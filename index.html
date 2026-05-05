@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>万象社 - 万般景象，皆汇于此</title>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    
     <style>
         :root {
             --bg-deep: #0a0a14;
@@ -18,7 +13,6 @@
             --gold-light: #e8c9a0;
             --text: #e0d8cf;
             --text-light: #b0a8a0;
-            --accent: #7b8fcc;
             --border: rgba(255, 255, 255, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             --shadow-gold: 0 0 30px rgba(212, 167, 116, 0.3);
@@ -90,9 +84,16 @@
             animation-delay: -14s;
         }
         @keyframes nebulaDrift {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(40px, -30px) scale(1.15); }
-            66% { transform: translate(-25px, 20px) scale(0.9); }
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(40px, -30px) scale(1.15);
+            }
+            66% {
+                transform: translate(-25px, 20px) scale(0.9);
+            }
         }
 
         .app-container {
@@ -194,8 +195,14 @@
             display: block;
         }
         @keyframes fadeSlideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .section-header {
@@ -237,6 +244,7 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
+            cursor: pointer;
             transition: all var(--transition);
             box-shadow: var(--shadow);
             position: relative;
@@ -251,6 +259,7 @@
             width: 100%;
             height: 220px;
             object-fit: cover;
+            display: block;
             transition: transform 0.6s ease;
         }
         .work-card:hover .card-img {
@@ -276,6 +285,10 @@
             color: var(--text-light);
             font-size: 0.85rem;
             line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .work-card .card-shine {
             position: absolute;
@@ -283,7 +296,7 @@
             left: -100%;
             width: 60%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
             transition: left 0.8s ease;
             pointer-events: none;
         }
@@ -308,8 +321,8 @@
         }
         .member-name-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-gold), 0 12px 35px rgba(0,0,0,0.5);
-            border-color: rgba(212,167,116,0.5);
+            box-shadow: var(--shadow-gold), 0 12px 35px rgba(0, 0, 0, 0.5);
+            border-color: rgba(212, 167, 116, 0.5);
             background: var(--bg-card-hover);
         }
         .member-name-card .avatar-dot {
@@ -324,6 +337,7 @@
             font-family: var(--font-display);
             font-size: 1.5rem;
             color: #fff;
+            letter-spacing: 2px;
         }
         .member-name-card .member-name {
             font-family: var(--font-display);
@@ -343,7 +357,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 200;
             display: flex;
             align-items: center;
@@ -358,14 +372,14 @@
             pointer-events: all;
         }
         .modal-panel {
-            background: rgba(22,22,42,0.95);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(22, 22, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius);
             padding: 40px 32px;
             max-width: 480px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
             transform: translateY(20px) scale(0.95);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(20px);
@@ -386,7 +400,7 @@
             font-family: var(--font-display);
             font-size: 2.2rem;
             color: #fff;
-            box-shadow: 0 0 40px rgba(150,130,200,0.4);
+            box-shadow: 0 0 40px rgba(150, 130, 200, 0.4);
         }
         .modal-panel h2 {
             font-family: var(--font-display);
@@ -412,7 +426,7 @@
             font-style: italic;
             letter-spacing: 2px;
             padding: 12px 20px;
-            border-top: 1px solid rgba(255,255,255,0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
             margin-top: 8px;
             line-height: 1.6;
         }
@@ -447,8 +461,8 @@
             box-shadow: var(--shadow);
         }
         .news-item:hover {
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
             transform: translateX(4px);
         }
         .news-item .news-date {
@@ -476,8 +490,6 @@
             letter-spacing: 2px;
             font-size: 0.8rem;
             opacity: 0.6;
-            position: relative;
-            z-index: 1;
         }
 
         .toast {
@@ -485,14 +497,14 @@
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: rgba(30,30,50,0.9);
+            background: rgba(30, 30, 50, 0.9);
             color: #fff;
             padding: 12px 28px;
             border-radius: 30px;
             z-index: 300;
             letter-spacing: 2px;
             font-size: 0.9rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
         }
@@ -501,17 +513,12 @@
         }
 
         .admin-panel {
-            display: none;
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 30px;
             margin-top: 30px;
             box-shadow: var(--shadow);
-        }
-        .admin-panel.active {
-            display: block;
-            animation: fadeSlideIn 0.5s ease-out;
         }
         .admin-panel h2 {
             color: #fff;
@@ -524,8 +531,8 @@
             width: 100%;
             padding: 12px 16px;
             margin: 8px 0 16px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius-sm);
             color: #fff;
             font-size: 0.95rem;
@@ -538,8 +545,8 @@
         .admin-panel textarea:focus {
             outline: none;
             border-color: var(--gold);
-            box-shadow: 0 0 15px rgba(212,167,116,0.2);
-            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 15px rgba(212, 167, 116, 0.2);
+            background: rgba(255, 255, 255, 0.08);
         }
         .admin-panel label {
             color: var(--text-light);
@@ -550,8 +557,8 @@
             display: inline-block;
             padding: 12px 28px;
             border-radius: 30px;
-            border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.06);
             color: #fff;
             cursor: pointer;
             letter-spacing: 2px;
@@ -560,24 +567,24 @@
             font-family: var(--font-body);
         }
         .btn:hover {
-            background: rgba(255,255,255,0.14);
-            border-color: rgba(255,255,255,0.5);
-            box-shadow: 0 0 25px rgba(200,180,220,0.25);
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 25px rgba(200, 180, 220, 0.25);
             transform: translateY(-2px);
         }
         .btn-gold {
             border-color: var(--gold);
-            background: rgba(212,167,116,0.15);
+            background: rgba(212, 167, 116, 0.15);
             color: var(--gold-light);
         }
         .btn-gold:hover {
-            background: rgba(212,167,116,0.25);
-            box-shadow: 0 0 30px rgba(212,167,116,0.35);
+            background: rgba(212, 167, 116, 0.25);
+            box-shadow: 0 0 30px rgba(212, 167, 116, 0.35);
         }
         .btn-danger {
             border-color: #c44;
             color: #e88;
-            background: rgba(200,60,60,0.1);
+            background: rgba(200, 60, 60, 0.1);
         }
         .btn-sm {
             padding: 7px 16px;
@@ -593,13 +600,12 @@
         .admin-table td {
             padding: 12px 10px;
             text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             letter-spacing: 1px;
             color: var(--text);
         }
         .admin-table th {
             color: var(--gold-light);
-            font-weight: normal;
             letter-spacing: 2px;
             font-size: 0.8rem;
         }
@@ -612,7 +618,7 @@
                 top: 60px;
                 left: 10px;
                 right: 10px;
-                background: rgba(16,16,30,0.95);
+                background: rgba(16, 16, 30, 0.95);
                 border: 1px solid var(--border);
                 border-radius: 20px;
                 padding: 16px;
@@ -627,15 +633,12 @@
             }
             .section-header h1 {
                 font-size: 2rem;
-                letter-spacing: 2px;
             }
             .works-grid {
                 grid-template-columns: 1fr;
-                gap: 18px;
             }
             .members-grid {
                 grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 14px;
             }
         }
     </style>
@@ -706,7 +709,7 @@
         <section class="page-section" id="page-admin">
             <div class="section-header">
                 <h1>后 台 管 理</h1>
-                <p class="subtitle">数据维护 · 云端同步</p>
+                <p class="subtitle">数据维护 · JSON 同步</p>
                 <div class="divider"></div>
             </div>
             <div id="adminLoginArea" style="max-width:400px;margin:80px auto;text-align:center;">
@@ -715,11 +718,12 @@
                 <br><button class="btn btn-gold" onclick="adminLogin()" style="margin-top:12px;">登 录</button>
             </div>
             <div id="adminPanelArea" class="admin-panel" style="display:none;">
-                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;align-items:center;">
                     <button class="btn" onclick="switchAdminTab('works')" id="adminTabWorks">📦 作品管理</button>
                     <button class="btn" onclick="switchAdminTab('members')" id="adminTabMembers">👤 成员管理</button>
                     <button class="btn" onclick="switchAdminTab('news')" id="adminTabNews">📰 资讯管理</button>
-                    <button class="btn btn-danger btn-sm" onclick="adminLogout()" style="margin-left:auto;">退出登录</button>
+                    <button class="btn btn-gold btn-sm" onclick="exportDataJSON()" style="margin-left:auto;">💾 导出 data.json</button>
+                    <button class="btn btn-danger btn-sm" onclick="adminLogout()">退出登录</button>
                 </div>
                 <div id="adminContentArea"></div>
             </div>
@@ -746,77 +750,77 @@
         (function() {
             const canvas = document.getElementById('starsCanvas');
             const ctx = canvas.getContext('2d');
-            let stars = [];
-            let shootingStars = [];
-            let mouseX = 0, mouseY = 0, targetMouseX = 0, targetMouseY = 0;
+            let stars = [],
+                shootingStars = [];
+            let mouseX = 0,
+                mouseY = 0,
+                targetMouseX = 0,
+                targetMouseY = 0;
             const STAR_COUNT = 260;
 
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
+            function resize() { canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight; }
             resize();
-            window.addEventListener('resize', resize);
+            window.addEventListener('resize', () => { resize();
+                stars = [];
+                for (let i = 0; i < STAR_COUNT; i++) stars.push(createStar()); });
 
-            document.addEventListener('mousemove', (e) => {
-                targetMouseX = e.clientX;
-                targetMouseY = e.clientY;
-            });
+            document.addEventListener('mousemove', (e) => { targetMouseX = e.clientX;
+                targetMouseY = e.clientY; });
 
             function createStar() {
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                const size = Math.random() * 2.8 + 0.4;
-                const baseAlpha = Math.random() * 0.7 + 0.3;
-                const twinkleSpeed = Math.random() * 0.02 + 0.005;
-                const twinkleOffset = Math.random() * Math.PI * 2;
-                const hue = Math.random() < 0.15 ? 40 + Math.random() * 20 : 220 + Math.random() * 60;
-                return { x, y, size, baseAlpha, twinkleSpeed, twinkleOffset, hue };
+                return {
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2.8 + 0.4,
+                    baseAlpha: Math.random() * 0.7 + 0.3,
+                    twinkleSpeed: Math.random() * 0.02 + 0.005,
+                    twinkleOffset: Math.random() * Math.PI * 2,
+                    hue: Math.random() < 0.15 ? 40 + Math.random() * 20 : 220 + Math.random() * 60
+                };
             }
             for (let i = 0; i < STAR_COUNT; i++) stars.push(createStar());
 
             function spawnShootingStar() {
-                const x = Math.random() * canvas.width * 0.8;
-                const y = Math.random() * canvas.height * 0.4;
-                const len = Math.random() * 100 + 60;
-                const speed = Math.random() * 8 + 6;
-                const angle = Math.PI / 4 + Math.random() * 0.3;
-                const life = Math.random() * 60 + 40;
-                return { x, y, len, speed, angle, life, maxLife: life, alpha: 1 };
+                return {
+                    x: Math.random() * canvas.width * 0.8,
+                    y: Math.random() * canvas.height * 0.4,
+                    len: Math.random() * 100 + 60,
+                    speed: Math.random() * 8 + 6,
+                    angle: Math.PI / 4 + Math.random() * 0.3,
+                    life: Math.random() * 60 + 40,
+                    maxLife: 0,
+                    alpha: 1
+                };
             }
 
             function animate() {
                 mouseX += (targetMouseX - mouseX) * 0.04;
                 mouseY += (targetMouseY - mouseY) * 0.04;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
                 const now = Date.now() * 0.001;
                 stars.forEach(s => {
-                    const parallaxX = (mouseX - canvas.width / 2) * s.size * 0.015;
-                    const parallaxY = (mouseY - canvas.height / 2) * s.size * 0.015;
-                    const sx = s.x + parallaxX;
-                    const sy = s.y + parallaxY;
+                    const px = (mouseX - canvas.width / 2) * s.size * 0.015;
+                    const py = (mouseY - canvas.height / 2) * s.size * 0.015;
+                    const sx = s.x + px,
+                        sy = s.y + py;
                     const twinkle = Math.sin(now * s.twinkleSpeed * 60 + s.twinkleOffset) * 0.5 + 0.5;
                     const alpha = s.baseAlpha * (0.6 + twinkle * 0.4);
-
                     const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, s.size * 3);
-                    glow.addColorStop(0, `hsla(${s.hue}, 60%, 80%, ${alpha})`);
-                    glow.addColorStop(0.5, `hsla(${s.hue}, 40%, 70%, ${alpha * 0.4})`);
+                    glow.addColorStop(0, `hsla(${s.hue},60%,80%,${alpha})`);
+                    glow.addColorStop(0.5, `hsla(${s.hue},40%,70%,${alpha*0.4})`);
                     glow.addColorStop(1, 'transparent');
                     ctx.fillStyle = glow;
                     ctx.beginPath();
                     ctx.arc(sx, sy, s.size * 3, 0, Math.PI * 2);
                     ctx.fill();
-
-                    ctx.fillStyle = `hsla(${s.hue}, 30%, 95%, ${alpha})`;
+                    ctx.fillStyle = `hsla(${s.hue},30%,95%,${alpha})`;
                     ctx.beginPath();
                     ctx.arc(sx, sy, s.size * 0.7, 0, Math.PI * 2);
                     ctx.fill();
                 });
-
-                if (shootingStars.length < 2 && Math.random() < 0.012) {
-                    shootingStars.push(spawnShootingStar());
-                }
+                if (shootingStars.length < 2 && Math.random() < 0.012) shootingStars.push(
+                spawnShootingStar());
                 shootingStars = shootingStars.filter(ss => {
                     ss.x += Math.cos(ss.angle) * ss.speed;
                     ss.y += Math.sin(ss.angle) * ss.speed;
@@ -827,7 +831,7 @@
                     const ey = ss.y - Math.sin(ss.angle) * ss.len;
                     const grad = ctx.createLinearGradient(ss.x, ss.y, ex, ey);
                     grad.addColorStop(0, `rgba(255,255,255,${ss.alpha})`);
-                    grad.addColorStop(0.3, `rgba(200,210,255,${ss.alpha * 0.7})`);
+                    grad.addColorStop(0.3, `rgba(200,210,255,${ss.alpha*0.7})`);
                     grad.addColorStop(1, 'rgba(255,255,255,0)');
                     ctx.strokeStyle = grad;
                     ctx.lineWidth = 1.5;
@@ -844,41 +848,74 @@
                 requestAnimationFrame(animate);
             }
             animate();
-            window.addEventListener('resize', () => {
-                resize();
-                stars = [];
-                for (let i = 0; i < STAR_COUNT; i++) stars.push(createStar());
-            });
         })();
 
-        // ==================== Firebase 初始化 ====================
-        // ⚠️ 替换这里：把你自己的 firebaseConfig 粘贴到下面
-        const firebaseConfig = {
-            apiKey: "AIzaSyXXXXXXXXXXXXXXXXXXX",
-            authDomain: "wanxiangshe.firebaseapp.com",
-            projectId: "wanxiangshe",
-            storageBucket: "wanxiangshe.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef123456"
-        };
+        // ==================== 数据管理 ====================
+        const DATA_KEYS = { works: 'wxs_works', members: 'wxs_members', news: 'wxs_news' };
+        const DATA_URL = 'data.json'; // 云端 JSON 文件路径
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        const defaultWorks = [
+            { id: 1, title: '星月夜', author: '林月如', desc: '数字绘画作品，以星空为背景，融合东方意境与现代技法。',
+                image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80' },
+            { id: 2, title: '城市脉搏', author: '陈远航', desc: '摄影系列作品，捕捉城市夜晚霓虹灯光与流动车轨。',
+                image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80' },
+        ];
+        const defaultMembers = [
+            { id: 1, name: '林月如', role: '社长', number: 'WX-001', signature: '以画笔描绘万象，用心感受世界。' },
+            { id: 2, name: '陈远航', role: '副社长', number: 'WX-002', signature: '镜头之下，皆是故事。' },
+        ];
+        const defaultNews = [
+            { id: 1, date: '2024-12-20', title: '万象社年度作品展圆满落幕', content: '本次展览共展出30余件社员作品，吸引了超过500名观众前来观展。' },
+            { id: 2, date: '2024-11-08', title: '新社员招募正式启动', content: '万象社面向所有创意爱好者开放招募，欢迎加入我们。' },
+        ];
 
-        // ==================== 数据读写 ====================
-        async function fetchCollection(name) {
-            const snapshot = await db.collection(name).get();
-            const data = [];
-            snapshot.forEach(doc => data.push({ id: doc.id, ...doc.data() }));
-            return data;
+        function getLocalData(key) {
+            try { const raw = localStorage.getItem(DATA_KEYS[key]); return raw ? JSON.parse(raw) :
+                    null; } catch (e) { return null; }
         }
 
-        async function saveDocument(collection, id, data) {
-            await db.collection(collection).doc(String(id)).set(data);
+        function setLocalData(key, data) { localStorage.setItem(DATA_KEYS[key], JSON.stringify(data)); }
+
+        function initLocalData() {
+            if (!getLocalData('works')) setLocalData('works', defaultWorks);
+            if (!getLocalData('members')) setLocalData('members', defaultMembers);
+            if (!getLocalData('news')) setLocalData('news', defaultNews);
         }
 
-        async function deleteDocument(collection, id) {
-            await db.collection(collection).doc(String(id)).delete();
+        // ==================== 尝试从云端加载 JSON ====================
+        async function loadCloudData() {
+            try {
+                const res = await fetch(DATA_URL);
+                if (!res.ok) return false;
+                const cloud = await res.json();
+                if (cloud.works) setLocalData('works', cloud.works);
+                if (cloud.members) setLocalData('members', cloud.members);
+                if (cloud.news) setLocalData('news', cloud.news);
+                console.log('✅ 已从云端 data.json 同步最新数据');
+                return true;
+            } catch (e) {
+                console.log('ℹ️ 未找到云端数据，使用本地存储');
+                return false;
+            }
+        }
+
+        // ==================== 导出 data.json ====================
+        function exportDataJSON() {
+            const data = {
+                works: getLocalData('works') || [],
+                members: getLocalData('members') || [],
+                news: getLocalData('news') || [],
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('✅ data.json 已下载！上传到 GitHub 仓库即可同步给所有人');
         }
 
         // ==================== 导航 ====================
@@ -887,12 +924,12 @@
         function navigateTo(page) {
             if (currentPage === page && page !== 'admin') return;
             document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-            const newSection = document.getElementById('page-' + page);
-            if (newSection) newSection.classList.add('active');
+            const ns = document.getElementById('page-' + page);
+            if (ns) ns.classList.add('active');
             currentPage = page;
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            const activeLink = document.querySelector(`.nav-links a[data-page="${page}"]`);
-            if (activeLink) activeLink.classList.add('active');
+            const al = document.querySelector(`.nav-links a[data-page="${page}"]`);
+            if (al) al.classList.add('active');
             document.getElementById('navLinks').classList.remove('open');
             if (page === 'works') renderWorks();
             if (page === 'members') renderMembers();
@@ -901,60 +938,52 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function toggleMenu() {
-            document.getElementById('navLinks').classList.toggle('open');
-        }
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
 
         function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.classList.add('show');
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2200);
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._t);
+            t._t = setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // ==================== 渲染 ====================
-        async function renderWorks() {
+        // ==================== 渲染函数 ====================
+        function renderWorks() {
             const grid = document.getElementById('worksGrid');
-            const works = await fetchCollection('works');
-            if (works.length === 0) {
-                grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;letter-spacing:2px;">暂无作品展示</p>';
-                return;
-            }
+            const works = getLocalData('works') || [];
+            if (!works.length) { grid.innerHTML =
+                    '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;">暂无作品</p>'; return; }
             grid.innerHTML = works.map(w => `
-                <div class="work-card">
-                    <div class="card-shine"></div>
-                    <img class="card-img" src="${escapeHTML(w.image)}" alt="${escapeHTML(w.title)}" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'">
-                    <div class="card-body">
-                        <h3>${escapeHTML(w.title)}</h3>
-                        <p class="author">✧ ${escapeHTML(w.author)}</p>
-                        <p class="desc">${escapeHTML(w.desc)}</p>
-                    </div>
-                </div>
-            `).join('');
+            <div class="work-card">
+              <div class="card-shine"></div>
+              <img class="card-img" src="${esc(w.image)}" alt="${esc(w.title)}" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'">
+              <div class="card-body">
+                <h3>${esc(w.title)}</h3>
+                <p class="author">✧ ${esc(w.author)}</p>
+                <p class="desc">${esc(w.desc)}</p>
+              </div>
+            </div>`).join('');
         }
 
-        async function renderMembers() {
+        function renderMembers() {
             const grid = document.getElementById('membersGrid');
-            const members = await fetchCollection('members');
-            if (members.length === 0) {
-                grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;letter-spacing:2px;">暂无成员信息</p>';
-                return;
-            }
+            const members = getLocalData('members') || [];
+            if (!members.length) { grid.innerHTML =
+                    '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;">暂无成员</p>'; return; }
             grid.innerHTML = members.map(m => `
-                <div class="member-name-card" onclick="openMemberModal('${m.id}')">
-                    <div class="avatar-dot">${escapeHTML(m.name ? m.name.charAt(0) : '?')}</div>
-                    <div class="member-name">${escapeHTML(m.name)}</div>
-                    <div class="member-role-hint">${escapeHTML(m.role)}</div>
-                </div>
-            `).join('');
+            <div class="member-name-card" onclick="openMemberModal('${m.id}')">
+              <div class="avatar-dot">${esc((m.name||'?').charAt(0))}</div>
+              <div class="member-name">${esc(m.name)}</div>
+              <div class="member-role-hint">${esc(m.role)}</div>
+            </div>`).join('');
         }
 
-        async function openMemberModal(id) {
-            const members = await fetchCollection('members');
+        function openMemberModal(id) {
+            const members = getLocalData('members') || [];
             const m = members.find(m => String(m.id) === String(id));
             if (!m) return;
-            document.getElementById('modalAvatar').textContent = m.name ? m.name.charAt(0) : '?';
+            document.getElementById('modalAvatar').textContent = (m.name || '?').charAt(0);
             document.getElementById('modalName').textContent = m.name || '';
             document.getElementById('modalRole').textContent = '✦ ' + (m.role || '');
             document.getElementById('modalId').textContent = '编号：' + (m.number || '');
@@ -963,214 +992,201 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function closeMemberModal() {
-            document.getElementById('memberModal').classList.remove('show');
-            document.body.style.overflow = '';
-        }
-        document.getElementById('memberModal').addEventListener('click', function(e) {
-            if (e.target === this) closeMemberModal();
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeMemberModal();
-        });
+        function closeMemberModal() { document.getElementById('memberModal').classList.remove('show');
+            document.body.style.overflow = ''; }
+        document.getElementById('memberModal').addEventListener('click', function(e) { if (e.target === this)
+                closeMemberModal(); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMemberModal(); });
 
-        async function renderNews() {
+        function renderNews() {
             const list = document.getElementById('newsList');
-            const news = await fetchCollection('news');
-            if (news.length === 0) {
-                list.innerHTML = '<p style="text-align:center;color:var(--text-light);letter-spacing:2px;">暂无社区资讯</p>';
-                return;
-            }
+            const news = getLocalData('news') || [];
+            if (!news.length) { list.innerHTML =
+                    '<p style="text-align:center;color:var(--text-light);">暂无资讯</p>'; return; }
             list.innerHTML = news.map(n => `
-                <div class="news-item">
-                    <div class="news-date">📅 ${escapeHTML(n.date)}</div>
-                    <h3>${escapeHTML(n.title)}</h3>
-                    <p>${escapeHTML(n.content)}</p>
-                </div>
-            `).join('');
+            <div class="news-item">
+              <div class="news-date">📅 ${esc(n.date)}</div>
+              <h3>${esc(n.title)}</h3>
+              <p>${esc(n.content)}</p>
+            </div>`).join('');
         }
 
-        function escapeHTML(str) {
-            const div = document.createElement('div');
-            div.textContent = str || '';
-            return div.innerHTML;
-        }
+        function esc(s) { const d = document.createElement('div');
+            d.textContent = s || ''; return d.innerHTML; }
 
         // ==================== 后台管理 ====================
-        const ADMIN_PASSWORD = 'wanxiang2024';
+        const ADMIN_PW = 'wanxiang2024';
 
         function checkAdminStatus() {
-            const logged = sessionStorage.getItem('wxs_admin_logged');
-            if (logged === 'true') {
-                document.getElementById('adminLoginArea').style.display = 'none';
-                document.getElementById('adminPanelArea').style.display = 'block';
-                switchAdminTab('works');
-            } else {
-                document.getElementById('adminLoginArea').style.display = 'block';
-                document.getElementById('adminPanelArea').style.display = 'none';
-            }
+            const logged = sessionStorage.getItem('wxs_admin');
+            document.getElementById('adminLoginArea').style.display = logged === 'true' ? 'none' : 'block';
+            document.getElementById('adminPanelArea').style.display = logged === 'true' ? 'block' : 'none';
+            if (logged === 'true') switchAdminTab('works');
         }
 
         function adminLogin() {
-            const pw = document.getElementById('adminPassword').value;
-            if (pw === ADMIN_PASSWORD) {
-                sessionStorage.setItem('wxs_admin_logged', 'true');
+            if (document.getElementById('adminPassword').value === ADMIN_PW) {
+                sessionStorage.setItem('wxs_admin', 'true');
                 checkAdminStatus();
                 showToast('✅ 登录成功');
-            } else {
-                showToast('❌ 密码错误');
-            }
+            } else showToast('❌ 密码错误');
         }
 
-        function adminLogout() {
-            sessionStorage.removeItem('wxs_admin_logged');
+        function adminLogout() { sessionStorage.removeItem('wxs_admin');
             checkAdminStatus();
-            showToast('已退出登录');
-        }
+            showToast('已退出'); }
 
-        let currentAdminTab = 'works';
+        let adminTab = 'works';
 
-        async function switchAdminTab(tab) {
-            currentAdminTab = tab;
+        function switchAdminTab(tab) {
+            adminTab = tab;
             document.querySelectorAll('[id^="adminTab"]').forEach(b => b.style.boxShadow = 'none');
-            const activeBtn = document.getElementById('adminTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
-            if (activeBtn) activeBtn.style.boxShadow = '0 0 20px rgba(200,180,220,0.4)';
-            await renderAdminContent();
+            const btn = document.getElementById('adminTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+            if (btn) btn.style.boxShadow = '0 0 20px rgba(200,180,220,0.4)';
+            renderAdminContent();
         }
 
-        async function renderAdminContent() {
+        function renderAdminContent() {
             const area = document.getElementById('adminContentArea');
-            const data = await fetchCollection(currentAdminTab);
-            const labels = {
-                works: { title: '作品', fields: ['title', 'author', 'desc', 'image'], fieldLabels: ['作品标题', '作者', '描述', '图片URL'] },
-                members: { title: '成员', fields: ['name', 'role', 'number', 'signature'], fieldLabels: ['昵称', '职位', '编号', '签名'] },
-                news: { title: '资讯', fields: ['title', 'date', 'content'], fieldLabels: ['标题', '日期(YYYY-MM-DD)', '内容'] },
-            };
-            const cfg = labels[currentAdminTab];
-            let html = `<h3>${cfg.title}列表 <span style="font-size:0.7rem;color:var(--text-light);">(共${data.length}条)</span></h3>`;
-            html += `<table class="admin-table"><thead><tr><th>ID</th>${cfg.fieldLabels.map(l => `<th>${l}</th>`).join('')}<th>操作</th></tr></thead><tbody>`;
+            const data = getLocalData(adminTab) || [];
+            const cfg = {
+                works: { title: '作品', fields: ['title', 'author', 'desc', 'image'],
+                fieldLabels: ['标题', '作者', '描述', '图片URL'] },
+                members: { title: '成员', fields: ['name', 'role', 'number', 'signature'],
+                    fieldLabels: ['昵称', '职位', '编号', '签名'] },
+                news: { title: '资讯', fields: ['title', 'date', 'content'], fieldLabels: ['标题', '日期', '内容'] },
+            } [adminTab];
+            let html =
+                `<h3>${cfg.title}列表 <span style="font-size:0.7rem;color:var(--text-light);">(共${data.length}条)</span></h3>`;
+            html +=
+                `<table class="admin-table"><thead><tr><th>ID</th>${cfg.fieldLabels.map(l=>`<th>${l}</th>`).join('')}<th>操作</th></tr></thead><tbody>`;
             data.forEach(item => {
-                html += `<tr>`;
-                html += `<td>${item.id}</td>`;
+                html += `<tr><td>${item.id}</td>`;
                 cfg.fields.forEach(f => {
-                    const val = item[f] || '';
-                    html += `<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHTML(String(val))}">${escapeHTML(String(val).substring(0, 40))}</td>`;
+                    const v = item[f] || '';
+                    html +=
+                        `<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${esc(String(v))}">${esc(String(v).substring(0,40))}</td>`;
                 });
-                html += `<td><button class="btn btn-sm" onclick="editItem('${currentAdminTab}','${item.id}')">✏️编辑</button> <button class="btn btn-sm btn-danger" onclick="deleteItem('${currentAdminTab}','${item.id}')">🗑删除</button></td>`;
-                html += `</tr>`;
+                html +=
+                    `<td><button class="btn btn-sm" onclick="editItem('${adminTab}',${item.id})">✏️</button> <button class="btn btn-sm btn-danger" onclick="deleteItem('${adminTab}',${item.id})">🗑</button></td></tr>`;
             });
             html += `</tbody></table>`;
-            html += `<button class="btn btn-gold" style="margin-top:18px;" onclick="addItem('${currentAdminTab}')">＋ 新增${cfg.title}</button>`;
-            html += `<div id="editFormArea" style="margin-top:20px;padding:20px;background:rgba(0,0,0,0.2);border-radius:12px;display:none;"></div>`;
+            html +=
+                `<button class="btn btn-gold" style="margin-top:18px;" onclick="addItem('${adminTab}')">＋ 新增</button>`;
+            html +=
+            `<div id="editFormArea" style="margin-top:20px;padding:20px;background:rgba(0,0,0,0.2);border-radius:12px;display:none;"></div>`;
             area.innerHTML = html;
         }
 
-        async function getNextId(tab) {
-            const data = await fetchCollection(tab);
-            return data.length > 0 ? Math.max(...data.map(d => parseInt(d.id) || 0)) + 1 : 1;
-        }
+        function getNextId(tab) { const d = getLocalData(tab) || []; return d.length ? Math.max(...d.map(i => i.id)) +
+                1 : 1; }
 
-        async function addItem(tab) {
+        function addItem(tab) {
             const cfg = {
-                works: { fields: ['title', 'author', 'desc', 'image'], fieldLabels: ['作品标题', '作者', '描述', '图片URL'] },
-                members: { fields: ['name', 'role', 'number', 'signature'], fieldLabels: ['昵称', '职位', '编号', '签名'] },
-                news: { fields: ['title', 'date', 'content'], fieldLabels: ['标题', '日期(YYYY-MM-DD)', '内容'] },
-            };
-            const c = cfg[tab];
-            let formHtml = `<h4 style="color:#fff;letter-spacing:2px;">新增${c.fieldLabels[0] ? '条目' : ''}</h4>`;
-            c.fields.forEach((f, i) => {
-                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (tab === 'members' && f === 'signature');
-                const defaultVal = (tab === 'news' && f === 'date') ? new Date().toISOString().split('T')[0] : '';
-                if (isTextarea) {
-                    formHtml += `<label>${c.fieldLabels[i]}</label><textarea id="form_${f}" rows="3">${defaultVal}</textarea>`;
-                } else {
-                    formHtml += `<label>${c.fieldLabels[i]}</label><input id="form_${f}" value="${defaultVal}">`;
-                }
+                works: ['title', 'author', 'desc', 'image'],
+                members: ['name', 'role', 'number', 'signature'],
+                news: ['title', 'date', 'content']
+            } [tab];
+            const labels = {
+                works: ['标题', '作者', '描述', '图片URL'],
+                members: ['昵称', '职位', '编号', '签名'],
+                news: ['标题', '日期', '内容']
+            } [tab];
+            let h = '<h4 style="color:#fff;letter-spacing:2px;">新增</h4>';
+            cfg.forEach((f, i) => {
+                const ta = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (tab ===
+                    'members' && f === 'signature');
+                h += `<label>${labels[i]}</label>`;
+                h += ta ? `<textarea id="f_${f}" rows="3"></textarea>` :
+                    `<input id="f_${f}" value="${tab==='news'&&f==='date'?new Date().toISOString().split('T')[0]:''}">`;
             });
-            formHtml += `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveNewItem('${tab}')">💾 保存</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
+            h +=
+                `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveNew('${tab}')">💾 保存</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
             document.getElementById('editFormArea').style.display = 'block';
-            document.getElementById('editFormArea').innerHTML = formHtml;
+            document.getElementById('editFormArea').innerHTML = h;
         }
 
-        async function editItem(tab, id) {
-            const data = await fetchCollection(tab);
-            const item = data.find(d => String(d.id) === String(id));
+        function editItem(tab, id) {
+            const data = getLocalData(tab) || [];
+            const item = data.find(d => d.id === id);
             if (!item) return;
             const cfg = {
-                works: { fields: ['title', 'author', 'desc', 'image'], fieldLabels: ['作品标题', '作者', '描述', '图片URL'] },
-                members: { fields: ['name', 'role', 'number', 'signature'], fieldLabels: ['昵称', '职位', '编号', '签名'] },
-                news: { fields: ['title', 'date', 'content'], fieldLabels: ['标题', '日期', '内容'] },
-            };
-            const c = cfg[tab];
-            let formHtml = `<h4 style="color:#fff;letter-spacing:2px;">编辑 (ID: ${id})</h4>`;
-            c.fields.forEach((f, i) => {
-                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (tab === 'members' && f === 'signature');
-                if (isTextarea) {
-                    formHtml += `<label>${c.fieldLabels[i]}</label><textarea id="form_${f}" rows="3">${escapeHTML(String(item[f] || ''))}</textarea>`;
-                } else {
-                    formHtml += `<label>${c.fieldLabels[i]}</label><input id="form_${f}" value="${escapeHTML(String(item[f] || ''))}">`;
-                }
+                works: ['title', 'author', 'desc', 'image'],
+                members: ['name', 'role', 'number', 'signature'],
+                news: ['title', 'date', 'content']
+            } [tab];
+            const labels = {
+                works: ['标题', '作者', '描述', '图片URL'],
+                members: ['昵称', '职位', '编号', '签名'],
+                news: ['标题', '日期', '内容']
+            } [tab];
+            let h = `<h4 style="color:#fff;letter-spacing:2px;">编辑 (ID: ${id})</h4>`;
+            cfg.forEach((f, i) => {
+                const ta = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (tab ===
+                    'members' && f === 'signature');
+                h += `<label>${labels[i]}</label>`;
+                h += ta ? `<textarea id="f_${f}" rows="3">${esc(String(item[f]||''))}</textarea>` :
+                    `<input id="f_${f}" value="${esc(String(item[f]||''))}">`;
             });
-            formHtml += `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveEditItem('${tab}','${id}')">💾 更新</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
+            h +=
+                `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveEdit('${tab}',${id})">💾 更新</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
             document.getElementById('editFormArea').style.display = 'block';
-            document.getElementById('editFormArea').innerHTML = formHtml;
+            document.getElementById('editFormArea').innerHTML = h;
         }
 
-        async function saveNewItem(tab) {
-            const cfg = {
-                works: ['title', 'author', 'desc', 'image'],
-                members: ['name', 'role', 'number', 'signature'],
-                news: ['title', 'date', 'content'],
-            };
-            const fields = cfg[tab];
-            const newItem = { id: String(await getNextId(tab)) };
-            fields.forEach(f => {
-                const el = document.getElementById('form_' + f);
-                newItem[f] = el ? el.value : '';
-            });
-            if (!newItem[fields[0]]) { showToast('⚠️ 请填写必要字段'); return; }
-            await saveDocument(tab, newItem.id, newItem);
+        function saveNew(tab) {
+            const fields = { works: ['title', 'author', 'desc', 'image'], members: ['name', 'role', 'number',
+                    'signature'
+                ], news: ['title', 'date', 'content'] } [tab];
+            const obj = { id: getNextId(tab) };
+            fields.forEach(f => { const el = document.getElementById('f_' + f);
+                obj[f] = el ? el.value : ''; });
+            if (!obj[fields[0]]) { showToast('⚠️ 请填写必要字段'); return; }
+            const data = getLocalData(tab) || [];
+            data.push(obj);
+            setLocalData(tab, data);
             document.getElementById('editFormArea').style.display = 'none';
-            await renderAdminContent();
-            refreshActivePage(tab);
-            showToast('✅ 新增成功 · 已同步到云端');
+            renderAdminContent();
+            refreshPage(tab);
+            showToast('✅ 已保存（本地）。点"导出 data.json"同步到云端');
         }
 
-        async function saveEditItem(tab, id) {
-            const cfg = {
-                works: ['title', 'author', 'desc', 'image'],
-                members: ['name', 'role', 'number', 'signature'],
-                news: ['title', 'date', 'content'],
-            };
-            const fields = cfg[tab];
-            const updatedItem = { id: String(id) };
-            fields.forEach(f => {
-                const el = document.getElementById('form_' + f);
-                if (el) updatedItem[f] = el.value;
-            });
-            await saveDocument(tab, String(id), updatedItem);
+        function saveEdit(tab, id) {
+            const fields = { works: ['title', 'author', 'desc', 'image'], members: ['name', 'role', 'number',
+                    'signature'
+                ], news: ['title', 'date', 'content'] } [tab];
+            const data = getLocalData(tab) || [];
+            const idx = data.findIndex(d => d.id === id);
+            if (idx < 0) return;
+            fields.forEach(f => { const el = document.getElementById('f_' + f); if (el) data[idx][f] = el
+                .value; });
+            setLocalData(tab, data);
             document.getElementById('editFormArea').style.display = 'none';
-            await renderAdminContent();
-            refreshActivePage(tab);
-            showToast('✅ 更新成功 · 已同步到云端');
+            renderAdminContent();
+            refreshPage(tab);
+            showToast('✅ 已更新（本地）。点"导出 data.json"同步到云端');
         }
 
-        async function deleteItem(tab, id) {
-            if (!confirm('确定要删除这条记录吗？此操作不可恢复。')) return;
-            await deleteDocument(tab, String(id));
-            await renderAdminContent();
-            refreshActivePage(tab);
-            showToast('🗑 已删除 · 已同步到云端');
+        function deleteItem(tab, id) {
+            if (!confirm('确定删除？')) return;
+            let data = getLocalData(tab) || [];
+            data = data.filter(d => d.id !== id);
+            setLocalData(tab, data);
+            renderAdminContent();
+            refreshPage(tab);
+            showToast('🗑 已删除（本地）。点"导出 data.json"同步到云端');
         }
 
-        function refreshActivePage(tab) {
-            if (tab === 'works' && currentPage === 'works') renderWorks();
-            if (tab === 'members' && currentPage === 'members') renderMembers();
-            if (tab === 'news' && currentPage === 'news') renderNews();
-        }
+        function refreshPage(tab) { if (tab === 'works') renderWorks(); if (tab === 'members') renderMembers(); if (
+                tab === 'news') renderNews(); }
 
         // ==================== 初始化 ====================
-        function init() {
+        async function init() {
+            initLocalData();
+            const synced = await loadCloudData();
+            if (synced) {
+                // 重新渲染所有页面
+            }
             renderWorks();
             renderMembers();
             renderNews();
@@ -1178,8 +1194,8 @@
         }
         init();
 
-        console.log('🌌 万象社 · Firebase 云端同步版已就绪');
-        console.log('在后台管理中的任何修改都会自动同步给所有访客');
+        console.log('🌌 万象社 · JSON 同步版已就绪');
+        console.log('💡 使用提示：在后台修改数据 → 点"导出 data.json" → 上传到 GitHub 仓库 → 所有人自动同步');
     </script>
 </body>
 </html>
