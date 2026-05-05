@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>万象社 - 万般景象，皆汇于此</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
     <style>
         :root {
             --bg-deep: #0a0a14;
@@ -14,7 +19,6 @@
             --text: #e0d8cf;
             --text-light: #b0a8a0;
             --accent: #7b8fcc;
-            --accent-light: #a0b4f0;
             --border: rgba(255, 255, 255, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             --shadow-gold: 0 0 30px rgba(212, 167, 116, 0.3);
@@ -30,11 +34,9 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         html {
             scroll-behavior: smooth;
         }
-
         body {
             font-family: var(--font-body);
             background: var(--bg-deep);
@@ -45,7 +47,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ==================== 星空画布 ==================== */
         #starsCanvas {
             position: fixed;
             top: 0;
@@ -56,7 +57,6 @@
             pointer-events: none;
         }
 
-        /* ==================== 星云光晕层 ==================== */
         .nebula-glow {
             position: fixed;
             border-radius: 50%;
@@ -72,7 +72,6 @@
             background: #4a3a8a;
             top: -150px;
             left: -100px;
-            animation-delay: 0s;
         }
         .nebula-glow.n2 {
             width: 400px;
@@ -91,19 +90,11 @@
             animation-delay: -14s;
         }
         @keyframes nebulaDrift {
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1);
-            }
-            33% {
-                transform: translate(40px, -30px) scale(1.15);
-            }
-            66% {
-                transform: translate(-25px, 20px) scale(0.9);
-            }
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -30px) scale(1.15); }
+            66% { transform: translate(-25px, 20px) scale(0.9); }
         }
 
-        /* ==================== 主容器 ==================== */
         .app-container {
             position: relative;
             z-index: 1;
@@ -112,7 +103,6 @@
             padding: 0 24px;
         }
 
-        /* ==================== 导航栏 ==================== */
         .navbar {
             position: sticky;
             top: 16px;
@@ -145,11 +135,6 @@
             background-clip: text;
             cursor: pointer;
             transition: all var(--transition);
-            text-shadow: none;
-        }
-        .navbar .logo:hover {
-            filter: brightness(1.3);
-            transform: scale(1.04);
         }
         .nav-links {
             display: flex;
@@ -166,9 +151,8 @@
             font-size: 0.95rem;
             letter-spacing: 1px;
             transition: all var(--transition);
-            position: relative;
-            white-space: nowrap;
             cursor: pointer;
+            white-space: nowrap;
         }
         .nav-links li a:hover,
         .nav-links li a.active {
@@ -193,17 +177,14 @@
             cursor: pointer;
             gap: 5px;
             z-index: 101;
-            padding: 5px;
         }
         .hamburger span {
             width: 26px;
             height: 2.5px;
             background: var(--text);
             border-radius: 3px;
-            transition: all 0.3s;
         }
 
-        /* ==================== 页面区域 ==================== */
         .page-section {
             display: none;
             animation: fadeSlideIn 0.6s ease-out forwards;
@@ -213,17 +194,10 @@
             display: block;
         }
         @keyframes fadeSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ==================== 区块标题 ==================== */
         .section-header {
             text-align: center;
             margin-bottom: 50px;
@@ -253,7 +227,6 @@
             opacity: 0.7;
         }
 
-        /* ==================== 作品集网格 ==================== */
         .works-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -264,11 +237,9 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
-            cursor: pointer;
             transition: all var(--transition);
             box-shadow: var(--shadow);
             position: relative;
-            group: true;
         }
         .work-card:hover {
             transform: translateY(-8px);
@@ -280,7 +251,6 @@
             width: 100%;
             height: 220px;
             object-fit: cover;
-            display: block;
             transition: transform 0.6s ease;
         }
         .work-card:hover .card-img {
@@ -306,10 +276,6 @@
             color: var(--text-light);
             font-size: 0.85rem;
             line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
         .work-card .card-shine {
             position: absolute;
@@ -317,7 +283,7 @@
             left: -100%;
             width: 60%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
             transition: left 0.8s ease;
             pointer-events: none;
         }
@@ -325,7 +291,6 @@
             left: 150%;
         }
 
-        /* ==================== 人物介绍 - 名字卡片网格 ==================== */
         .members-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -340,13 +305,11 @@
             cursor: pointer;
             transition: all var(--transition);
             box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
         }
         .member-name-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-gold), 0 12px 35px rgba(0, 0, 0, 0.5);
-            border-color: rgba(212, 167, 116, 0.5);
+            box-shadow: var(--shadow-gold), 0 12px 35px rgba(0,0,0,0.5);
+            border-color: rgba(212,167,116,0.5);
             background: var(--bg-card-hover);
         }
         .member-name-card .avatar-dot {
@@ -361,12 +324,6 @@
             font-family: var(--font-display);
             font-size: 1.5rem;
             color: #fff;
-            letter-spacing: 2px;
-            transition: all var(--transition);
-        }
-        .member-name-card:hover .avatar-dot {
-            box-shadow: 0 0 25px rgba(180, 150, 220, 0.5);
-            transform: scale(1.08);
         }
         .member-name-card .member-name {
             font-family: var(--font-display);
@@ -380,14 +337,13 @@
             letter-spacing: 1px;
         }
 
-        /* ==================== 成员详情模态框 ==================== */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             z-index: 200;
             display: flex;
             align-items: center;
@@ -402,14 +358,14 @@
             pointer-events: all;
         }
         .modal-panel {
-            background: rgba(22, 22, 42, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(22,22,42,0.95);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: var(--radius);
             padding: 40px 32px;
             max-width: 480px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(150, 130, 200, 0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             transform: translateY(20px) scale(0.95);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(20px);
@@ -430,15 +386,13 @@
             font-family: var(--font-display);
             font-size: 2.2rem;
             color: #fff;
-            letter-spacing: 3px;
-            box-shadow: 0 0 40px rgba(150, 130, 200, 0.4);
+            box-shadow: 0 0 40px rgba(150,130,200,0.4);
         }
         .modal-panel h2 {
             font-family: var(--font-display);
             font-size: 1.8rem;
             color: #fff;
             letter-spacing: 3px;
-            margin-bottom: 4px;
         }
         .modal-panel .modal-role {
             color: var(--gold-light);
@@ -458,7 +412,7 @@
             font-style: italic;
             letter-spacing: 2px;
             padding: 12px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255,255,255,0.15);
             margin-top: 8px;
             line-height: 1.6;
         }
@@ -472,20 +426,11 @@
             font-size: 1.5rem;
             cursor: pointer;
             opacity: 0.7;
-            transition: all 0.3s;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         .modal-close:hover {
             opacity: 1;
-            background: rgba(255, 255, 255, 0.1);
         }
 
-        /* ==================== 咨询列表 ==================== */
         .news-list {
             display: flex;
             flex-direction: column;
@@ -500,11 +445,10 @@
             padding: 22px 26px;
             transition: all var(--transition);
             box-shadow: var(--shadow);
-            cursor: default;
         }
         .news-item:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             transform: translateX(4px);
         }
         .news-item .news-date {
@@ -525,7 +469,6 @@
             line-height: 1.6;
         }
 
-        /* ==================== 页脚 ==================== */
         .site-footer {
             text-align: center;
             padding: 30px 0;
@@ -537,20 +480,19 @@
             z-index: 1;
         }
 
-        /* ==================== Toast ==================== */
         .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: rgba(30, 30, 50, 0.9);
+            background: rgba(30,30,50,0.9);
             color: #fff;
             padding: 12px 28px;
             border-radius: 30px;
             z-index: 300;
             letter-spacing: 2px;
             font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255,255,255,0.2);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
         }
@@ -558,7 +500,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* ==================== 后台管理面板 ==================== */
         .admin-panel {
             display: none;
             background: var(--bg-card);
@@ -579,13 +520,12 @@
             font-family: var(--font-display);
         }
         .admin-panel input,
-        .admin-panel textarea,
-        .admin-panel select {
+        .admin-panel textarea {
             width: 100%;
             padding: 12px 16px;
             margin: 8px 0 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: var(--radius-sm);
             color: #fff;
             font-size: 0.95rem;
@@ -598,8 +538,8 @@
         .admin-panel textarea:focus {
             outline: none;
             border-color: var(--gold);
-            box-shadow: 0 0 15px rgba(212, 167, 116, 0.2);
-            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(212,167,116,0.2);
+            background: rgba(255,255,255,0.08);
         }
         .admin-panel label {
             color: var(--text-light);
@@ -610,44 +550,38 @@
             display: inline-block;
             padding: 12px 28px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.06);
             color: #fff;
             cursor: pointer;
             letter-spacing: 2px;
             font-size: 0.9rem;
             transition: all var(--transition);
             font-family: var(--font-body);
-            text-decoration: none;
         }
         .btn:hover {
-            background: rgba(255, 255, 255, 0.14);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 25px rgba(200, 180, 220, 0.25);
+            background: rgba(255,255,255,0.14);
+            border-color: rgba(255,255,255,0.5);
+            box-shadow: 0 0 25px rgba(200,180,220,0.25);
             transform: translateY(-2px);
         }
         .btn-gold {
             border-color: var(--gold);
-            background: rgba(212, 167, 116, 0.15);
+            background: rgba(212,167,116,0.15);
             color: var(--gold-light);
         }
         .btn-gold:hover {
-            background: rgba(212, 167, 116, 0.25);
-            box-shadow: 0 0 30px rgba(212, 167, 116, 0.35);
+            background: rgba(212,167,116,0.25);
+            box-shadow: 0 0 30px rgba(212,167,116,0.35);
         }
         .btn-danger {
             border-color: #c44;
             color: #e88;
-            background: rgba(200, 60, 60, 0.1);
-        }
-        .btn-danger:hover {
-            background: rgba(200, 60, 60, 0.2);
-            box-shadow: 0 0 20px rgba(200, 60, 60, 0.3);
+            background: rgba(200,60,60,0.1);
         }
         .btn-sm {
             padding: 7px 16px;
             font-size: 0.8rem;
-            letter-spacing: 1px;
         }
         .admin-table {
             width: 100%;
@@ -659,7 +593,7 @@
         .admin-table td {
             padding: 12px 10px;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             letter-spacing: 1px;
             color: var(--text);
         }
@@ -669,16 +603,7 @@
             letter-spacing: 2px;
             font-size: 0.8rem;
         }
-        .admin-table tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
-        }
-        .admin-login {
-            max-width: 400px;
-            margin: 80px auto;
-            text-align: center;
-        }
 
-        /* ==================== 响应式 ==================== */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -687,13 +612,12 @@
                 top: 60px;
                 left: 10px;
                 right: 10px;
-                background: rgba(16, 16, 30, 0.95);
+                background: rgba(16,16,30,0.95);
                 border: 1px solid var(--border);
                 border-radius: 20px;
                 padding: 16px;
                 backdrop-filter: blur(20px);
                 box-shadow: var(--shadow);
-                gap: 4px;
             }
             .nav-links.open {
                 display: flex;
@@ -713,53 +637,20 @@
                 grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
                 gap: 14px;
             }
-            .navbar {
-                padding: 10px 18px;
-                margin-top: 10px;
-                border-radius: 30px;
-            }
-            .navbar .logo {
-                font-size: 1.3rem;
-                letter-spacing: 2px;
-            }
-            .modal-panel {
-                padding: 28px 18px;
-            }
-        }
-        @media (max-width: 400px) {
-            .members-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            .member-name-card {
-                padding: 16px 8px;
-            }
-            .member-name-card .avatar-dot {
-                width: 38px;
-                height: 38px;
-                font-size: 1.2rem;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- 星云光晕 -->
     <div class="nebula-glow n1"></div>
     <div class="nebula-glow n2"></div>
     <div class="nebula-glow n3"></div>
-
-    <!-- 星空画布 -->
     <canvas id="starsCanvas"></canvas>
-
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <!-- 主容器 -->
     <div class="app-container">
-        <!-- 导航栏 -->
         <nav class="navbar" id="navbar">
-            <div class="logo" onclick="navigateTo('home')" title="万象社">万象社</div>
+            <div class="logo" onclick="navigateTo('home')">万象社</div>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()">
                 <span></span><span></span><span></span>
             </div>
@@ -772,7 +663,6 @@
             </ul>
         </nav>
 
-        <!-- ==================== 首页 ==================== -->
         <section class="page-section active" id="page-home">
             <div class="section-header">
                 <h1>万 象 社</h1>
@@ -780,17 +670,12 @@
                 <div class="divider"></div>
             </div>
             <div style="text-align:center;max-width:700px;margin:0 auto;color:var(--text-light);letter-spacing:2px;line-height:2;">
-                <p style="font-size:1.1rem;">欢迎来到<span style="color:var(--gold-light);">万象社</span>，一个汇聚创意与灵感的社区。</p>
-                <p>在这里，我们展示社员们的精美作品，结识志同道合的伙伴，</p>
-                <p>分享最新的社区动态与资讯。</p>
-                <p style="margin-top:16px;font-style:italic;opacity:0.7;">—— 仰望星空，脚踏实地 ——</p>
-                <div style="margin-top:30px;">
-                    <span class="btn btn-gold" onclick="navigateTo('works')" style="cursor:pointer;">✨ 浏览作品集</span>
-                </div>
+                <p style="font-size:1.1rem;">欢迎来到<span style="color:var(--gold-light);">万象社</span></p>
+                <p>汇聚创意与灵感，展示社员精美作品</p>
+                <p>✨ 仰望星空，脚踏实地 ✨</p>
             </div>
         </section>
 
-        <!-- ==================== 作品集页面 ==================== -->
         <section class="page-section" id="page-works">
             <div class="section-header">
                 <h1>作 品 集</h1>
@@ -800,7 +685,6 @@
             <div class="works-grid" id="worksGrid"></div>
         </section>
 
-        <!-- ==================== 人物介绍页面 ==================== -->
         <section class="page-section" id="page-members">
             <div class="section-header">
                 <h1>成 员 名 录</h1>
@@ -810,7 +694,6 @@
             <div class="members-grid" id="membersGrid"></div>
         </section>
 
-        <!-- ==================== 社区资讯页面 ==================== -->
         <section class="page-section" id="page-news">
             <div class="section-header">
                 <h1>社 区 资 讯</h1>
@@ -820,18 +703,16 @@
             <div class="news-list" id="newsList"></div>
         </section>
 
-        <!-- ==================== 后台管理页面 ==================== -->
         <section class="page-section" id="page-admin">
             <div class="section-header">
                 <h1>后 台 管 理</h1>
-                <p class="subtitle">数据维护 · 内容管理</p>
+                <p class="subtitle">数据维护 · 云端同步</p>
                 <div class="divider"></div>
             </div>
-            <div id="adminLoginArea" class="admin-login">
+            <div id="adminLoginArea" style="max-width:400px;margin:80px auto;text-align:center;">
                 <h3 style="color:#fff;letter-spacing:3px;margin-bottom:16px;">管理员登录</h3>
-                <input type="password" id="adminPassword" placeholder="请输入管理密码" style="max-width:300px;text-align:center;">
-                <br>
-                <button class="btn btn-gold" onclick="adminLogin()" style="margin-top:12px;">登 录</button>
+                <input type="password" id="adminPassword" placeholder="请输入管理密码" style="text-align:center;width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:#fff;">
+                <br><button class="btn btn-gold" onclick="adminLogin()" style="margin-top:12px;">登 录</button>
             </div>
             <div id="adminPanelArea" class="admin-panel" style="display:none;">
                 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
@@ -844,13 +725,11 @@
             </div>
         </section>
 
-        <!-- 页脚 -->
         <div class="site-footer">
-            <p>© 2024 万象社 · 万般景象，皆汇于此 · 星空与你同在</p>
+            <p>© 2026 万象社 · 万般景象，皆汇于此</p>
         </div>
     </div>
 
-    <!-- 成员详情模态框 -->
     <div class="modal-overlay" id="memberModal">
         <div class="modal-panel">
             <button class="modal-close" onclick="closeMemberModal()">✕</button>
@@ -869,12 +748,8 @@
             const ctx = canvas.getContext('2d');
             let stars = [];
             let shootingStars = [];
-            let mouseX = 0,
-                mouseY = 0;
-            let targetMouseX = 0,
-                targetMouseY = 0;
+            let mouseX = 0, mouseY = 0, targetMouseX = 0, targetMouseY = 0;
             const STAR_COUNT = 260;
-            const MAX_SHOOTING = 2;
 
             function resize() {
                 canvas.width = window.innerWidth;
@@ -883,19 +758,11 @@
             resize();
             window.addEventListener('resize', resize);
 
-            // 鼠标追踪（缓动）
             document.addEventListener('mousemove', (e) => {
                 targetMouseX = e.clientX;
                 targetMouseY = e.clientY;
             });
-            document.addEventListener('touchmove', (e) => {
-                if (e.touches[0]) {
-                    targetMouseX = e.touches[0].clientX;
-                    targetMouseY = e.touches[0].clientY;
-                }
-            }, { passive: true });
 
-            // 初始化星星
             function createStar() {
                 const x = Math.random() * canvas.width;
                 const y = Math.random() * canvas.height;
@@ -904,13 +771,10 @@
                 const twinkleSpeed = Math.random() * 0.02 + 0.005;
                 const twinkleOffset = Math.random() * Math.PI * 2;
                 const hue = Math.random() < 0.15 ? 40 + Math.random() * 20 : 220 + Math.random() * 60;
-                return { x, y, size, baseAlpha, twinkleSpeed, twinkleOffset, hue, vx: 0, vy: 0 };
+                return { x, y, size, baseAlpha, twinkleSpeed, twinkleOffset, hue };
             }
-            for (let i = 0; i < STAR_COUNT; i++) {
-                stars.push(createStar());
-            }
+            for (let i = 0; i < STAR_COUNT; i++) stars.push(createStar());
 
-            // 流星
             function spawnShootingStar() {
                 const x = Math.random() * canvas.width * 0.8;
                 const y = Math.random() * canvas.height * 0.4;
@@ -922,198 +786,125 @@
             }
 
             function animate() {
-                // 鼠标缓动
                 mouseX += (targetMouseX - mouseX) * 0.04;
                 mouseY += (targetMouseY - mouseY) * 0.04;
-
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // 背景微妙的深空渐变
-                const bgGrad = ctx.createRadialGradient(
-                    canvas.width / 2, canvas.height / 2, canvas.width * 0.1,
-                    canvas.width / 2, canvas.height / 2, canvas.width * 0.8
-                );
-                bgGrad.addColorStop(0, 'rgba(12,12,30,0.3)');
-                bgGrad.addColorStop(1, 'rgba(4,4,14,0.6)');
-                ctx.fillStyle = bgGrad;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
                 const now = Date.now() * 0.001;
-
-                // 绘制星星
                 stars.forEach(s => {
-                    // 微小的鼠标视差
                     const parallaxX = (mouseX - canvas.width / 2) * s.size * 0.015;
                     const parallaxY = (mouseY - canvas.height / 2) * s.size * 0.015;
-                    const sx = s.x + parallaxX + s.vx;
-                    const sy = s.y + parallaxY + s.vy;
-
-                    // 闪烁
+                    const sx = s.x + parallaxX;
+                    const sy = s.y + parallaxY;
                     const twinkle = Math.sin(now * s.twinkleSpeed * 60 + s.twinkleOffset) * 0.5 + 0.5;
                     const alpha = s.baseAlpha * (0.6 + twinkle * 0.4);
 
-                    // 光晕
                     const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, s.size * 3);
-                    const hslColor = `hsla(${s.hue}, 60%, 80%, ${alpha})`;
-                    glow.addColorStop(0, hslColor);
+                    glow.addColorStop(0, `hsla(${s.hue}, 60%, 80%, ${alpha})`);
                     glow.addColorStop(0.5, `hsla(${s.hue}, 40%, 70%, ${alpha * 0.4})`);
                     glow.addColorStop(1, 'transparent');
-
                     ctx.fillStyle = glow;
                     ctx.beginPath();
                     ctx.arc(sx, sy, s.size * 3, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // 核心亮点
                     ctx.fillStyle = `hsla(${s.hue}, 30%, 95%, ${alpha})`;
                     ctx.beginPath();
                     ctx.arc(sx, sy, s.size * 0.7, 0, Math.PI * 2);
                     ctx.fill();
                 });
 
-                // 流星管理
-                if (shootingStars.length < MAX_SHOOTING && Math.random() < 0.012) {
+                if (shootingStars.length < 2 && Math.random() < 0.012) {
                     shootingStars.push(spawnShootingStar());
                 }
-
-                // 绘制流星
                 shootingStars = shootingStars.filter(ss => {
                     ss.x += Math.cos(ss.angle) * ss.speed;
                     ss.y += Math.sin(ss.angle) * ss.speed;
                     ss.life--;
                     ss.alpha = ss.life / ss.maxLife;
                     if (ss.life <= 0) return false;
-
                     const ex = ss.x - Math.cos(ss.angle) * ss.len;
                     const ey = ss.y - Math.sin(ss.angle) * ss.len;
-
                     const grad = ctx.createLinearGradient(ss.x, ss.y, ex, ey);
                     grad.addColorStop(0, `rgba(255,255,255,${ss.alpha})`);
                     grad.addColorStop(0.3, `rgba(200,210,255,${ss.alpha * 0.7})`);
                     grad.addColorStop(1, 'rgba(255,255,255,0)');
-
                     ctx.strokeStyle = grad;
                     ctx.lineWidth = 1.5;
                     ctx.beginPath();
                     ctx.moveTo(ss.x, ss.y);
                     ctx.lineTo(ex, ey);
                     ctx.stroke();
-
-                    // 头部光点
                     ctx.fillStyle = `rgba(255,255,255,${ss.alpha})`;
                     ctx.beginPath();
                     ctx.arc(ss.x, ss.y, 2, 0, Math.PI * 2);
                     ctx.fill();
                     return true;
                 });
-
                 requestAnimationFrame(animate);
             }
             animate();
-
-            // 窗口大小变化时重置星星位置
             window.addEventListener('resize', () => {
                 resize();
                 stars = [];
-                for (let i = 0; i < STAR_COUNT; i++) {
-                    stars.push(createStar());
-                }
+                for (let i = 0; i < STAR_COUNT; i++) stars.push(createStar());
             });
         })();
 
-        // ==================== 数据管理 ====================
-        const DATA_KEYS = { works: 'wxs_works', members: 'wxs_members', news: 'wxs_news' };
-        const ADMIN_KEY = 'wxs_admin_logged';
-        const ADMIN_PASSWORD = 'wanxiang2024';
+        // ==================== Firebase 初始化 ====================
+        // ⚠️ 替换这里：把你自己的 firebaseConfig 粘贴到下面
+        const firebaseConfig = {
+            apiKey: "AIzaSyXXXXXXXXXXXXXXXXXXX",
+            authDomain: "wanxiangshe.firebaseapp.com",
+            projectId: "wanxiangshe",
+            storageBucket: "wanxiangshe.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
 
-        // 默认数据
-        const defaultWorks = [
-            { id: 1, title: '星月夜', author: '林月如', desc: '数字绘画作品，以星空为背景，融合东方意境与现代技法，展现了深邃夜空下的静谧山峦。',
-                image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80' },
-            { id: 2, title: '城市脉搏', author: '陈远航', desc: '摄影系列作品，捕捉城市夜晚霓虹灯光与流动车轨，呈现都市的节奏与生命力。',
-                image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80' },
-            { id: 3, title: '山海经·幻', author: '苏沐', desc: '插画系列，重新诠释《山海经》中的神兽形象，采用水墨与数字结合的手法。',
-                image: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&q=80' },
-            { id: 4, title: '微光', author: '周小羽', desc: '短片动画，讲述一粒星尘落入人间后寻找归途的温暖故事。',
-                image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80' },
-        ];
-        const defaultMembers = [
-            { id: 1, name: '林月如', role: '社长', number: 'WX-001', signature: '以画笔描绘万象，用心感受世界。' },
-            { id: 2, name: '陈远航', role: '副社长', number: 'WX-002', signature: '镜头之下，皆是故事。' },
-            { id: 3, name: '苏沐', role: '创意总监', number: 'WX-003', signature: '在传统与现代之间寻找平衡。' },
-            { id: 4, name: '周小羽', role: '动画师', number: 'WX-004', signature: '让每一帧都有生命。' },
-            { id: 5, name: '白露', role: '编辑', number: 'WX-005', signature: '文字是思想的容器。' },
-            { id: 6, name: '云泽', role: '外联部长', number: 'WX-006', signature: '连接万象，沟通无界。' },
-        ];
-        const defaultNews = [
-            { id: 1, date: '2024-12-20', title: '万象社年度作品展圆满落幕',
-                content: '本次展览共展出30余件社员作品，吸引了超过500名观众前来观展，现场气氛热烈，多件作品获得高度评价。' },
-            { id: 2, date: '2024-11-08', title: '新社员招募正式启动',
-                content: '万象社面向所有创意爱好者开放招募，欢迎绘画、摄影、动画、写作等各领域的伙伴加入我们。' },
-            { id: 3, date: '2024-10-15', title: '与"星河工作室"达成合作',
-                content: '双方将在数字艺术领域展开深度合作，共同举办线上联展与创作交流活动。' },
-        ];
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        function getData(key) {
-            try {
-                const raw = localStorage.getItem(DATA_KEYS[key]);
-                return raw ? JSON.parse(raw) : null;
-            } catch (e) { return null; }
+        // ==================== 数据读写 ====================
+        async function fetchCollection(name) {
+            const snapshot = await db.collection(name).get();
+            const data = [];
+            snapshot.forEach(doc => data.push({ id: doc.id, ...doc.data() }));
+            return data;
         }
 
-        function setData(key, data) {
-            localStorage.setItem(DATA_KEYS[key], JSON.stringify(data));
+        async function saveDocument(collection, id, data) {
+            await db.collection(collection).doc(String(id)).set(data);
         }
 
-        function initData() {
-            if (!getData('works')) setData('works', defaultWorks);
-            if (!getData('members')) setData('members', defaultMembers);
-            if (!getData('news')) setData('news', defaultNews);
+        async function deleteDocument(collection, id) {
+            await db.collection(collection).doc(String(id)).delete();
         }
-        initData();
 
         // ==================== 导航 ====================
         let currentPage = 'home';
 
         function navigateTo(page) {
             if (currentPage === page && page !== 'admin') return;
-            // 淡出当前页
-            const oldSection = document.getElementById('page-' + currentPage);
-            if (oldSection) {
-                oldSection.style.opacity = '0';
-                oldSection.style.transform = 'translateY(20px)';
-                oldSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            }
-            setTimeout(() => {
-                document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-                const newSection = document.getElementById('page-' + page);
-                if (newSection) {
-                    newSection.classList.add('active');
-                    newSection.style.opacity = '1';
-                    newSection.style.transform = 'translateY(0)';
-                    newSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                }
-                currentPage = page;
-                // 更新导航激活状态
-                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-                const activeLink = document.querySelector(`.nav-links a[data-page="${page}"]`);
-                if (activeLink) activeLink.classList.add('active');
-                // 关闭移动菜单
-                document.getElementById('navLinks').classList.remove('open');
-                // 加载数据
-                if (page === 'works') renderWorks();
-                if (page === 'members') renderMembers();
-                if (page === 'news') renderNews();
-                if (page === 'admin') checkAdminStatus();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 200);
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            const newSection = document.getElementById('page-' + page);
+            if (newSection) newSection.classList.add('active');
+            currentPage = page;
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            const activeLink = document.querySelector(`.nav-links a[data-page="${page}"]`);
+            if (activeLink) activeLink.classList.add('active');
+            document.getElementById('navLinks').classList.remove('open');
+            if (page === 'works') renderWorks();
+            if (page === 'members') renderMembers();
+            if (page === 'news') renderNews();
+            if (page === 'admin') checkAdminStatus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function toggleMenu() {
             document.getElementById('navLinks').classList.toggle('open');
         }
 
-        // ==================== Toast ====================
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
@@ -1122,55 +913,52 @@
             toast._timeout = setTimeout(() => toast.classList.remove('show'), 2200);
         }
 
-        // ==================== 作品集渲染 ====================
-        function renderWorks() {
+        // ==================== 渲染 ====================
+        async function renderWorks() {
             const grid = document.getElementById('worksGrid');
-            const works = getData('works') || [];
+            const works = await fetchCollection('works');
             if (works.length === 0) {
-                grid.innerHTML =
-                    '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;letter-spacing:2px;">暂无作品展示</p>';
+                grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;letter-spacing:2px;">暂无作品展示</p>';
                 return;
             }
             grid.innerHTML = works.map(w => `
-            <div class="work-card">
-              <div class="card-shine"></div>
-              <img class="card-img" src="${escapeHTML(w.image)}" alt="${escapeHTML(w.title)}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'">
-              <div class="card-body">
-                <h3>${escapeHTML(w.title)}</h3>
-                <p class="author">✧ ${escapeHTML(w.author)}</p>
-                <p class="desc">${escapeHTML(w.desc)}</p>
-              </div>
-            </div>
-          `).join('');
+                <div class="work-card">
+                    <div class="card-shine"></div>
+                    <img class="card-img" src="${escapeHTML(w.image)}" alt="${escapeHTML(w.title)}" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'">
+                    <div class="card-body">
+                        <h3>${escapeHTML(w.title)}</h3>
+                        <p class="author">✧ ${escapeHTML(w.author)}</p>
+                        <p class="desc">${escapeHTML(w.desc)}</p>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // ==================== 成员渲染 ====================
-        function renderMembers() {
+        async function renderMembers() {
             const grid = document.getElementById('membersGrid');
-            const members = getData('members') || [];
+            const members = await fetchCollection('members');
             if (members.length === 0) {
-                grid.innerHTML =
-                    '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;letter-spacing:2px;">暂无成员信息</p>';
+                grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;letter-spacing:2px;">暂无成员信息</p>';
                 return;
             }
             grid.innerHTML = members.map(m => `
-            <div class="member-name-card" onclick="openMemberModal('${m.id}')">
-              <div class="avatar-dot">${escapeHTML(m.name.charAt(0))}</div>
-              <div class="member-name">${escapeHTML(m.name)}</div>
-              <div class="member-role-hint">${escapeHTML(m.role)}</div>
-            </div>
-          `).join('');
+                <div class="member-name-card" onclick="openMemberModal('${m.id}')">
+                    <div class="avatar-dot">${escapeHTML(m.name ? m.name.charAt(0) : '?')}</div>
+                    <div class="member-name">${escapeHTML(m.name)}</div>
+                    <div class="member-role-hint">${escapeHTML(m.role)}</div>
+                </div>
+            `).join('');
         }
 
-        function openMemberModal(id) {
-            const members = getData('members') || [];
+        async function openMemberModal(id) {
+            const members = await fetchCollection('members');
             const m = members.find(m => String(m.id) === String(id));
             if (!m) return;
-            document.getElementById('modalAvatar').textContent = m.name.charAt(0);
-            document.getElementById('modalName').textContent = m.name;
-            document.getElementById('modalRole').textContent = '✦ ' + m.role;
-            document.getElementById('modalId').textContent = '编号：' + m.number;
-            document.getElementById('modalSignature').textContent = '「' + m.signature + '」';
+            document.getElementById('modalAvatar').textContent = m.name ? m.name.charAt(0) : '?';
+            document.getElementById('modalName').textContent = m.name || '';
+            document.getElementById('modalRole').textContent = '✦ ' + (m.role || '');
+            document.getElementById('modalId').textContent = '编号：' + (m.number || '');
+            document.getElementById('modalSignature').textContent = '「' + (m.signature || '') + '」';
             document.getElementById('memberModal').classList.add('show');
             document.body.style.overflow = 'hidden';
         }
@@ -1186,39 +974,48 @@
             if (e.key === 'Escape') closeMemberModal();
         });
 
-        // ==================== 资讯渲染 ====================
-        function renderNews() {
+        async function renderNews() {
             const list = document.getElementById('newsList');
-            const news = getData('news') || [];
+            const news = await fetchCollection('news');
             if (news.length === 0) {
-                list.innerHTML =
-                    '<p style="text-align:center;color:var(--text-light);letter-spacing:2px;">暂无社区资讯</p>';
+                list.innerHTML = '<p style="text-align:center;color:var(--text-light);letter-spacing:2px;">暂无社区资讯</p>';
                 return;
             }
             list.innerHTML = news.map(n => `
-            <div class="news-item">
-              <div class="news-date">📅 ${escapeHTML(n.date)}</div>
-              <h3>${escapeHTML(n.title)}</h3>
-              <p>${escapeHTML(n.content)}</p>
-            </div>
-          `).join('');
+                <div class="news-item">
+                    <div class="news-date">📅 ${escapeHTML(n.date)}</div>
+                    <h3>${escapeHTML(n.title)}</h3>
+                    <p>${escapeHTML(n.content)}</p>
+                </div>
+            `).join('');
+        }
+
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
         }
 
         // ==================== 后台管理 ====================
+        const ADMIN_PASSWORD = 'wanxiang2024';
+
         function checkAdminStatus() {
-            const logged = sessionStorage.getItem(ADMIN_KEY);
+            const logged = sessionStorage.getItem('wxs_admin_logged');
             if (logged === 'true') {
-                showAdminPanel();
+                document.getElementById('adminLoginArea').style.display = 'none';
+                document.getElementById('adminPanelArea').style.display = 'block';
+                switchAdminTab('works');
             } else {
-                hideAdminPanel();
+                document.getElementById('adminLoginArea').style.display = 'block';
+                document.getElementById('adminPanelArea').style.display = 'none';
             }
         }
 
         function adminLogin() {
             const pw = document.getElementById('adminPassword').value;
             if (pw === ADMIN_PASSWORD) {
-                sessionStorage.setItem(ADMIN_KEY, 'true');
-                showAdminPanel();
+                sessionStorage.setItem('wxs_admin_logged', 'true');
+                checkAdminStatus();
                 showToast('✅ 登录成功');
             } else {
                 showToast('❌ 密码错误');
@@ -1226,184 +1023,144 @@
         }
 
         function adminLogout() {
-            sessionStorage.removeItem(ADMIN_KEY);
-            hideAdminPanel();
+            sessionStorage.removeItem('wxs_admin_logged');
+            checkAdminStatus();
             showToast('已退出登录');
-        }
-
-        function showAdminPanel() {
-            document.getElementById('adminLoginArea').style.display = 'none';
-            document.getElementById('adminPanelArea').style.display = 'block';
-            document.getElementById('adminPanelArea').classList.add('active');
-            switchAdminTab('works');
-        }
-
-        function hideAdminPanel() {
-            document.getElementById('adminLoginArea').style.display = 'block';
-            document.getElementById('adminPanelArea').style.display = 'none';
-            document.getElementById('adminPanelArea').classList.remove('active');
-            document.getElementById('adminContentArea').innerHTML = '';
         }
 
         let currentAdminTab = 'works';
 
-        function switchAdminTab(tab) {
+        async function switchAdminTab(tab) {
             currentAdminTab = tab;
             document.querySelectorAll('[id^="adminTab"]').forEach(b => b.style.boxShadow = 'none');
             const activeBtn = document.getElementById('adminTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
             if (activeBtn) activeBtn.style.boxShadow = '0 0 20px rgba(200,180,220,0.4)';
-            renderAdminContent();
+            await renderAdminContent();
         }
 
-        function renderAdminContent() {
+        async function renderAdminContent() {
             const area = document.getElementById('adminContentArea');
-            const data = getData(currentAdminTab) || [];
+            const data = await fetchCollection(currentAdminTab);
             const labels = {
-                works: { title: '作品', fields: ['title', 'author', 'desc', 'image'],
-                    fieldLabels: ['作品标题', '作者', '描述', '图片URL'] },
-                members: { title: '成员', fields: ['name', 'role', 'number', 'signature'],
-                    fieldLabels: ['昵称', '职位', '编号', '签名'] },
-                news: { title: '资讯', fields: ['title', 'date', 'content'], fieldLabels: ['标题', '日期(YYYY-MM-DD)',
-                        '内容'
-                    ] },
+                works: { title: '作品', fields: ['title', 'author', 'desc', 'image'], fieldLabels: ['作品标题', '作者', '描述', '图片URL'] },
+                members: { title: '成员', fields: ['name', 'role', 'number', 'signature'], fieldLabels: ['昵称', '职位', '编号', '签名'] },
+                news: { title: '资讯', fields: ['title', 'date', 'content'], fieldLabels: ['标题', '日期(YYYY-MM-DD)', '内容'] },
             };
             const cfg = labels[currentAdminTab];
             let html = `<h3>${cfg.title}列表 <span style="font-size:0.7rem;color:var(--text-light);">(共${data.length}条)</span></h3>`;
-            html += `<table class="admin-table"><thead><tr><th>ID</th>${cfg.fieldLabels.map(l=>`<th>${l}</th>`).join('')}<th>操作</th></tr></thead><tbody>`;
+            html += `<table class="admin-table"><thead><tr><th>ID</th>${cfg.fieldLabels.map(l => `<th>${l}</th>`).join('')}<th>操作</th></tr></thead><tbody>`;
             data.forEach(item => {
                 html += `<tr>`;
                 html += `<td>${item.id}</td>`;
                 cfg.fields.forEach(f => {
                     const val = item[f] || '';
-                    html +=
-                        `<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHTML(String(val))}">${escapeHTML(String(val).substring(0,40))}</td>`;
+                    html += `<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHTML(String(val))}">${escapeHTML(String(val).substring(0, 40))}</td>`;
                 });
-                html +=
-                    `<td><button class="btn btn-sm" onclick="editItem('${currentAdminTab}',${item.id})">✏️编辑</button> <button class="btn btn-sm btn-danger" onclick="deleteItem('${currentAdminTab}',${item.id})">🗑删除</button></td>`;
+                html += `<td><button class="btn btn-sm" onclick="editItem('${currentAdminTab}','${item.id}')">✏️编辑</button> <button class="btn btn-sm btn-danger" onclick="deleteItem('${currentAdminTab}','${item.id}')">🗑删除</button></td>`;
                 html += `</tr>`;
             });
             html += `</tbody></table>`;
-            html +=
-                `<button class="btn btn-gold" style="margin-top:18px;" onclick="addItem('${currentAdminTab}')">＋ 新增${cfg.title}</button>`;
-            html +=
-                `<div id="editFormArea" style="margin-top:20px;padding:20px;background:rgba(0,0,0,0.2);border-radius:12px;display:none;"></div>`;
+            html += `<button class="btn btn-gold" style="margin-top:18px;" onclick="addItem('${currentAdminTab}')">＋ 新增${cfg.title}</button>`;
+            html += `<div id="editFormArea" style="margin-top:20px;padding:20px;background:rgba(0,0,0,0.2);border-radius:12px;display:none;"></div>`;
             area.innerHTML = html;
         }
 
-        function getNextId(tab) {
-            const data = getData(tab) || [];
-            return data.length > 0 ? Math.max(...data.map(d => d.id)) + 1 : 1;
+        async function getNextId(tab) {
+            const data = await fetchCollection(tab);
+            return data.length > 0 ? Math.max(...data.map(d => parseInt(d.id) || 0)) + 1 : 1;
         }
 
-        function addItem(tab) {
+        async function addItem(tab) {
             const cfg = {
-                works: { fields: ['title', 'author', 'desc', 'image'],
-                    fieldLabels: ['作品标题', '作者', '描述', '图片URL'] },
+                works: { fields: ['title', 'author', 'desc', 'image'], fieldLabels: ['作品标题', '作者', '描述', '图片URL'] },
                 members: { fields: ['name', 'role', 'number', 'signature'], fieldLabels: ['昵称', '职位', '编号', '签名'] },
                 news: { fields: ['title', 'date', 'content'], fieldLabels: ['标题', '日期(YYYY-MM-DD)', '内容'] },
             };
             const c = cfg[tab];
             let formHtml = `<h4 style="color:#fff;letter-spacing:2px;">新增${c.fieldLabels[0] ? '条目' : ''}</h4>`;
             c.fields.forEach((f, i) => {
-                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (
-                    tab === 'members' && f === 'signature');
+                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (tab === 'members' && f === 'signature');
+                const defaultVal = (tab === 'news' && f === 'date') ? new Date().toISOString().split('T')[0] : '';
                 if (isTextarea) {
-                    formHtml +=
-                        `<label>${c.fieldLabels[i]}</label><textarea id="form_${f}" rows="3">${tab==='news'&&f==='date'?'2024-12-20':''}</textarea>`;
+                    formHtml += `<label>${c.fieldLabels[i]}</label><textarea id="form_${f}" rows="3">${defaultVal}</textarea>`;
                 } else {
-                    formHtml +=
-                        `<label>${c.fieldLabels[i]}</label><input id="form_${f}" value="${tab==='news'&&f==='date'?'2024-12-20':''}">`;
+                    formHtml += `<label>${c.fieldLabels[i]}</label><input id="form_${f}" value="${defaultVal}">`;
                 }
             });
-            formHtml +=
-                `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveNewItem('${tab}')">💾 保存</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
+            formHtml += `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveNewItem('${tab}')">💾 保存</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
             document.getElementById('editFormArea').style.display = 'block';
             document.getElementById('editFormArea').innerHTML = formHtml;
-            document.getElementById('editFormArea').dataset.editId = '';
         }
 
-        function editItem(tab, id) {
-            const data = getData(tab) || [];
-            const item = data.find(d => d.id === id);
+        async function editItem(tab, id) {
+            const data = await fetchCollection(tab);
+            const item = data.find(d => String(d.id) === String(id));
             if (!item) return;
             const cfg = {
-                works: { fields: ['title', 'author', 'desc', 'image'],
-                    fieldLabels: ['作品标题', '作者', '描述', '图片URL'] },
+                works: { fields: ['title', 'author', 'desc', 'image'], fieldLabels: ['作品标题', '作者', '描述', '图片URL'] },
                 members: { fields: ['name', 'role', 'number', 'signature'], fieldLabels: ['昵称', '职位', '编号', '签名'] },
                 news: { fields: ['title', 'date', 'content'], fieldLabels: ['标题', '日期', '内容'] },
             };
             const c = cfg[tab];
             let formHtml = `<h4 style="color:#fff;letter-spacing:2px;">编辑 (ID: ${id})</h4>`;
             c.fields.forEach((f, i) => {
-                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (
-                    tab === 'members' && f === 'signature');
+                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (tab === 'members' && f === 'signature');
                 if (isTextarea) {
-                    formHtml +=
-                        `<label>${c.fieldLabels[i]}</label><textarea id="form_${f}" rows="3">${escapeHTML(String(item[f]||''))}</textarea>`;
+                    formHtml += `<label>${c.fieldLabels[i]}</label><textarea id="form_${f}" rows="3">${escapeHTML(String(item[f] || ''))}</textarea>`;
                 } else {
-                    formHtml +=
-                        `<label>${c.fieldLabels[i]}</label><input id="form_${f}" value="${escapeHTML(String(item[f]||''))}">`;
+                    formHtml += `<label>${c.fieldLabels[i]}</label><input id="form_${f}" value="${escapeHTML(String(item[f] || ''))}">`;
                 }
             });
-            formHtml +=
-                `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveEditItem('${tab}',${id})">💾 更新</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
+            formHtml += `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveEditItem('${tab}','${id}')">💾 更新</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
             document.getElementById('editFormArea').style.display = 'block';
             document.getElementById('editFormArea').innerHTML = formHtml;
-            document.getElementById('editFormArea').dataset.editId = id;
-            document.getElementById('editFormArea').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function saveNewItem(tab) {
+        async function saveNewItem(tab) {
             const cfg = {
                 works: ['title', 'author', 'desc', 'image'],
                 members: ['name', 'role', 'number', 'signature'],
                 news: ['title', 'date', 'content'],
             };
             const fields = cfg[tab];
-            const newItem = { id: getNextId(tab) };
+            const newItem = { id: String(await getNextId(tab)) };
             fields.forEach(f => {
                 const el = document.getElementById('form_' + f);
                 newItem[f] = el ? el.value : '';
             });
             if (!newItem[fields[0]]) { showToast('⚠️ 请填写必要字段'); return; }
-            const data = getData(tab) || [];
-            data.push(newItem);
-            setData(tab, data);
+            await saveDocument(tab, newItem.id, newItem);
             document.getElementById('editFormArea').style.display = 'none';
-            renderAdminContent();
-            showToast('✅ 新增成功');
+            await renderAdminContent();
             refreshActivePage(tab);
+            showToast('✅ 新增成功 · 已同步到云端');
         }
 
-        function saveEditItem(tab, id) {
+        async function saveEditItem(tab, id) {
             const cfg = {
                 works: ['title', 'author', 'desc', 'image'],
                 members: ['name', 'role', 'number', 'signature'],
                 news: ['title', 'date', 'content'],
             };
             const fields = cfg[tab];
-            const data = getData(tab) || [];
-            const idx = data.findIndex(d => d.id === id);
-            if (idx < 0) return;
+            const updatedItem = { id: String(id) };
             fields.forEach(f => {
                 const el = document.getElementById('form_' + f);
-                if (el) data[idx][f] = el.value;
+                if (el) updatedItem[f] = el.value;
             });
-            setData(tab, data);
+            await saveDocument(tab, String(id), updatedItem);
             document.getElementById('editFormArea').style.display = 'none';
-            renderAdminContent();
-            showToast('✅ 更新成功');
+            await renderAdminContent();
             refreshActivePage(tab);
+            showToast('✅ 更新成功 · 已同步到云端');
         }
 
-        function deleteItem(tab, id) {
+        async function deleteItem(tab, id) {
             if (!confirm('确定要删除这条记录吗？此操作不可恢复。')) return;
-            let data = getData(tab) || [];
-            data = data.filter(d => d.id !== id);
-            setData(tab, data);
-            renderAdminContent();
-            showToast('🗑 已删除');
+            await deleteDocument(tab, String(id));
+            await renderAdminContent();
             refreshActivePage(tab);
+            showToast('🗑 已删除 · 已同步到云端');
         }
 
         function refreshActivePage(tab) {
@@ -1412,52 +1169,17 @@
             if (tab === 'news' && currentPage === 'news') renderNews();
         }
 
-        // ==================== 工具函数 ====================
-        function escapeHTML(str) {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
-
-        // ==================== 键盘导航 ====================
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeMemberModal();
-            if (e.ctrlKey || e.metaKey) return;
-            if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
-            if (document.activeElement && document.activeElement.tagName === 'TEXTAREA') return;
-            switch (e.key.toLowerCase()) {
-                case '1':
-                    navigateTo('home');
-                    break;
-                case '2':
-                    navigateTo('works');
-                    break;
-                case '3':
-                    navigateTo('members');
-                    break;
-                case '4':
-                    navigateTo('news');
-                    break;
-                case '5':
-                    navigateTo('admin');
-                    break;
-            }
-        });
-
         // ==================== 初始化 ====================
         function init() {
             renderWorks();
             renderMembers();
             renderNews();
-            // 默认显示首页
             document.getElementById('page-home').classList.add('active');
         }
         init();
 
-        console.log('%c🌌 万象社 %c· 万般景象，皆汇于此 %c✨',
-            'font-size:1.4em;color:#d4a574;', 'color:#b0a8a0;', 'font-size:1.2em;');
-        console.log('%c星空特效已就绪 | 按数字键1-5切换页面 | 后台管理密码: wanxiang2024',
-            'color:#7b8fcc;letter-spacing:1px;');
+        console.log('🌌 万象社 · Firebase 云端同步版已就绪');
+        console.log('在后台管理中的任何修改都会自动同步给所有访客');
     </script>
 </body>
 </html>
