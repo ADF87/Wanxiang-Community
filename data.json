@@ -1,28 +1,93 @@
 {
   "works": [
-    { "id": 1, "title": "星月夜", "author": "林月如", "desc": "数字绘画作品…", "image": "https://…" },
-    { "id": 2, "title": "城市脉搏", "author": "陈远航", "desc": "摄影系列…", "image": "https://…" }
-  ],
-  "members": [
-    { "id": 1, "name": "林月如", "role": "社长", "number": "WX-001", "signature": "以画笔描绘万象。", "avatar": "" },
-    { "id": 2, "name": "陈远航", "role": "副社长", "number": "WX-002", "signature": "镜头之下，皆是故事。", "avatar": "" }
-  ],
-  "news": [
     {
-      "id": 1,
-      "date": "2024-12-20",
-      "title": "万象社年度作品展圆满落幕",
-      "summary": "本次展览展出30余件作品，500+观众到场。",
-      "content": "详细内容…",
-      "image": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80"
+      "id": "w1",
+      "title": "星月夜",
+      "description": "一幅描绘星空与月亮交汇的魔法画作，融合了深邃的紫色与金色星光。创作灵感来源于古老星图。",
+      "imageUrl": "https://images.unsplash.com/photo-1502481851512-e9e2529bfbf9?w=600&h=400&fit=crop",
+      "date": "2025-12-01"
     },
     {
-      "id": 2,
-      "date": "2024-11-08",
-      "title": "新社员招募启动",
-      "summary": "欢迎绘画、摄影等各领域伙伴加入。",
-      "content": "详细招募信息…",
-      "image": ""
+      "id": "w2",
+      "title": "魔法森林",
+      "description": "隐藏在迷雾中的魔法森林，树木散发着微光，小径通向未知的领域。",
+      "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=400&fit=crop",
+      "date": "2025-11-20"
+    },
+    {
+      "id": "w3",
+      "title": "银河卷轴",
+      "description": "记载着古老魔法的卷轴，在银河光芒下缓缓展开，文字如星辰般闪烁。",
+      "imageUrl": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=400&fit=crop",
+      "date": "2025-11-08"
+    },
+    {
+      "id": "w4",
+      "title": "月下城堡",
+      "description": "月光照耀下的魔法城堡，塔尖闪烁着神秘的光芒，传说中这里是万象社的起源之地。",
+      "imageUrl": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=600&h=400&fit=crop",
+      "date": "2025-10-15"
+    }
+  ],
+  "members": [
+    {
+      "id": "m1",
+      "name": "星澜",
+      "number": "WXS-001",
+      "role": "星辰魔法师",
+      "signature": "以星为引，以月为灯。",
+      "avatarUrl": "",
+      "description": "万象社创始成员，擅长星辰魔法与星图解读。"
+    },
+    {
+      "id": "m2",
+      "name": "月影",
+      "number": "WXS-002",
+      "role": "月光守护者",
+      "signature": "月光所至，心之所向。",
+      "avatarUrl": "",
+      "description": "守护月光之力，能够在黑夜中指引方向。"
+    },
+    {
+      "id": "m3",
+      "name": "灵霜",
+      "number": "WXS-003",
+      "role": "冰晶术士",
+      "signature": "霜华绽放，冰封万象。",
+      "avatarUrl": "",
+      "description": "掌握冰晶魔法，创作出无数美丽的冰晶艺术品。"
+    },
+    {
+      "id": "m4",
+      "name": "炽焰",
+      "number": "WXS-004",
+      "role": "火焰掌控者",
+      "signature": "烈焰不灭，热情永存。",
+      "avatarUrl": "",
+      "description": "以火焰为笔，绘制出最热烈的魔法画卷。"
+    }
+  ],
+  "articles": [
+    {
+      "id": "a1",
+      "title": "星空下的魔法契约",
+      "content": "在万象社成立的那一夜，星空格外明亮。\n\n所有创始成员聚集在月光之下，共同签署了一份魔法契约——以星辰为见证，以月光为笔墨，承诺永远守护这片魔法天地。\n\n这份契约不仅是一纸文书，更是每一位成员心中不灭的信仰。每当新成员加入时，都会在星空下重新宣读这份誓言。",
+      "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop",
+      "date": "2025-12-25"
+    },
+    {
+      "id": "a2",
+      "title": "银河彼岸的传说",
+      "content": "传说在银河的彼岸，有一座由纯白星光构成的宫殿。\n\n那里居住着最古老的星辰魔法师，他们守护着宇宙间最珍贵的秘密——万象之源。\n\n据说，只有真正理解星辰语言的人，才能找到通往那座宫殿的道路。万象社的使命之一，就是寻找并守护这个传说。",
+      "imageUrl": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&h=400&fit=crop",
+      "date": "2025-12-10"
+    },
+    {
+      "id": "a3",
+      "title": "魔法入门：感知星辰之力",
+      "content": "每一个向往魔法的人，都可以从感知星辰之力开始。\n\n第一步：在晴朗的夜晚，仰望星空，找到最亮的那颗星。\n第二步：闭上眼睛，想象星光穿过你的身体。\n第三步：感受那份温暖，那就是星辰之力的萌芽。\n\n记住，魔法不在于天赋，而在于持之以恒的练习与敬畏之心。",
+      "imageUrl": "https://images.unsplash.com/photo-1518818419601-72c4f1b2f5f0?w=600&h=400&fit=crop",
+      "date": "2025-11-30"
     }
   ]
 }
