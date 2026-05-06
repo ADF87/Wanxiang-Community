@@ -125,7 +125,23 @@
             border-color: rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
         }
-        .navbar .logo {
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all var(--transition);
+            user-select: none;
+        }
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+        .logo-text {
             font-family: var(--font-display);
             font-size: 1.6rem;
             font-weight: bold;
@@ -134,8 +150,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            cursor: pointer;
             transition: all var(--transition);
+        }
+        .logo:hover .logo-text {
+            filter: brightness(1.3);
+            transform: scale(1.04);
         }
         .nav-links {
             display: flex;
@@ -325,9 +344,9 @@
             border-color: rgba(212, 167, 116, 0.5);
             background: var(--bg-card-hover);
         }
-        .member-name-card .avatar-dot {
-            width: 50px;
-            height: 50px;
+        .avatar-dot {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             margin: 0 auto 12px;
             background: linear-gradient(135deg, #4a3a6a, #6a5a8a);
@@ -335,17 +354,30 @@
             align-items: center;
             justify-content: center;
             font-family: var(--font-display);
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: #fff;
             letter-spacing: 2px;
+            overflow: hidden;
+            transition: all var(--transition);
         }
-        .member-name-card .member-name {
+        .member-name-card:hover .avatar-dot {
+            box-shadow: 0 0 25px rgba(180, 150, 220, 0.5);
+            transform: scale(1.08);
+        }
+        .avatar-dot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+        .member-name {
             font-family: var(--font-display);
             font-size: 1.1rem;
             color: #fff;
             letter-spacing: 2px;
         }
-        .member-name-card .member-role-hint {
+        .member-role-hint {
             font-size: 0.8rem;
             color: var(--gold-light);
             letter-spacing: 1px;
@@ -388,7 +420,7 @@
         .modal-overlay.show .modal-panel {
             transform: translateY(0) scale(1);
         }
-        .modal-panel .modal-avatar {
+        .modal-avatar {
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -401,6 +433,13 @@
             font-size: 2.2rem;
             color: #fff;
             box-shadow: 0 0 40px rgba(150, 130, 200, 0.4);
+            overflow: hidden;
+        }
+        .modal-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
         .modal-panel h2 {
             font-family: var(--font-display);
@@ -640,6 +679,16 @@
             .members-grid {
                 grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             }
+            .avatar-dot {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            .modal-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -653,7 +702,23 @@
 
     <div class="app-container">
         <nav class="navbar" id="navbar">
-            <div class="logo" onclick="navigateTo('home')">万象社</div>
+            <div class="logo" onclick="navigateTo('home')">
+                <span class="logo-icon">
+                    <svg width="36" height="36" viewBox="0 0 36 36">
+                        <defs>
+                            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#e8c9a0"/>
+                                <stop offset="100%" stop-color="#d4a574"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="18" cy="18" r="12" fill="none" stroke="url(#ringGrad)" stroke-width="2" stroke-dasharray="8 6" opacity="0.9"/>
+                        <circle cx="18" cy="6" r="1.8" fill="#e8c9a0"/>
+                        <circle cx="28.4" cy="24" r="1.8" fill="#e8c9a0"/>
+                        <circle cx="7.6" cy="24" r="1.8" fill="#e8c9a0"/>
+                    </svg>
+                </span>
+                <span class="logo-text">万象社</span>
+            </div>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()">
                 <span></span><span></span><span></span>
             </div>
@@ -737,7 +802,7 @@
     <div class="modal-overlay" id="memberModal">
         <div class="modal-panel">
             <button class="modal-close" onclick="closeMemberModal()">✕</button>
-            <div class="modal-avatar" id="modalAvatar">?</div>
+            <div class="modal-avatar" id="modalAvatar"></div>
             <h2 id="modalName"></h2>
             <p class="modal-role" id="modalRole"></p>
             <p class="modal-id" id="modalId"></p>
@@ -746,7 +811,7 @@
     </div>
 
     <script>
-        // ==================== 星空特效 ====================
+        // ==================== 星空特效 (保持不变) ====================
         (function() {
             const canvas = document.getElementById('starsCanvas');
             const ctx = canvas.getContext('2d');
@@ -761,12 +826,16 @@
             function resize() { canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight; }
             resize();
-            window.addEventListener('resize', () => { resize();
+            window.addEventListener('resize', () => {
+                resize();
                 stars = [];
-                for (let i = 0; i < STAR_COUNT; i++) stars.push(createStar()); });
+                for (let i = 0; i < STAR_COUNT; i++) stars.push(createStar());
+            });
 
-            document.addEventListener('mousemove', (e) => { targetMouseX = e.clientX;
-                targetMouseY = e.clientY; });
+            document.addEventListener('mousemove', (e) => {
+                targetMouseX = e.clientX;
+                targetMouseY = e.clientY;
+            });
 
             function createStar() {
                 return {
@@ -850,9 +919,9 @@
             animate();
         })();
 
-        // ==================== 数据管理 ====================
+        // ==================== 数据管理 (扩展 avatar 字段) ====================
         const DATA_KEYS = { works: 'wxs_works', members: 'wxs_members', news: 'wxs_news' };
-        const DATA_URL = 'data.json'; // 云端 JSON 文件路径
+        const DATA_URL = 'data.json';
 
         const defaultWorks = [
             { id: 1, title: '星月夜', author: '林月如', desc: '数字绘画作品，以星空为背景，融合东方意境与现代技法。',
@@ -861,8 +930,9 @@
                 image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80' },
         ];
         const defaultMembers = [
-            { id: 1, name: '林月如', role: '社长', number: 'WX-001', signature: '以画笔描绘万象，用心感受世界。' },
-            { id: 2, name: '陈远航', role: '副社长', number: 'WX-002', signature: '镜头之下，皆是故事。' },
+            { id: 1, name: '林月如', role: '社长', number: 'WX-001', signature: '以画笔描绘万象，用心感受世界。',
+            avatar: '' },
+            { id: 2, name: '陈远航', role: '副社长', number: 'WX-002', signature: '镜头之下，皆是故事。', avatar: '' },
         ];
         const defaultNews = [
             { id: 1, date: '2024-12-20', title: '万象社年度作品展圆满落幕', content: '本次展览共展出30余件社员作品，吸引了超过500名观众前来观展。' },
@@ -882,7 +952,6 @@
             if (!getLocalData('news')) setLocalData('news', defaultNews);
         }
 
-        // ==================== 尝试从云端加载 JSON ====================
         async function loadCloudData() {
             try {
                 const res = await fetch(DATA_URL);
@@ -899,7 +968,6 @@
             }
         }
 
-        // ==================== 导出 data.json ====================
         function exportDataJSON() {
             const data = {
                 works: getLocalData('works') || [],
@@ -948,12 +1016,14 @@
             t._t = setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // ==================== 渲染函数 ====================
+        // ==================== 渲染 (支持头像) ====================
         function renderWorks() {
             const grid = document.getElementById('worksGrid');
             const works = getLocalData('works') || [];
-            if (!works.length) { grid.innerHTML =
-                    '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;">暂无作品</p>'; return; }
+            if (!works.length) {
+                grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;">暂无作品</p>';
+                return;
+            }
             grid.innerHTML = works.map(w => `
             <div class="work-card">
               <div class="card-shine"></div>
@@ -969,21 +1039,35 @@
         function renderMembers() {
             const grid = document.getElementById('membersGrid');
             const members = getLocalData('members') || [];
-            if (!members.length) { grid.innerHTML =
-                    '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;">暂无成员</p>'; return; }
-            grid.innerHTML = members.map(m => `
-            <div class="member-name-card" onclick="openMemberModal('${m.id}')">
-              <div class="avatar-dot">${esc((m.name||'?').charAt(0))}</div>
-              <div class="member-name">${esc(m.name)}</div>
-              <div class="member-role-hint">${esc(m.role)}</div>
-            </div>`).join('');
+            if (!members.length) {
+                grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;">暂无成员</p>';
+                return;
+            }
+            grid.innerHTML = members.map(m => {
+                const initial = esc((m.name || '?').charAt(0));
+                const avatarHTML = m.avatar ?
+                    `<img src="${esc(m.avatar)}" alt="${esc(m.name)}" onerror="this.parentElement.innerHTML='${initial}'">` :
+                    initial;
+                return `
+                <div class="member-name-card" onclick="openMemberModal('${m.id}')">
+                  <div class="avatar-dot">${avatarHTML}</div>
+                  <div class="member-name">${esc(m.name)}</div>
+                  <div class="member-role-hint">${esc(m.role)}</div>
+                </div>`;
+            }).join('');
         }
 
         function openMemberModal(id) {
             const members = getLocalData('members') || [];
             const m = members.find(m => String(m.id) === String(id));
             if (!m) return;
-            document.getElementById('modalAvatar').textContent = (m.name || '?').charAt(0);
+            const avatarCont = document.getElementById('modalAvatar');
+            if (m.avatar) {
+                avatarCont.innerHTML =
+                    `<img src="${esc(m.avatar)}" alt="${esc(m.name)}" onerror="this.parentElement.textContent='${(m.name||'?').charAt(0)}'">`;
+            } else {
+                avatarCont.textContent = (m.name || '?').charAt(0);
+            }
             document.getElementById('modalName').textContent = m.name || '';
             document.getElementById('modalRole').textContent = '✦ ' + (m.role || '');
             document.getElementById('modalId').textContent = '编号：' + (m.number || '');
@@ -992,17 +1076,24 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function closeMemberModal() { document.getElementById('memberModal').classList.remove('show');
-            document.body.style.overflow = ''; }
-        document.getElementById('memberModal').addEventListener('click', function(e) { if (e.target === this)
-                closeMemberModal(); });
-        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMemberModal(); });
+        function closeMemberModal() {
+            document.getElementById('memberModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('memberModal').addEventListener('click', function(e) {
+            if (e.target === this) closeMemberModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeMemberModal();
+        });
 
         function renderNews() {
             const list = document.getElementById('newsList');
             const news = getLocalData('news') || [];
-            if (!news.length) { list.innerHTML =
-                    '<p style="text-align:center;color:var(--text-light);">暂无资讯</p>'; return; }
+            if (!news.length) {
+                list.innerHTML = '<p style="text-align:center;color:var(--text-light);">暂无资讯</p>';
+                return;
+            }
             list.innerHTML = news.map(n => `
             <div class="news-item">
               <div class="news-date">📅 ${esc(n.date)}</div>
@@ -1011,10 +1102,13 @@
             </div>`).join('');
         }
 
-        function esc(s) { const d = document.createElement('div');
-            d.textContent = s || ''; return d.innerHTML; }
+        function esc(s) {
+            const d = document.createElement('div');
+            d.textContent = s || '';
+            return d.innerHTML;
+        }
 
-        // ==================== 后台管理 ====================
+        // ==================== 后台管理 (新增头像字段) ====================
         const ADMIN_PW = 'wanxiang2024';
 
         function checkAdminStatus() {
@@ -1050,10 +1144,11 @@
             const area = document.getElementById('adminContentArea');
             const data = getLocalData(adminTab) || [];
             const cfg = {
-                works: { title: '作品', fields: ['title', 'author', 'desc', 'image'],
-                fieldLabels: ['标题', '作者', '描述', '图片URL'] },
-                members: { title: '成员', fields: ['name', 'role', 'number', 'signature'],
-                    fieldLabels: ['昵称', '职位', '编号', '签名'] },
+                works: { title: '作品', fields: ['title', 'author', 'desc', 'image'], fieldLabels: ['标题', '作者',
+                        '描述', '图片URL'
+                    ] },
+                members: { title: '成员', fields: ['name', 'role', 'number', 'signature', 'avatar'],
+                    fieldLabels: ['昵称', '职位', '编号', '签名', '头像URL'] },
                 news: { title: '资讯', fields: ['title', 'date', 'content'], fieldLabels: ['标题', '日期', '内容'] },
             } [adminTab];
             let html =
@@ -1065,7 +1160,7 @@
                 cfg.fields.forEach(f => {
                     const v = item[f] || '';
                     html +=
-                        `<td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${esc(String(v))}">${esc(String(v).substring(0,40))}</td>`;
+                        `<td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${esc(String(v))}">${esc(String(v).substring(0,30))}</td>`;
                 });
                 html +=
                     `<td><button class="btn btn-sm" onclick="editItem('${adminTab}',${item.id})">✏️</button> <button class="btn btn-sm btn-danger" onclick="deleteItem('${adminTab}',${item.id})">🗑</button></td></tr>`;
@@ -1074,7 +1169,7 @@
             html +=
                 `<button class="btn btn-gold" style="margin-top:18px;" onclick="addItem('${adminTab}')">＋ 新增</button>`;
             html +=
-            `<div id="editFormArea" style="margin-top:20px;padding:20px;background:rgba(0,0,0,0.2);border-radius:12px;display:none;"></div>`;
+                `<div id="editFormArea" style="margin-top:20px;padding:20px;background:rgba(0,0,0,0.2);border-radius:12px;display:none;"></div>`;
             area.innerHTML = html;
         }
 
@@ -1082,22 +1177,21 @@
                 1 : 1; }
 
         function addItem(tab) {
-            const cfg = {
-                works: ['title', 'author', 'desc', 'image'],
-                members: ['name', 'role', 'number', 'signature'],
-                news: ['title', 'date', 'content']
-            } [tab];
-            const labels = {
-                works: ['标题', '作者', '描述', '图片URL'],
-                members: ['昵称', '职位', '编号', '签名'],
-                news: ['标题', '日期', '内容']
-            } [tab];
+            const cfgMap = {
+                works: { fields: ['title', 'author', 'desc', 'image'], labels: ['标题', '作者', '描述', '图片URL'] },
+                members: { fields: ['name', 'role', 'number', 'signature', 'avatar'], labels: ['昵称', '职位', '编号',
+                        '签名', '头像URL'
+                    ] },
+                news: { fields: ['title', 'date', 'content'], labels: ['标题', '日期', '内容'] },
+            };
+            const { fields, labels } = cfgMap[tab];
             let h = '<h4 style="color:#fff;letter-spacing:2px;">新增</h4>';
-            cfg.forEach((f, i) => {
-                const ta = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (tab ===
-                    'members' && f === 'signature');
+            fields.forEach((f, i) => {
+                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (
+                    tab === 'members' && (f === 'signature'));
                 h += `<label>${labels[i]}</label>`;
-                h += ta ? `<textarea id="f_${f}" rows="3"></textarea>` :
+                h += isTextarea ?
+                    `<textarea id="f_${f}" rows="3"></textarea>` :
                     `<input id="f_${f}" value="${tab==='news'&&f==='date'?new Date().toISOString().split('T')[0]:''}">`;
             });
             h +=
@@ -1110,23 +1204,23 @@
             const data = getLocalData(tab) || [];
             const item = data.find(d => d.id === id);
             if (!item) return;
-            const cfg = {
-                works: ['title', 'author', 'desc', 'image'],
-                members: ['name', 'role', 'number', 'signature'],
-                news: ['title', 'date', 'content']
-            } [tab];
-            const labels = {
-                works: ['标题', '作者', '描述', '图片URL'],
-                members: ['昵称', '职位', '编号', '签名'],
-                news: ['标题', '日期', '内容']
-            } [tab];
+            const cfgMap = {
+                works: { fields: ['title', 'author', 'desc', 'image'], labels: ['标题', '作者', '描述', '图片URL'] },
+                members: { fields: ['name', 'role', 'number', 'signature', 'avatar'], labels: ['昵称', '职位', '编号',
+                        '签名', '头像URL'
+                    ] },
+                news: { fields: ['title', 'date', 'content'], labels: ['标题', '日期', '内容'] },
+            };
+            const { fields, labels } = cfgMap[tab];
             let h = `<h4 style="color:#fff;letter-spacing:2px;">编辑 (ID: ${id})</h4>`;
-            cfg.forEach((f, i) => {
-                const ta = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (tab ===
-                    'members' && f === 'signature');
+            fields.forEach((f, i) => {
+                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && f === 'content') || (
+                    tab === 'members' && (f === 'signature'));
+                const val = item[f] || '';
                 h += `<label>${labels[i]}</label>`;
-                h += ta ? `<textarea id="f_${f}" rows="3">${esc(String(item[f]||''))}</textarea>` :
-                    `<input id="f_${f}" value="${esc(String(item[f]||''))}">`;
+                h += isTextarea ?
+                    `<textarea id="f_${f}" rows="3">${esc(String(val))}</textarea>` :
+                    `<input id="f_${f}" value="${esc(String(val))}">`;
             });
             h +=
                 `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveEdit('${tab}',${id})">💾 更新</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
@@ -1135,9 +1229,12 @@
         }
 
         function saveNew(tab) {
-            const fields = { works: ['title', 'author', 'desc', 'image'], members: ['name', 'role', 'number',
-                    'signature'
-                ], news: ['title', 'date', 'content'] } [tab];
+            const cfgMap = {
+                works: ['title', 'author', 'desc', 'image'],
+                members: ['name', 'role', 'number', 'signature', 'avatar'],
+                news: ['title', 'date', 'content'],
+            };
+            const fields = cfgMap[tab];
             const obj = { id: getNextId(tab) };
             fields.forEach(f => { const el = document.getElementById('f_' + f);
                 obj[f] = el ? el.value : ''; });
@@ -1152,14 +1249,17 @@
         }
 
         function saveEdit(tab, id) {
-            const fields = { works: ['title', 'author', 'desc', 'image'], members: ['name', 'role', 'number',
-                    'signature'
-                ], news: ['title', 'date', 'content'] } [tab];
+            const cfgMap = {
+                works: ['title', 'author', 'desc', 'image'],
+                members: ['name', 'role', 'number', 'signature', 'avatar'],
+                news: ['title', 'date', 'content'],
+            };
+            const fields = cfgMap[tab];
             const data = getLocalData(tab) || [];
             const idx = data.findIndex(d => d.id === id);
             if (idx < 0) return;
             fields.forEach(f => { const el = document.getElementById('f_' + f); if (el) data[idx][f] = el
-                .value; });
+            .value; });
             setLocalData(tab, data);
             document.getElementById('editFormArea').style.display = 'none';
             renderAdminContent();
@@ -1177,16 +1277,16 @@
             showToast('🗑 已删除（本地）。点"导出 data.json"同步到云端');
         }
 
-        function refreshPage(tab) { if (tab === 'works') renderWorks(); if (tab === 'members') renderMembers(); if (
-                tab === 'news') renderNews(); }
+        function refreshPage(tab) {
+            if (tab === 'works') renderWorks();
+            if (tab === 'members') renderMembers();
+            if (tab === 'news') renderNews();
+        }
 
         // ==================== 初始化 ====================
         async function init() {
             initLocalData();
             const synced = await loadCloudData();
-            if (synced) {
-                // 重新渲染所有页面
-            }
             renderWorks();
             renderMembers();
             renderNews();
@@ -1194,8 +1294,7 @@
         }
         init();
 
-        console.log('🌌 万象社 · JSON 同步版已就绪');
-        console.log('💡 使用提示：在后台修改数据 → 点"导出 data.json" → 上传到 GitHub 仓库 → 所有人自动同步');
+        console.log('🌌 万象社 · JSON 同步版 · 头像与星环已就绪');
     </script>
 </body>
 </html>
