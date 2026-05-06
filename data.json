@@ -2,27 +2,49 @@
   "works": [
     {
       "id": 1,
-      "title": "《我的世界》 GXL机械动力工厂",
-      "author": "起雾星空",
-      "desc": "无",
-      "image": "https://img2.nloln.de/file/BQACAgUAAyEGAASLVN5eAAIWY2n6HpVAPRLv96KOtoH-FVhKliG4AAKsHAACGIvRVwThmflFS84lOwQ.jpg"
+      "title": "星月夜",
+      "author": "林月如",
+      "desc": "数字绘画作品，以星空为背景，融合东方意境与现代技法。",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"
+    },
+    {
+      "id": 2,
+      "title": "城市脉搏",
+      "author": "陈远航",
+      "desc": "摄影系列作品，捕捉城市夜晚霓虹灯光与流动车轨。",
+      "image": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80"
     }
   ],
   "members": [
     {
       "id": 1,
-      "name": "起雾星空",
-      "role": "副社长/副社长",
-      "number": "K331",
-      "signature": "在雾的尽头，我仰望星空。在星的深处，我沉入迷雾。\n我是观察者，也是被观察的夜。万象在我眼中流转，而真相，永远藏在下一层雾里。"
+      "name": "林月如",
+      "role": "社长",
+      "number": "WX-001",
+      "signature": "以画笔描绘万象，用心感受世界。",
+      "avatar": ""
+    },
+    {
+      "id": 2,
+      "name": "陈远航",
+      "role": "副社长",
+      "number": "WX-002",
+      "signature": "镜头之下，皆是故事。",
+      "avatar": ""
     }
   ],
   "news": [
     {
       "id": 1,
-      "title": "万象一测试开始啦！",
-      "date": "2026-05-05",
-      "content": "随着旧版本的网站暴毙新版的网站已经制作完毕，现在已经可以浏览"
+      "date": "2024-12-20",
+      "title": "万象社年度作品展圆满落幕",
+      "content": "本次展览共展出30余件社员作品，吸引了超过500名观众前来观展。"
+    },
+    {
+      "id": 2,
+      "date": "2024-11-08",
+      "title": "新社员招募正式启动",
+      "content": "万象社面向所有创意爱好者开放招募，欢迎加入我们。"
     }
   ]
 }
