@@ -23,14 +23,8 @@
             --font-body: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: var(--font-body);
             background: var(--bg-deep);
@@ -41,24 +35,11 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        #starsCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
+        #starsCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
         .nebula-glow {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.06;
-            pointer-events: none;
-            z-index: 0;
-            animation: nebulaDrift 20s ease-in-out infinite;
+            position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.06;
+            pointer-events: none; z-index: 0; animation: nebulaDrift 20s ease-in-out infinite;
         }
         .nebula-glow.n1 { width: 500px; height: 500px; background: #4a3a8a; top: -150px; left: -100px; }
         .nebula-glow.n2 { width: 400px; height: 400px; background: #8a5a3a; bottom: -100px; right: -80px; animation-delay: -7s; }
@@ -109,12 +90,8 @@
         .section-header .subtitle { color: var(--text-light); letter-spacing: 3px; font-size: 0.95rem; }
         .section-header .divider { width: 60px; height: 2px; background: var(--gold); margin: 16px auto 0; border-radius: 2px; opacity: 0.7; }
 
-        /* 作品网格 */
         .works-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; }
-        .work-card {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-            overflow: hidden; cursor: pointer; transition: all var(--transition); box-shadow: var(--shadow); position: relative;
-        }
+        .work-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all var(--transition); box-shadow: var(--shadow); position: relative; }
         .work-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-gold), 0 16px 40px rgba(0,0,0,0.5); border-color: rgba(212,167,116,0.4); background: var(--bg-card-hover); }
         .work-card .card-img { width: 100%; height: 220px; object-fit: cover; display: block; transition: transform 0.6s ease; }
         .work-card:hover .card-img { transform: scale(1.06); }
@@ -122,22 +99,11 @@
         .work-card .card-body h3 { font-family: var(--font-display); font-size: 1.2rem; color: #fff; margin-bottom: 6px; letter-spacing: 2px; }
         .work-card .card-body .author { color: var(--gold-light); font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 8px; }
         .work-card .card-body .desc { color: var(--text-light); font-size: 0.85rem; line-height: 1.5; }
-        .work-card .card-shine { position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent); transition: left 0.8s ease; pointer-events: none; }
-        .work-card:hover .card-shine { left: 150%; }
 
-        /* 成员网格 */
         .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .member-name-card {
-            background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm);
-            padding: 24px 16px; text-align: center; cursor: pointer; transition: all var(--transition); box-shadow: var(--shadow);
-        }
+        .member-name-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 24px 16px; text-align: center; cursor: pointer; transition: all var(--transition); box-shadow: var(--shadow); }
         .member-name-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-gold), 0 12px 35px rgba(0,0,0,0.5); border-color: rgba(212,167,116,0.5); background: var(--bg-card-hover); }
-        .avatar-dot {
-            width: 70px; height: 70px; border-radius: 50%; margin: 0 auto 12px;
-            background: linear-gradient(135deg, #4a3a6a, #6a5a8a);
-            display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-display); font-size: 1.8rem; color: #fff; letter-spacing: 2px; overflow: hidden;
-        }
+        .avatar-dot { width: 70px; height: 70px; border-radius: 50%; margin: 0 auto 12px; background: linear-gradient(135deg, #4a3a6a, #6a5a8a); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.8rem; color: #fff; overflow: hidden; }
         .member-name-card:hover .avatar-dot { box-shadow: 0 0 25px rgba(180,150,220,0.5); transform: scale(1.08); }
         .avatar-dot img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         .member-name { font-family: var(--font-display); font-size: 1.1rem; color: #fff; letter-spacing: 2px; }
@@ -148,19 +114,16 @@
         .news-card {
             background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
             overflow: hidden; transition: all var(--transition); box-shadow: var(--shadow);
-            cursor: default; position: relative;
+            cursor: pointer; position: relative;
         }
         .news-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-gold), 0 12px 35px rgba(0,0,0,0.5); border-color: rgba(212,167,116,0.4); background: var(--bg-card-hover); }
-        .news-card .news-img {
-            width: 100%; height: 180px; object-fit: cover; display: block;
-            border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02);
-        }
+        .news-card .news-img { width: 100%; height: 180px; object-fit: cover; display: block; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
         .news-card .news-body { padding: 20px; }
         .news-card .news-date { font-size: 0.75rem; color: var(--gold-light); letter-spacing: 2px; margin-bottom: 8px; }
         .news-card h3 { font-family: var(--font-display); font-size: 1.2rem; color: #fff; margin-bottom: 10px; letter-spacing: 2px; line-height: 1.4; }
-        .news-card .news-summary { color: var(--text-light); font-size: 0.85rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+        .news-card .news-summary { color: var(--text-light); font-size: 0.85rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
-        /* 模态框 */
+        /* 文章详情模态框 (宽屏可滚动) */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(4px); }
         .modal-overlay.show { opacity: 1; pointer-events: all; }
         .modal-panel { background: rgba(22,22,42,0.95); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius); padding: 40px 32px; max-width: 480px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.6); transform: translateY(20px) scale(0.95); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(20px); position: relative; }
@@ -173,6 +136,15 @@
         .modal-panel .modal-signature { color: #ccc; font-style: italic; letter-spacing: 2px; padding: 12px 20px; border-top: 1px solid rgba(255,255,255,0.15); margin-top: 8px; line-height: 1.6; }
         .modal-close { position: absolute; top: 12px; right: 18px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; opacity: 0.7; }
         .modal-close:hover { opacity: 1; }
+
+        /* 文章详情专用模态框 (更宽，可滚动) */
+        .article-modal-panel {
+            max-width: 800px; width: 95%; text-align: left; padding: 30px;
+            max-height: 80vh; overflow-y: auto;
+        }
+        .article-modal-panel .article-date { color: var(--gold-light); letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 12px; }
+        .article-modal-panel .article-body { color: var(--text-light); line-height: 1.8; font-size: 0.95rem; letter-spacing: 1px; word-wrap: break-word; }
+        .article-modal-panel .article-body img { max-width: 100%; height: auto; border-radius: var(--radius-sm); margin: 16px 0; box-shadow: var(--shadow); border: 1px solid var(--border); }
 
         .site-footer { text-align: center; padding: 30px 0; color: var(--text-light); letter-spacing: 2px; font-size: 0.8rem; opacity: 0.6; }
 
@@ -202,6 +174,7 @@
             .works-grid { grid-template-columns: 1fr; }
             .members-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .news-grid { grid-template-columns: 1fr; }
+            .article-modal-panel { padding: 20px; }
         }
     </style>
 </head>
@@ -215,28 +188,20 @@
         <nav class="navbar" id="navbar">
             <div class="logo" onclick="navigateTo('home')">
                 <span class="logo-icon">
-                    <!-- 星环+星球 Logo -->
                     <svg width="40" height="40" viewBox="0 0 40 40">
                         <defs>
                             <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#e8c9a0"/>
-                                <stop offset="100%" stop-color="#d4a574"/>
+                                <stop offset="0%" stop-color="#e8c9a0"/><stop offset="100%" stop-color="#d4a574"/>
                             </linearGradient>
                             <radialGradient id="planetGrad" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#f5e6d3"/>
-                                <stop offset="60%" stop-color="#d4a574"/>
-                                <stop offset="100%" stop-color="#8b6f4e"/>
+                                <stop offset="0%" stop-color="#f5e6d3"/><stop offset="60%" stop-color="#d4a574"/><stop offset="100%" stop-color="#8b6f4e"/>
                             </radialGradient>
                             <filter id="planetGlow" x="-50%" y="-50%" width="200%" height="200%">
-                                <feGaussianBlur stdDeviation="2" result="blur"/>
-                                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                <feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
                             </filter>
                         </defs>
-                        <!-- 星环 -->
                         <circle cx="20" cy="20" r="14" fill="none" stroke="url(#ringGrad)" stroke-width="2" stroke-dasharray="7 5" opacity="0.8"/>
-                        <!-- 星球 -->
                         <circle cx="20" cy="20" r="7" fill="url(#planetGrad)" filter="url(#planetGlow)"/>
-                        <!-- 星光点 -->
                         <circle cx="20" cy="6" r="1.5" fill="#e8c9a0"/>
                         <circle cx="30.4" cy="24" r="1.5" fill="#e8c9a0"/>
                         <circle cx="9.6" cy="24" r="1.5" fill="#e8c9a0"/>
@@ -274,7 +239,7 @@
         </section>
 
         <section class="page-section" id="page-news">
-            <div class="section-header"><h1>社 区 资 讯</h1><p class="subtitle">最新动态 · 一手掌握</p><div class="divider"></div></div>
+            <div class="section-header"><h1>社 区 资 讯</h1><p class="subtitle">点击文章卡片进入详情</p><div class="divider"></div></div>
             <div class="news-grid" id="newsList"></div>
         </section>
 
@@ -300,6 +265,7 @@
         <div class="site-footer"><p>© 2026 万象社 · 万般景象，皆汇于此</p></div>
     </div>
 
+    <!-- 成员详情模态框 -->
     <div class="modal-overlay" id="memberModal">
         <div class="modal-panel">
             <button class="modal-close" onclick="closeMemberModal()">✕</button>
@@ -308,6 +274,16 @@
             <p class="modal-role" id="modalRole"></p>
             <p class="modal-id" id="modalId"></p>
             <p class="modal-signature" id="modalSignature"></p>
+        </div>
+    </div>
+
+    <!-- 文章详情模态框 -->
+    <div class="modal-overlay" id="articleModal">
+        <div class="modal-panel article-modal-panel">
+            <button class="modal-close" onclick="closeArticleModal()">✕</button>
+            <div class="article-date" id="articleDate"></div>
+            <h2 id="articleTitle" style="margin-bottom:20px;"></h2>
+            <div class="article-body" id="articleBody"></div>
         </div>
     </div>
 
@@ -327,9 +303,7 @@
                 return { x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2.8 + 0.4, baseAlpha: Math.random() * 0.7 + 0.3, twinkleSpeed: Math.random() * 0.02 + 0.005, twinkleOffset: Math.random() * Math.PI * 2, hue: Math.random() < 0.15 ? 40 + Math.random() * 20 : 220 + Math.random() * 60 };
             }
             for (let i = 0; i < STAR_COUNT; i++) stars.push(createStar());
-            function spawnShootingStar() {
-                return { x: Math.random() * canvas.width * 0.8, y: Math.random() * canvas.height * 0.4, len: Math.random() * 100 + 60, speed: Math.random() * 8 + 6, angle: Math.PI / 4 + Math.random() * 0.3, life: Math.random() * 60 + 40, maxLife: 0, alpha: 1 };
-            }
+            function spawnShootingStar() { return { x: Math.random() * canvas.width * 0.8, y: Math.random() * canvas.height * 0.4, len: Math.random() * 100 + 60, speed: Math.random() * 8 + 6, angle: Math.PI / 4 + Math.random() * 0.3, life: Math.random() * 60 + 40, maxLife: 0, alpha: 1 }; }
             function animate() {
                 mouseX += (targetMouseX - mouseX) * 0.04; mouseY += (targetMouseY - mouseY) * 0.04;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -377,11 +351,11 @@
             { id: 2, name: '陈远航', role: '副社长', number: 'WX-002', signature: '镜头之下，皆是故事。', avatar: '' },
         ];
         const defaultNews = [
-            { id: 1, date: '2024-12-20', title: '万象社年度作品展圆满落幕', summary: '本次展览共展出30余件社员作品，吸引了超过500名观众前来观展，现场气氛热烈。', content: '本次展览共展出30余件社员作品，吸引了超过500名观众前来观展，现场气氛热烈。多件作品获得高度评价，为社团年度活动画上圆满句号。', image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80' },
-            { id: 2, date: '2024-11-08', title: '新社员招募正式启动', summary: '万象社面向所有创意爱好者开放招募，欢迎绘画、摄影、动画、写作等各领域的伙伴加入。', content: '万象社面向所有创意爱好者开放招募，欢迎绘画、摄影、动画、写作等各领域的伙伴加入我们。报名通道已开启，详情请关注后续公告。', image: '' },
+            { id: 1, date: '2024-12-20', title: '万象社年度作品展圆满落幕', summary: '本次展览共展出30余件社员作品，吸引了超过500名观众前来观展。', content: '<p>本次展览共展出30余件社员作品，吸引了超过500名观众前来观展，现场气氛热烈。</p><p>多件作品获得高度评价，为社团年度活动画上圆满句号。</p><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&q=80" alt="展览现场">', image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80' },
+            { id: 2, date: '2024-11-08', title: '新社员招募正式启动', summary: '万象社面向所有创意爱好者开放招募。', content: '<p>万象社面向所有创意爱好者开放招募，欢迎绘画、摄影、动画、写作等各领域的伙伴加入我们。</p><p>报名通道已开启，详情请关注后续公告。</p>', image: '' },
         ];
 
-        function getLocalData(key) { try { const r = localStorage.getItem(DATA_KEYS[key]); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
+        function getLocalData(key) { try { return JSON.parse(localStorage.getItem(DATA_KEYS[key])); } catch(e){return null;} }
         function setLocalData(key, data) { localStorage.setItem(DATA_KEYS[key], JSON.stringify(data)); }
         function initLocalData() {
             if (!getLocalData('works')) setLocalData('works', defaultWorks);
@@ -397,17 +371,17 @@
                 if (cloud.works) setLocalData('works', cloud.works);
                 if (cloud.members) setLocalData('members', cloud.members);
                 if (cloud.news) setLocalData('news', cloud.news);
-                console.log('✅ 已从云端同步');
                 return true;
-            } catch (e) { console.log('ℹ️ 未找到云端数据'); return false; }
+            } catch(e) { return false; }
         }
 
         function exportDataJSON() {
             const data = { works: getLocalData('works') || [], members: getLocalData('members') || [], news: getLocalData('news') || [] };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'data.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-            showToast('✅ data.json 已下载！上传到 GitHub 即可同步');
+            const a = document.createElement('a'); a.href = url; a.download = 'data.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('✅ data.json 已下载');
         }
 
         // ========== 导航 ==========
@@ -433,7 +407,7 @@
         function renderWorks() {
             const grid = document.getElementById('worksGrid');
             const works = getLocalData('works') || [];
-            if (!works.length) { grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;">暂无作品</p>'; return; }
+            if (!works.length) { grid.innerHTML = '<p style="text-align:center;color:var(--text-light);">暂无作品</p>'; return; }
             grid.innerHTML = works.map(w => `
                 <div class="work-card"><div class="card-shine"></div>
                     <img class="card-img" src="${esc(w.image)}" alt="${esc(w.title)}" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'">
@@ -444,7 +418,7 @@
         function renderMembers() {
             const grid = document.getElementById('membersGrid');
             const members = getLocalData('members') || [];
-            if (!members.length) { grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;">暂无成员</p>'; return; }
+            if (!members.length) { grid.innerHTML = '<p style="text-align:center;color:var(--text-light);">暂无成员</p>'; return; }
             grid.innerHTML = members.map(m => {
                 const initial = esc((m.name || '?').charAt(0));
                 const avatarHTML = m.avatar ? `<img src="${esc(m.avatar)}" alt="${esc(m.name)}" onerror="this.parentElement.innerHTML='${initial}'">` : initial;
@@ -466,17 +440,17 @@
         }
         function closeMemberModal() { document.getElementById('memberModal').classList.remove('show'); document.body.style.overflow = ''; }
         document.getElementById('memberModal').addEventListener('click', function(e) { if (e.target === this) closeMemberModal(); });
-        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMemberModal(); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeMemberModal(); closeArticleModal(); } });
 
         function renderNews() {
             const grid = document.getElementById('newsList');
             const news = getLocalData('news') || [];
-            if (!news.length) { grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;">暂无资讯</p>'; return; }
+            if (!news.length) { grid.innerHTML = '<p style="text-align:center;color:var(--text-light);">暂无资讯</p>'; return; }
             grid.innerHTML = news.map(n => {
-                const summary = n.summary || (n.content || '').substring(0, 60) + (n.content && n.content.length > 60 ? '...' : '');
+                const summary = n.summary || (n.content ? n.content.replace(/<[^>]*>/g, '').substring(0, 60) + '...' : '');
                 const imgHTML = n.image ? `<img class="news-img" src="${esc(n.image)}" alt="${esc(n.title)}" onerror="this.style.display='none'">` : '';
                 return `
-                <div class="news-card">
+                <div class="news-card" onclick="openArticle(${n.id})">
                     ${imgHTML}
                     <div class="news-body">
                         <div class="news-date">📅 ${esc(n.date)}</div>
@@ -486,6 +460,21 @@
                 </div>`;
             }).join('');
         }
+
+        function openArticle(id) {
+            const news = getLocalData('news') || [];
+            const article = news.find(n => n.id === id); if (!article) return;
+            document.getElementById('articleDate').textContent = '📅 ' + esc(article.date || '');
+            document.getElementById('articleTitle').textContent = article.title || '';
+            document.getElementById('articleBody').innerHTML = article.content || ''; // 正文HTML
+            document.getElementById('articleModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeArticleModal() {
+            document.getElementById('articleModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('articleModal').addEventListener('click', function(e) { if (e.target === this) closeArticleModal(); });
 
         function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
 
@@ -516,9 +505,9 @@
             const area = document.getElementById('adminContentArea');
             const data = getLocalData(adminTab) || [];
             const cfg = {
-                works: { title: '作品', fields: ['title', 'author', 'desc', 'image'], fieldLabels: ['标题', '作者', '描述', '图片URL'] },
-                members: { title: '成员', fields: ['name', 'role', 'number', 'signature', 'avatar'], fieldLabels: ['昵称', '职位', '编号', '签名', '头像URL'] },
-                news: { title: '资讯', fields: ['title', 'date', 'summary', 'content', 'image'], fieldLabels: ['标题', '日期', '摘要', '正文', '封面URL'] },
+                works: { title: '作品', fields: ['title','author','desc','image'], fieldLabels: ['标题','作者','描述','图片URL'] },
+                members: { title: '成员', fields: ['name','role','number','signature','avatar'], fieldLabels: ['昵称','职位','编号','签名','头像URL'] },
+                news: { title: '资讯', fields: ['title','date','summary','content','image'], fieldLabels: ['标题','日期','摘要','正文','封面URL'] },
             }[adminTab];
             let html = `<h3>${cfg.title}列表 <span style="font-size:0.7rem;color:var(--text-light);">(共${data.length}条)</span></h3>`;
             html += `<table class="admin-table"><thead><tr><th>ID</th>${cfg.fieldLabels.map(l=>`<th>${l}</th>`).join('')}<th>操作</th></tr></thead><tbody>`;
@@ -540,16 +529,20 @@
 
         function addItem(tab) {
             const cfgMap = {
-                works: { fields: ['title', 'author', 'desc', 'image'], labels: ['标题', '作者', '描述', '图片URL'] },
-                members: { fields: ['name', 'role', 'number', 'signature', 'avatar'], labels: ['昵称', '职位', '编号', '签名', '头像URL'] },
-                news: { fields: ['title', 'date', 'summary', 'content', 'image'], labels: ['标题', '日期', '摘要', '正文', '封面URL'] },
+                works: { fields: ['title','author','desc','image'], labels: ['标题','作者','描述','图片URL'] },
+                members: { fields: ['name','role','number','signature','avatar'], labels: ['昵称','职位','编号','签名','头像URL'] },
+                news: { fields: ['title','date','summary','content','image'], labels: ['标题','日期','摘要','正文','封面URL'] },
             };
             const { fields, labels } = cfgMap[tab];
             let h = '<h4 style="color:#fff;letter-spacing:2px;">新增</h4>';
             fields.forEach((f, i) => {
-                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && (f === 'summary' || f === 'content')) || (tab === 'members' && f === 'signature');
+                const isTextarea = (f === 'desc' || f === 'summary' || f === 'content' || f === 'signature');
                 h += `<label>${labels[i]}</label>`;
                 h += isTextarea ? `<textarea id="f_${f}" rows="3"></textarea>` : `<input id="f_${f}" value="${tab==='news'&&f==='date'?new Date().toISOString().split('T')[0]:''}">`;
+                // 为正文添加插入图片按钮
+                if (f === 'content') {
+                    h += `<button type="button" class="btn btn-sm" style="margin:4px 0 8px;" onclick="insertImageToField('f_content')">📷 插入图片</button>`;
+                }
             });
             h += `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveNew('${tab}')">💾 保存</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
             document.getElementById('editFormArea').style.display = 'block';
@@ -559,28 +552,47 @@
         function editItem(tab, id) {
             const data = getLocalData(tab) || []; const item = data.find(d => d.id === id); if (!item) return;
             const cfgMap = {
-                works: { fields: ['title', 'author', 'desc', 'image'], labels: ['标题', '作者', '描述', '图片URL'] },
-                members: { fields: ['name', 'role', 'number', 'signature', 'avatar'], labels: ['昵称', '职位', '编号', '签名', '头像URL'] },
-                news: { fields: ['title', 'date', 'summary', 'content', 'image'], labels: ['标题', '日期', '摘要', '正文', '封面URL'] },
+                works: { fields: ['title','author','desc','image'], labels: ['标题','作者','描述','图片URL'] },
+                members: { fields: ['name','role','number','signature','avatar'], labels: ['昵称','职位','编号','签名','头像URL'] },
+                news: { fields: ['title','date','summary','content','image'], labels: ['标题','日期','摘要','正文','封面URL'] },
             };
             const { fields, labels } = cfgMap[tab];
             let h = `<h4 style="color:#fff;letter-spacing:2px;">编辑 (ID: ${id})</h4>`;
             fields.forEach((f, i) => {
-                const isTextarea = (tab === 'works' && f === 'desc') || (tab === 'news' && (f === 'summary' || f === 'content')) || (tab === 'members' && f === 'signature');
+                const isTextarea = (f === 'desc' || f === 'summary' || f === 'content' || f === 'signature');
                 const val = item[f] || '';
                 h += `<label>${labels[i]}</label>`;
                 h += isTextarea ? `<textarea id="f_${f}" rows="3">${esc(String(val))}</textarea>` : `<input id="f_${f}" value="${esc(String(val))}">`;
+                if (f === 'content') {
+                    h += `<button type="button" class="btn btn-sm" style="margin:4px 0 8px;" onclick="insertImageToField('f_content')">📷 插入图片</button>`;
+                }
             });
             h += `<button class="btn btn-gold" style="margin-top:12px;" onclick="saveEdit('${tab}',${id})">💾 更新</button> <button class="btn" onclick="document.getElementById('editFormArea').style.display='none'">取消</button>`;
             document.getElementById('editFormArea').style.display = 'block';
             document.getElementById('editFormArea').innerHTML = h;
         }
 
+        // 插入图片工具函数
+        function insertImageToField(fieldId) {
+            const url = prompt('请输入图片链接（URL）:');
+            if (!url) return;
+            const imgTag = `<img src="${url}" alt="图片">`;
+            const textarea = document.getElementById(fieldId);
+            if (textarea) {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const text = textarea.value;
+                textarea.value = text.substring(0, start) + imgTag + text.substring(end);
+                textarea.focus();
+                textarea.selectionStart = textarea.selectionEnd = start + imgTag.length;
+            }
+        }
+
         function saveNew(tab) {
             const cfgMap = {
-                works: ['title', 'author', 'desc', 'image'],
-                members: ['name', 'role', 'number', 'signature', 'avatar'],
-                news: ['title', 'date', 'summary', 'content', 'image'],
+                works: ['title','author','desc','image'],
+                members: ['name','role','number','signature','avatar'],
+                news: ['title','date','summary','content','image'],
             };
             const fields = cfgMap[tab];
             const obj = { id: getNextId(tab) };
@@ -595,9 +607,9 @@
 
         function saveEdit(tab, id) {
             const cfgMap = {
-                works: ['title', 'author', 'desc', 'image'],
-                members: ['name', 'role', 'number', 'signature', 'avatar'],
-                news: ['title', 'date', 'summary', 'content', 'image'],
+                works: ['title','author','desc','image'],
+                members: ['name','role','number','signature','avatar'],
+                news: ['title','date','summary','content','image'],
             };
             const fields = cfgMap[tab];
             const data = getLocalData(tab) || []; const idx = data.findIndex(d => d.id === id);
