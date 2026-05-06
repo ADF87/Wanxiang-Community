@@ -36,7 +36,7 @@
             line-height: 1.5;
         }
 
-        /* 魔法星尘 + 深邃夜空背景层 */
+        /* 魔法星夜底层 + 特效画布 */
         #magicBgCanvas {
             position: fixed;
             top: 0;
@@ -65,7 +65,6 @@
             z-index: 1;
             pointer-events: none;
         }
-        /* 魔法粉尘粒子层 */
         #magicDustCanvas {
             position: fixed;
             top: 0;
@@ -322,7 +321,13 @@
                 <button class="btn btn-gold" onclick="adminLogin()">登 录 枢 纽</button>
             </div>
             <div id="adminPanelArea" class="admin-panel" style="display:none; padding:28px;">
-                <div style="display:flex; gap:12px; flex-wrap:wrap;"><button class="btn" onclick="switchAdminTab('works')">📦 作品</button><button class="btn" onclick="switchAdminTab('members')">👤 成员</button><button class="btn" onclick="switchAdminTab('news')">📰 资讯</button><button class="btn btn-gold btn-sm" onclick="exportDataJSON()">💾 导出 data.json</button><button class="btn" onclick="adminLogout()">退出</button></div>
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <button class="btn" onclick="switchAdminTab('works')">📦 作品</button>
+                    <button class="btn" onclick="switchAdminTab('members')">👤 成员</button>
+                    <button class="btn" onclick="switchAdminTab('news')">📰 资讯</button>
+                    <button class="btn btn-gold btn-sm" onclick="exportDataJSON()">💾 导出 data.json</button>
+                    <button class="btn" onclick="adminLogout()">退出</button>
+                </div>
                 <div id="adminContentArea" style="margin-top:28px;"></div>
             </div>
         </section>
@@ -336,259 +341,169 @@
 
     <script>
         // ---------- 魔法星夜特效 (轻量 + 星月元素) ----------
-        // 1. 静态魔法背景 + 缓慢飘浮的月亮光晕
-        const bgCanvas = document.getElementById('magicBgCanvas');
-        const bgCtx = bgCanvas.getContext('2d');
-        let w, h;
-        function resizeBg() { w = bgCanvas.width = window.innerWidth; h = bgCanvas.height = window.innerHeight; }
-        resizeBg(); window.addEventListener('resize', resizeBg);
-        // 绘制深紫色魔法夜空 + 柔和渐变
-        function drawStaticBg() {
-            const grad = bgCtx.createLinearGradient(0, 0, 0, h);
-            grad.addColorStop(0, '#0d022a');
-            grad.addColorStop(0.5, '#160439');
-            grad.addColorStop(1, '#030012');
-            bgCtx.fillStyle = grad;
-            bgCtx.fillRect(0, 0, w, h);
-        }
-        drawStaticBg();
+        (function magicVisuals() {
+            let w, h;
+            const bgCanvas = document.getElementById('magicBgCanvas');
+            const bgCtx = bgCanvas.getContext('2d');
+            function resizeAll() {
+                w = window.innerWidth;
+                h = window.innerHeight;
+                bgCanvas.width = w; bgCanvas.height = h;
+                starsCanvas.width = w; starsCanvas.height = h;
+                moonCanvas.width = w; moonCanvas.height = h;
+                dustCanvas.width = w; dustCanvas.height = h;
+                drawStaticBg();
+            }
+            function drawStaticBg() {
+                const grad = bgCtx.createLinearGradient(0, 0, 0, h);
+                grad.addColorStop(0, '#0d022a');
+                grad.addColorStop(0.5, '#160439');
+                grad.addColorStop(1, '#030012');
+                bgCtx.fillStyle = grad;
+                bgCtx.fillRect(0, 0, w, h);
+            }
+            window.addEventListener('resize', resizeAll);
+            resizeAll();
 
-        // 2. 月亮 + 魔法光环 (独立canvas)
-        const moonCanvas = document.getElementById('moonCanvas');
-        const moonCtx = moonCanvas.getContext('2d');
-        let moonX, moonY, moonGlowIntensity = 0;
-        function resizeMoon() { moonCanvas.width = window.innerWidth; moonCanvas.height = window.innerHeight; moonX = w * 0.85; moonY = h * 0.12; }
-        resizeMoon(); window.addEventListener('resize', resizeMoon);
-        let timeMoon = 0;
-        function drawMoon() {
-            if(!moonCtx) return;
-            moonCtx.clearRect(0, 0, w, h);
-            // 魔法月晕
-            const glowGrd = moonCtx.createRadialGradient(moonX, moonY, 10, moonX, moonY, 110);
-            glowGrd.addColorStop(0, `rgba(255, 230, 170, ${0.35 + Math.sin(timeMoon)*0.05})`);
-            glowGrd.addColorStop(0.7, `rgba(180, 120, 255, 0.2)`);
-            glowGrd.addColorStop(1, 'transparent');
-            moonCtx.fillStyle = glowGrd;
-            moonCtx.beginPath();
-            moonCtx.arc(moonX, moonY, 120, 0, Math.PI*2);
-            moonCtx.fill();
-            // 月亮本体
-            moonCtx.shadowBlur = 30;
-            moonCtx.shadowColor = '#ffe6a3';
-            moonCtx.beginPath();
-            moonCtx.arc(moonX, moonY, 35, 0, Math.PI*2);
-            moonCtx.fillStyle = '#fdf4dc';
-            moonCtx.fill();
-            // 月面纹理
-            moonCtx.beginPath();
-            moonCtx.arc(moonX-8, moonY-5, 6, 0, Math.PI*2);
-            moonCtx.fillStyle = '#e6d5b3';
-            moonCtx.fill();
-            moonCtx.beginPath();
-            moonCtx.arc(moonX+6, moonY+3, 4, 0, Math.PI*2);
-            moonCtx.fill();
-            // 魔法星环围绕月亮
-            for(let i=0;i<12;i++) {
-                let rad = (timeMoon*0.02 + i) * Math.PI*2 / 12;
-                let x = moonX + Math.cos(rad)*68;
-                let y = moonY + Math.sin(rad)*48;
-                moonCtx.fillStyle = `rgba(255, 210, 90, ${0.5+Math.sin(timeMoon*3+i)*0.2})`;
+            // 月亮绘制
+            const moonCanvas = document.getElementById('moonCanvas');
+            const moonCtx = moonCanvas.getContext('2d');
+            let moonX, moonY, timeMoon = 0;
+            function drawMoon() {
+                if(!moonCtx) return;
+                moonCtx.clearRect(0, 0, w, h);
+                moonX = w * 0.85; moonY = h * 0.12;
+                const glowGrd = moonCtx.createRadialGradient(moonX, moonY, 10, moonX, moonY, 110);
+                glowGrd.addColorStop(0, `rgba(255, 230, 170, ${0.35 + Math.sin(timeMoon)*0.05})`);
+                glowGrd.addColorStop(0.7, `rgba(180, 120, 255, 0.2)`);
+                glowGrd.addColorStop(1, 'transparent');
+                moonCtx.fillStyle = glowGrd;
                 moonCtx.beginPath();
-                moonCtx.arc(x, y, 2.5, 0, Math.PI*2);
+                moonCtx.arc(moonX, moonY, 120, 0, Math.PI*2);
                 moonCtx.fill();
+                moonCtx.shadowBlur = 30;
+                moonCtx.shadowColor = '#ffe6a3';
+                moonCtx.beginPath();
+                moonCtx.arc(moonX, moonY, 35, 0, Math.PI*2);
+                moonCtx.fillStyle = '#fdf4dc';
+                moonCtx.fill();
+                moonCtx.beginPath();
+                moonCtx.arc(moonX-8, moonY-5, 6, 0, Math.PI*2);
+                moonCtx.fillStyle = '#e6d5b3';
+                moonCtx.fill();
+                moonCtx.beginPath();
+                moonCtx.arc(moonX+6, moonY+3, 4, 0, Math.PI*2);
+                moonCtx.fill();
+                for(let i=0;i<12;i++) {
+                    let rad = (timeMoon*0.02 + i) * Math.PI*2 / 12;
+                    let x = moonX + Math.cos(rad)*68;
+                    let y = moonY + Math.sin(rad)*48;
+                    moonCtx.fillStyle = `rgba(255, 210, 90, ${0.5+Math.sin(timeMoon*3+i)*0.2})`;
+                    moonCtx.beginPath();
+                    moonCtx.arc(x, y, 2.5, 0, Math.PI*2);
+                    moonCtx.fill();
+                }
+                moonCtx.shadowBlur = 0;
+                timeMoon += 0.016;
+                requestAnimationFrame(drawMoon);
             }
-            moonCtx.shadowBlur = 0;
-            timeMoon += 0.016;
-            requestAnimationFrame(drawMoon);
-        }
-        drawMoon();
+            drawMoon();
 
-        // 3. 闪烁星辰 + 魔法流星
-        const starsCanvas = document.getElementById('starsCanvas');
-        const starsCtx = starsCanvas.getContext('2d');
-        let starsArray = [], shootingStars = [];
-        function resizeStars() { starsCanvas.width = window.innerWidth; starsCanvas.height = window.innerHeight; initStars(); }
-        function initStars() {
-            starsArray = [];
-            for(let i=0;i<400;i++) {
-                starsArray.push({
+            // 星辰
+            const starsCanvas = document.getElementById('starsCanvas');
+            const starsCtx = starsCanvas.getContext('2d');
+            let starsArray = [], shootingStars = [];
+            function initStars() {
+                starsArray = [];
+                for(let i=0;i<420;i++) {
+                    starsArray.push({
+                        x: Math.random() * w, y: Math.random() * h,
+                        size: Math.random() * 2.2 + 0.8,
+                        alpha: Math.random() * 0.6 + 0.3,
+                        twinkle: Math.random() * 0.03 + 0.008,
+                        hue: 260 + Math.random() * 80
+                    });
+                }
+            }
+            function animateStars() {
+                if(!starsCtx) return;
+                starsCtx.clearRect(0, 0, w, h);
+                let t = Date.now() * 0.004;
+                starsArray.forEach(s => {
+                    let tw = Math.sin(t * s.twinkle * 60) * 0.4 + 0.6;
+                    let a = s.alpha * tw;
+                    starsCtx.fillStyle = `hsla(${s.hue}, 85%, 70%, ${a})`;
+                    starsCtx.beginPath();
+                    starsCtx.arc(s.x, s.y, s.size * 0.7, 0, Math.PI*2);
+                    starsCtx.fill();
+                    starsCtx.fillStyle = `hsla(${s.hue}, 90%, 80%, ${a*0.6})`;
+                    starsCtx.beginPath();
+                    starsCtx.arc(s.x, s.y, s.size*1.8, 0, Math.PI*2);
+                    starsCtx.fill();
+                });
+                if(Math.random()<0.025 && shootingStars.length<2) {
+                    shootingStars.push({
+                        x: Math.random() * w * 0.8, y: Math.random() * h * 0.3,
+                        len: 80, speed: Math.random() * 12 + 7,
+                        angle: Math.PI/4 + (Math.random()-0.5)*0.3,
+                        life: 70, alpha: 1
+                    });
+                }
+                shootingStars = shootingStars.filter(ss => {
+                    ss.x += Math.cos(ss.angle) * ss.speed;
+                    ss.y += Math.sin(ss.angle) * ss.speed;
+                    ss.life--; ss.alpha = ss.life/70;
+                    if(ss.life<=0) return false;
+                    let ex = ss.x - Math.cos(ss.angle)*ss.len;
+                    let ey = ss.y - Math.sin(ss.angle)*ss.len;
+                    let grad = starsCtx.createLinearGradient(ss.x, ss.y, ex, ey);
+                    grad.addColorStop(0, `rgba(255, 210, 100, ${ss.alpha*0.9})`);
+                    grad.addColorStop(1, `rgba(200, 100, 250, 0)`);
+                    starsCtx.strokeStyle = grad;
+                    starsCtx.lineWidth = 2.2;
+                    starsCtx.beginPath();
+                    starsCtx.moveTo(ss.x, ss.y);
+                    starsCtx.lineTo(ex, ey);
+                    starsCtx.stroke();
+                    starsCtx.fillStyle = `rgba(255, 220, 130, ${ss.alpha})`;
+                    starsCtx.beginPath();
+                    starsCtx.arc(ss.x, ss.y, 3, 0, Math.PI*2);
+                    starsCtx.fill();
+                    return true;
+                });
+                requestAnimationFrame(animateStars);
+            }
+            initStars();
+            animateStars();
+
+            // 魔法粉尘
+            const dustCanvas = document.getElementById('magicDustCanvas');
+            const dustCtx = dustCanvas.getContext('2d');
+            let dustParticles = [];
+            for(let i=0;i<200;i++) {
+                dustParticles.push({
                     x: Math.random() * w, y: Math.random() * h,
-                    size: Math.random() * 2.2 + 0.8,
-                    alpha: Math.random() * 0.6 + 0.3,
-                    twinkle: Math.random() * 0.03 + 0.008,
-                    hue: 260 + Math.random() * 80  // 紫罗兰到淡金
+                    size: Math.random() * 3 + 1.2,
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.12,
+                    alpha: Math.random() * 0.5 + 0.2,
+                    colorHue: 280 + Math.random() * 80
                 });
             }
-        }
-        window.addEventListener('resize', () => { starsCanvas.width = w; starsCanvas.height = h; initStars(); });
-        function animateStars() {
-            if(!starsCtx) return;
-            starsCtx.clearRect(0, 0, w, h);
-            let t = Date.now() * 0.004;
-            starsArray.forEach(s => {
-                let tw = Math.sin(t * s.twinkle * 60) * 0.4 + 0.6;
-                let a = s.alpha * tw;
-                starsCtx.fillStyle = `hsla(${s.hue}, 85%, 70%, ${a})`;
-                starsCtx.beginPath();
-                starsCtx.arc(s.x, s.y, s.size * 0.7, 0, Math.PI*2);
-                starsCtx.fill();
-                starsCtx.fillStyle = `hsla(${s.hue}, 90%, 80%, ${a*0.6})`;
-                starsCtx.beginPath();
-                starsCtx.arc(s.x, s.y, s.size*1.8, 0, Math.PI*2);
-                starsCtx.fill();
-            });
-            // 流星
-            if(Math.random()<0.025 && shootingStars.length<2) {
-                shootingStars.push({
-                    x: Math.random() * w * 0.8, y: Math.random() * h * 0.3,
-                    len: 80, speed: Math.random() * 12 + 7,
-                    angle: Math.PI/4 + (Math.random()-0.5)*0.3,
-                    life: 70, alpha: 1, gold: true
-                });
-            }
-            shootingStars = shootingStars.filter(ss => {
-                ss.x += Math.cos(ss.angle) * ss.speed;
-                ss.y += Math.sin(ss.angle) * ss.speed;
-                ss.life--; ss.alpha = ss.life/70;
-                if(ss.life<=0) return false;
-                let ex = ss.x - Math.cos(ss.angle)*ss.len;
-                let ey = ss.y - Math.sin(ss.angle)*ss.len;
-                let grad = starsCtx.createLinearGradient(ss.x, ss.y, ex, ey);
-                grad.addColorStop(0, `rgba(255, 210, 100, ${ss.alpha*0.9})`);
-                grad.addColorStop(1, `rgba(200, 100, 250, 0)`);
-                starsCtx.strokeStyle = grad;
-                starsCtx.lineWidth = 2.2;
-                starsCtx.beginPath();
-                starsCtx.moveTo(ss.x, ss.y);
-                starsCtx.lineTo(ex, ey);
-                starsCtx.stroke();
-                starsCtx.fillStyle = `rgba(255, 220, 130, ${ss.alpha})`;
-                starsCtx.beginPath();
-                starsCtx.arc(ss.x, ss.y, 3, 0, Math.PI*2);
-                starsCtx.fill();
-                return true;
-            });
-            requestAnimationFrame(animateStars);
-        }
-        setTimeout(() => { resizeStars(); animateStars(); }, 100);
-
-        // 4. 魔法粉尘 (飘浮光点)
-        const dustCanvas = document.getElementById('magicDustCanvas');
-        const dustCtx = dustCanvas.getContext('2d');
-        let dustParticles = [];
-        function resizeDust() { dustCanvas.width = w; dustCanvas.height = h; }
-        window.addEventListener('resize', resizeDust);
-        for(let i=0;i<180;i++) {
-            dustParticles.push({
-                x: Math.random() * w, y: Math.random() * h,
-                size: Math.random() * 3 + 1.2,
-                vx: (Math.random() - 0.5) * 0.2,
-                vy: (Math.random() - 0.5) * 0.12,
-                alpha: Math.random() * 0.5 + 0.2,
-                colorHue: 280 + Math.random() * 80
-            });
-        }
-        function animateDust() {
-            if(!dustCtx) return;
-            dustCtx.clearRect(0, 0, w, h);
-            for(let d of dustParticles) {
-                d.x += d.vx;
-                d.y += d.vy;
-                if(d.x < -30) d.x = w+30;
-                if(d.x > w+30) d.x = -30;
-                if(d.y < -30) d.y = h+30;
-                if(d.y > h+30) d.y = -30;
-                dustCtx.fillStyle = `hsla(${d.colorHue}, 90%, 70%, ${d.alpha*0.45})`;
-                dustCtx.beginPath();
-                dustCtx.arc(d.x, d.y, d.size*0.8, 0, Math.PI*2);
-                dustCtx.fill();
-                dustCtx.fillStyle = `hsla(${d.colorHue+20}, 90%, 75%, ${d.alpha*0.25})`;
-                dustCtx.beginPath();
-                dustCtx.arc(d.x, d.y, d.size*1.5, 0, Math.PI*2);
-                dustCtx.fill();
-            }
-            requestAnimationFrame(animateDust);
-        }
-        animateDust();
-        
-        // ========== 数据与交互核心 ==========
-        const DATA_KEYS = { works: 'wxs_works', members: 'wxs_members', news: 'wxs_news' };
-        const defaultWorks = [
-            { id:1, title:'月之咒语', author:'林月如', desc:'魔法光影绘画，月光与星尘交织而成，蕴含着古老的祝福。', image:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80' },
-            { id:2, title:'星尘魔杖', author:'陈远航', desc:'星轨摄影与炼金术符号的艺术结合，捕捉宇宙魔力。', image:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80' },
-            { id:3, title:'占星秘仪', author:'苏星野', desc:'数字插画，描绘占星轮盘与魔法灵境。', image:'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&q=80' }
-        ];
-        const defaultMembers = [{ id:1, name:'林月如', role:'月之社长', number:'WX-月痕', signature:'以月光为墨，书万象之诗。', avatar:''},{ id:2, name:'陈远航', role:'观星使者', number:'WX-星语', signature:'星轨中寻觅魔法的轨迹。', avatar:''}];
-        const defaultNews = [{ id:1, date:'2025-03-08', title:'星月魔法展即将开启', summary:'沉浸式魔法光影展，邂逅星月奇境。', content:'<p>沉浸式展览结合光影与魔法咒文，带来神秘体验。</p><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&q=80">', image:'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80'}];
-        
-        function getLocalData(key){ try{ return JSON.parse(localStorage.getItem(DATA_KEYS[key])); } catch(e){return null;} }
-        function setLocalData(key,data){ localStorage.setItem(DATA_KEYS[key], JSON.stringify(data)); }
-        function initLocalData(){ if(!getLocalData('works')) setLocalData('works',defaultWorks); if(!getLocalData('members')) setLocalData('members',defaultMembers); if(!getLocalData('news')) setLocalData('news',defaultNews); }
-        async function loadCloudData(){ try{ let res=await fetch('data.json'); if(res.ok){ let json=await res.json(); if(json.works)setLocalData('works',json.works); if(json.members)setLocalData('members',json.members); if(json.news)setLocalData('news',json.news); return true;}}catch(e){} return false;}
-        function exportDataJSON(){ let data={works:getLocalData('works'),members:getLocalData('members'),news:getLocalData('news')}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})); a.download='data.json'; a.click(); showToast('✨ 魔法书卷 data.json 已导出 ✨');}
-        function showToast(msg){ let t=document.getElementById('toast'); t.textContent=msg; t.style.opacity='1'; setTimeout(()=>t.style.opacity='0',2500);}
-        
-        let currentPage='home';
-        function navigateTo(page){ 
-            if(currentPage===page && page!=='admin') return;
-            document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
-            document.getElementById('page-'+page).classList.add('active');
-            currentPage=page;
-            document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-            let activeLink=document.querySelector(`.nav-links a[data-page="${page}"]`); if(activeLink) activeLink.classList.add('active');
-            if(page==='works') renderWorks(); if(page==='members') renderMembers(); if(page==='news') renderNews(); if(page==='admin') checkAdminStatus();
-            window.scrollTo({top:0,behavior:'smooth'}); document.getElementById('navLinks')?.classList.remove('open');
-        }
-        
-        function renderWorks(){ 
-            let works=getLocalData('works')||[]; 
-            document.getElementById('worksGrid').innerHTML=works.map(w=>`
-                <div class="work-card" data-id="${w.id}">
-                    <img class="card-img" src="${escapeHtml(w.image)}" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'">
-                    <div class="card-body">
-                        <h3>${escapeHtml(w.title)}</h3>
-                        <p class="author">🔮 ${escapeHtml(w.author)}</p>
-                        <p class="desc">${escapeHtml(w.desc.substring(0,80))}${w.desc.length>80?'…':''}</p>
-                    </div>
-                </div>`).join('');
-            document.querySelectorAll('.work-card').forEach(card => {
-                card.addEventListener('click', (e) => { const id = parseInt(card.getAttribute('data-id')); openWorkDetail(id); });
-            });
-        }
-        function openWorkDetail(id){ let works=getLocalData('works')||[]; let w=works.find(w=>w.id===id); if(w){ document.getElementById('workModalImg').src=w.image; document.getElementById('workModalTitle').innerText=w.title; document.getElementById('workModalAuthor').innerHTML=`🔮 ${escapeHtml(w.author)}`; document.getElementById('workModalDesc').innerHTML=w.desc; document.getElementById('workModal').classList.add('show'); document.body.style.overflow='hidden'; } }
-        function closeWorkModal(){ document.getElementById('workModal').classList.remove('show'); document.body.style.overflow=''; }
-        function renderMembers(){ let m=getLocalData('members')||[]; document.getElementById('membersGrid').innerHTML=m.map(mem=>{let ini=escapeHtml((mem.name||'?').charAt(0)); let avHtml=mem.avatar?`<img src="${escapeHtml(mem.avatar)}" style="width:100%;height:100%;object-fit:cover;">`:ini; return `<div class="member-name-card" onclick="openMemberModal('${mem.id}')"><div class="avatar-dot">${avHtml}</div><div class="member-name">${escapeHtml(mem.name)}</div><div class="member-role-hint">✨ ${escapeHtml(mem.role)}</div></div>`;}).join('');}
-        function openMemberModal(id){ let m=getLocalData('members').find(x=>String(x.id)===String(id)); if(!m)return; let avatarDiv=document.getElementById('modalAvatar'); if(m.avatar)avatarDiv.innerHTML=`<img src="${escapeHtml(m.avatar)}" style="width:100%;height:100%;object-fit:cover;">`; else avatarDiv.innerHTML=(m.name||'?').charAt(0); document.getElementById('modalName').innerText=m.name; document.getElementById('modalRole').innerText='✦ '+m.role; document.getElementById('modalId').innerText='星月编号：'+m.number; document.getElementById('modalSignature').innerText='「'+ (m.signature||'')+'」'; document.getElementById('memberModal').classList.add('show');}
-        function closeMemberModal(){ document.getElementById('memberModal').classList.remove('show');}
-        function renderNews(){ let news=getLocalData('news')||[]; document.getElementById('newsList').innerHTML=news.map(n=>`<div class="news-card" onclick="openArticle(${n.id})">${n.image?`<img class="news-img" src="${escapeHtml(n.image)}" onerror="this.style.display='none'">`:''}<div class="news-body"><div class="news-date">🌙 ${escapeHtml(n.date)}</div><h3>${escapeHtml(n.title)}</h3><p class="news-summary">${escapeHtml((n.summary||'').substring(0,80))}</p></div></div>`).join('');}
-        function openArticle(id){ let art=getLocalData('news').find(n=>n.id===id); if(art){ document.getElementById('articleDate').innerHTML='🌙 '+escapeHtml(art.date); document.getElementById('articleTitle').innerHTML=escapeHtml(art.title); document.getElementById('articleBody').innerHTML=art.content||'暂无内容'; document.getElementById('articleModal').classList.add('show');}}
-        function closeArticleModal(){ document.getElementById('articleModal').classList.remove('show');}
-        function escapeHtml(str){ let div=document.createElement('div'); div.textContent=str||''; return div.innerHTML;}
-        
-        const ADMIN_PW='magic2026';
-        function checkAdminStatus(){ let logged=sessionStorage.getItem('wxs_admin'); document.getElementById('adminLoginArea').style.display=logged==='true'?'none':'block'; document.getElementById('adminPanelArea').style.display=logged==='true'?'block':'none'; if(logged==='true') switchAdminTab('works');}
-        function adminLogin(){ if(document.getElementById('adminPassword').value===ADMIN_PW){ sessionStorage.setItem('wxs_admin','true'); checkAdminStatus(); showToast('✅ 登录成功'); } else showToast('❌ 密码错误');}
-        function adminLogout(){ sessionStorage.removeItem('wxs_admin'); checkAdminStatus(); showToast('已退出');}
-        let adminTab='works';
-        function switchAdminTab(tab){ adminTab=tab; renderAdminContent();}
-        function renderAdminContent(){ let data=getLocalData(adminTab)||[]; let cfg={works:{fields:['title','author','desc','image'],labels:['标题','作者','描述','图片URL']}, members:{fields:['name','role','number','signature','avatar'],labels:['昵称','职位','编号','签名','头像URL']}, news:{fields:['title','date','summary','content','image'],labels:['标题','日期','摘要','正文','封面URL']}}[adminTab]; let html=`<h3>${adminTab}管理</h3><table class="admin-table"><tr>${cfg.labels.map(l=>`<th>${l}</th>`).join('')}<th>操作</th></tr>`; data.forEach(item=>{ html+=`<tr>${cfg.fields.map(f=>`<td style="max-width:150px;overflow:hidden;">${escapeHtml(String(item[f]||'').substring(0,25))}</td>`).join('')}<td><button class="btn btn-sm" onclick="editItem('${adminTab}',${item.id})">✏️</button> <button class="btn btn-sm" onclick="deleteItem('${adminTab}',${item.id})">🗑</button></td></tr>`; }); html+=`<table><button class="btn btn-gold" onclick="addItem('${adminTab}')">＋ 新增</button><div id="editFormArea" style="margin-top:20px;"></div>`; document.getElementById('adminContentArea').innerHTML=html;}
-        function getNextId(tab){ let d=getLocalData(tab)||[]; return d.length?Math.max(...d.map(i=>i.id))+1:1;}
-        function addItem(tab){ let cfgMap={works:['title','author','desc','image'],members:['name','role','number','signature','avatar'],news:['title','date','summary','content','image']}; let fields=cfgMap[tab]; let html='<h4>新增条目</h4>'; fields.forEach(f=>{ html+=`<label>${f}</label><textarea id="f_${f}" rows="2"></textarea>`; if(f==='content') html+=`<button type="button" class="btn btn-sm" onclick="insertImageToField('f_content')">📷 插入图片</button>`; }); html+=`<button class="btn btn-gold" onclick="saveNew('${tab}')">保存</button> <button class="btn" onclick="document.getElementById('editFormArea').innerHTML=''">取消</button>`; document.getElementById('editFormArea').innerHTML=html;}
-        function editItem(tab,id){ let data=getLocalData(tab); let item=data.find(d=>d.id===id); let cfgMap={works:['title','author','desc','image'],members:['name','role','number','signature','avatar'],news:['title','date','summary','content','image']}; let fields=cfgMap[tab]; let html=`<h4>编辑 ID ${id}</h4>`; fields.forEach(f=>{ let val=item[f]||''; html+=`<label>${f}</label><textarea id="f_${f}" rows="2">${escapeHtml(val)}</textarea>`; if(f==='content') html+=`<button type="button" class="btn btn-sm" onclick="insertImageToField('f_content')">📷 插入图片</button>`; }); html+=`<button class="btn btn-gold" onclick="saveEdit('${tab}',${id})">更新</button> <button class="btn" onclick="document.getElementById('editFormArea').innerHTML=''">取消</button>`; document.getElementById('editFormArea').innerHTML=html;}
-        function insertImageToField(fieldId){ let url=prompt('输入图片URL:'); if(url){ let textarea=document.getElementById(fieldId); let tag=`<img src="${url}" alt="魔法图像" style="max-width:100%">`; let start=textarea.selectionStart; let val=textarea.value; textarea.value=val.slice(0,start)+tag+val.slice(start);}}
-        function saveNew(tab){ let cfgMap={works:['title','author','desc','image'],members:['name','role','number','signature','avatar'],news:['title','date','summary','content','image']}; let fields=cfgMap[tab]; let obj={id:getNextId(tab)}; fields.forEach(f=>{ let el=document.getElementById('f_'+f); if(el) obj[f]=el.value;}); let data=getLocalData(tab)||[]; data.push(obj); setLocalData(tab,data); document.getElementById('editFormArea').innerHTML=''; renderAdminContent(); refreshPage(tab); showToast('已保存至本地');}
-        function saveEdit(tab,id){ let cfgMap={works:['title','author','desc','image'],members:['name','role','number','signature','avatar'],news:['title','date','summary','content','image']}; let fields=cfgMap[tab]; let data=getLocalData(tab); let idx=data.findIndex(d=>d.id===id); fields.forEach(f=>{ let el=document.getElementById('f_'+f); if(el) data[idx][f]=el.value;}); setLocalData(tab,data); document.getElementById('editFormArea').innerHTML=''; renderAdminContent(); refreshPage(tab); showToast('已更新');}
-        function deleteItem(tab,id){ if(!confirm('确认删除？')) return; let data=getLocalData(tab).filter(d=>d.id!==id); setLocalData(tab,data); renderAdminContent(); refreshPage(tab); showToast('已删除');}
-        function refreshPage(tab){ if(tab==='works') renderWorks(); if(tab==='members') renderMembers(); if(tab==='news') renderNews();}
-        
-        window.onload=()=>{ initLocalData(); loadCloudData().then(()=>{ renderWorks(); renderMembers(); renderNews(); }); checkAdminStatus(); };
-        window.toggleMenu=function(){document.getElementById('navLinks').classList.toggle('open');};
-        window.closeMemberModal=closeMemberModal; window.closeArticleModal=closeArticleModal; window.openArticle=openArticle; window.openMemberModal=openMemberModal;
-        window.closeWorkModal=closeWorkModal;
-        document.getElementById('workModal').addEventListener('click',(e)=> { if(e.target===document.getElementById('workModal')) closeWorkModal(); });
-        document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ closeWorkModal(); closeMemberModal(); closeArticleModal(); } });
-        window.insertImageToField=insertImageToField; window.addItem=addItem; window.editItem=editItem; window.deleteItem=deleteItem;
-        window.saveNew=saveNew; window.saveEdit=saveEdit;
-    </script>
-</body>
-</html>
+            function animateDust() {
+                if(!dustCtx) return;
+                dustCtx.clearRect(0, 0, w, h);
+                for(let d of dustParticles) {
+                    d.x += d.vx;
+                    d.y += d.vy;
+                    if(d.x < -30) d.x = w+30;
+                    if(d.x > w+30) d.x = -30;
+                    if(d.y < -30) d.y = h+30;
+                    if(d.y > h+30) d.y = -30;
+                    dustCtx.fillStyle = `hsla(${d.colorHue}, 90%, 70%, ${d.alpha*0.45})`;
+                    dustCtx.beginPath();
+                    dustCtx.arc(d.x, d.y, d.size*0.8, 0, Math.PI*2);
+                    dustCtx.fill();
+                    dustCtx.fillStyle = `hsla(${d.colorHue+20}, 90%, 75%, ${d.alpha*0.25})`;
+                    dustCtx.beginPath();
+                    dustCtx.arc(d.x, d.y, d.size*1.
