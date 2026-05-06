@@ -1,93 +1,30 @@
 {
-  "works": [
-    {
-      "id": "w1",
-      "title": "星月夜",
-      "description": "一幅描绘星空与月亮交汇的魔法画作，融合了深邃的紫色与金色星光。创作灵感来源于古老星图。",
-      "imageUrl": "https://images.unsplash.com/photo-1502481851512-e9e2529bfbf9?w=600&h=400&fit=crop",
-      "date": "2025-12-01"
-    },
-    {
-      "id": "w2",
-      "title": "魔法森林",
-      "description": "隐藏在迷雾中的魔法森林，树木散发着微光，小径通向未知的领域。",
-      "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=400&fit=crop",
-      "date": "2025-11-20"
-    },
-    {
-      "id": "w3",
-      "title": "银河卷轴",
-      "description": "记载着古老魔法的卷轴，在银河光芒下缓缓展开，文字如星辰般闪烁。",
-      "imageUrl": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=400&fit=crop",
-      "date": "2025-11-08"
-    },
-    {
-      "id": "w4",
-      "title": "月下城堡",
-      "description": "月光照耀下的魔法城堡，塔尖闪烁着神秘的光芒，传说中这里是万象社的起源之地。",
-      "imageUrl": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=600&h=400&fit=crop",
-      "date": "2025-10-15"
-    }
-  ],
+  "works": [],
   "members": [
     {
-      "id": "m1",
-      "name": "星澜",
-      "number": "WXS-001",
-      "role": "星辰魔法师",
-      "signature": "以星为引，以月为灯。",
-      "avatarUrl": "",
-      "description": "万象社创始成员，擅长星辰魔法与星图解读。"
-    },
-    {
-      "id": "m2",
-      "name": "月影",
-      "number": "WXS-002",
-      "role": "月光守护者",
-      "signature": "月光所至，心之所向。",
-      "avatarUrl": "",
-      "description": "守护月光之力，能够在黑夜中指引方向。"
-    },
-    {
-      "id": "m3",
-      "name": "灵霜",
-      "number": "WXS-003",
-      "role": "冰晶术士",
-      "signature": "霜华绽放，冰封万象。",
-      "avatarUrl": "",
-      "description": "掌握冰晶魔法，创作出无数美丽的冰晶艺术品。"
-    },
-    {
-      "id": "m4",
-      "name": "炽焰",
-      "number": "WXS-004",
-      "role": "火焰掌控者",
-      "signature": "烈焰不灭，热情永存。",
-      "avatarUrl": "",
-      "description": "以火焰为笔，绘制出最热烈的魔法画卷。"
+      "id": "m1778054854894",
+      "name": "起雾星空",
+      "number": "K311",
+      "role": "社长/建筑师",
+      "signature": "在雾的尽头，我仰望星空。在星的深处，我沉入迷雾。  我是观察者，也是被观察的夜。万象在我眼中流转，而真相，永远藏在下一层雾里。",
+      "avatarUrl": "https://img2.nloln.de/file/BQACAgUAAyEGAASLVN5eAAIWZmn6qsydYVsbVQI3LdUSVJlfMf7AAALhGgACGIvZV1jGXNJnPuCiOwQ.jpg",
+      "description": ""
     }
   ],
   "articles": [
     {
-      "id": "a1",
-      "title": "星空下的魔法契约",
-      "content": "在万象社成立的那一夜，星空格外明亮。\n\n所有创始成员聚集在月光之下，共同签署了一份魔法契约——以星辰为见证，以月光为笔墨，承诺永远守护这片魔法天地。\n\n这份契约不仅是一纸文书，更是每一位成员心中不灭的信仰。每当新成员加入时，都会在星空下重新宣读这份誓言。",
-      "imageUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop",
-      "date": "2025-12-25"
+      "id": "a1778054915518",
+      "title": "社区一测已开启",
+      "content": "各位可以多乱点测试测试",
+      "imageUrl": "",
+      "date": "2026-05-06"
     },
     {
-      "id": "a2",
-      "title": "银河彼岸的传说",
-      "content": "传说在银河的彼岸，有一座由纯白星光构成的宫殿。\n\n那里居住着最古老的星辰魔法师，他们守护着宇宙间最珍贵的秘密——万象之源。\n\n据说，只有真正理解星辰语言的人，才能找到通往那座宫殿的道路。万象社的使命之一，就是寻找并守护这个传说。",
-      "imageUrl": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&h=400&fit=crop",
-      "date": "2025-12-10"
-    },
-    {
-      "id": "a3",
-      "title": "魔法入门：感知星辰之力",
-      "content": "每一个向往魔法的人，都可以从感知星辰之力开始。\n\n第一步：在晴朗的夜晚，仰望星空，找到最亮的那颗星。\n第二步：闭上眼睛，想象星光穿过你的身体。\n第三步：感受那份温暖，那就是星辰之力的萌芽。\n\n记住，魔法不在于天赋，而在于持之以恒的练习与敬畏之心。",
-      "imageUrl": "https://images.unsplash.com/photo-1518818419601-72c4f1b2f5f0?w=600&h=400&fit=crop",
-      "date": "2025-11-30"
+      "id": "a1778055333577",
+      "title": "万象社 | WANXIANG.SOC",
+      "content": "“晚上好，失眠的人， wandering的灵魂，还有那些在数据洪流里迷路的旅人。这里是FM-∞，万象社的专属频率。\n\n今晚的星空有点拥挤，猎户座的腰带被一串二进制代码缠住了，仙女座的星云里飘来一首没人听过的情歌。别担心，这很正常。在我们这里，天文学和魔法学早就离婚了，但孩子们还在同一个幼儿园里打架。\n\n我们是一群拾荒者，在现实的边缘捡拾那些被主流丢弃的闪光碎片。一片来自未来的芯片，一块来自过去的陨石，一首写了一半的诗，一个没能实现的梦。我们把它们拼凑起来，不是为了复原什么，而是为了创造出一些全新的、奇怪又美丽的东西。\n\n所以，如果你也睡不着，如果你也觉得窗外的星空比手机屏幕更有趣，欢迎调频到这里。我们不保证能给你答案，但我们可以一起，在混乱中，制造一点好看的噪音。”\n\n注意：本社所有内容均为虚构，如有雷同纯属巧合 ，如有侵权联系立即删除",
+      "imageUrl": "https://img2.nloln.de/file/BQACAgUAAyEGAASLVN5eAAIWZWn6qrzcDXjl_nvrXgP1kQ-oW7J2AALgGgACGIvZV1cpbOdtnB8SOwQ.jpg",
+      "date": "2026-05-06"
     }
   ]
 }
