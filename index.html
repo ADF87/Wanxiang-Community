@@ -3,39 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>万象社 · 暗夜星渊 | 万般景象，皆汇于此</title>
+    <title>万象社 · 星月魔法书 | 万般景象，皆汇于此</title>
     <style>
         :root {
-            --bg-deep: #010104;
-            --bg-card: rgba(8, 8, 18, 0.75);
-            --bg-card-hover: rgba(20, 25, 45, 0.88);
-            --glow-cyan: #5f9eff;
-            --glow-purple: #8a6eff;
-            --text: #eef5ff;
-            --text-light: #b4c8ff;
-            --border: rgba(80, 120, 200, 0.3);
-            --shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-            --shadow-cyan: 0 0 30px rgba(79, 158, 255, 0.3);
-            --radius: 24px;
-            --radius-sm: 14px;
-            --transition: 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            --bg-deep: #03001c;
+            --bg-card: rgba(20, 10, 45, 0.72);
+            --bg-card-hover: rgba(45, 30, 80, 0.88);
+            --moon-glow: #ffe6b3;
+            --star-gold: #ffd966;
+            --magic-purple: #c084fc;
+            --magic-blue: #818cf8;
+            --text: #f3e8ff;
+            --text-light: #cdc9ff;
+            --border: rgba(192, 132, 252, 0.35);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            --shadow-magic: 0 0 35px rgba(192, 132, 252, 0.45);
+            --radius: 28px;
+            --radius-sm: 16px;
+            --transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             --font-display: 'Cinema', 'Georgia', 'Noto Serif SC', 'STSong', serif;
-            --font-body: 'Inter', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            --font-body: 'Inter', 'PingFang SC', 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
             font-family: var(--font-body);
-            background: #010004;
+            background: #020012;
             color: var(--text);
             overflow-x: hidden;
             min-height: 100vh;
             line-height: 1.5;
         }
 
-        /* 深邃黑洞背景 + 星云光晕层 */
-        #galaxyCanvas {
+        /* 魔法星尘 + 深邃夜空背景层 */
+        #magicBgCanvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -43,7 +45,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.95;
+            background: radial-gradient(circle at 30% 20%, #0d0225, #010008);
         }
         #starsCanvas {
             position: fixed;
@@ -54,8 +56,7 @@
             z-index: 1;
             pointer-events: none;
         }
-        /* 漂浮星尘额外层 (动态粒子) */
-        #dustCanvas {
+        #moonCanvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -63,31 +64,42 @@
             height: 100%;
             z-index: 1;
             pointer-events: none;
-            opacity: 0.6;
+        }
+        /* 魔法粉尘粒子层 */
+        #magicDustCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.7;
         }
 
-        /* 大型星云光晕 (暗紫/暗青) */
+        /* 星云光晕 (紫罗兰+淡金) */
         .nebula-glow {
             position: fixed;
             border-radius: 50%;
-            filter: blur(160px);
-            opacity: 0.3;
+            filter: blur(140px);
+            opacity: 0.28;
             pointer-events: none;
             z-index: 0;
-            animation: nebulaFloat 30s infinite alternate ease-in-out;
+            animation: magicFloat 24s infinite alternate ease-in-out;
         }
-        .nebula-glow.n1 { width: 700px; height: 700px; background: radial-gradient(circle, #2a3f7a, #0f0a2a); top: -200px; left: -200px; }
-        .nebula-glow.n2 { width: 600px; height: 600px; background: radial-gradient(circle, #3a2a6e, #150a2a); bottom: -180px; right: -180px; animation-delay: -8s; opacity: 0.25; }
-        .nebula-glow.n3 { width: 500px; height: 500px; background: radial-gradient(circle, #1f3e6e, #071230); top: 20%; left: 70%; animation-delay: -15s; opacity: 0.2; }
-        .nebula-glow.n4 { width: 850px; height: 850px; background: radial-gradient(circle, #201c4a, #03010f); bottom: -30%; left: -15%; opacity: 0.2; filter: blur(210px); }
-        @keyframes nebulaFloat {
+        .nebula-glow.n1 { width: 650px; height: 650px; background: radial-gradient(circle, #a855f7, #3b0764); top: -15%; left: -10%; }
+        .nebula-glow.n2 { width: 550px; height: 550px; background: radial-gradient(circle, #fbbf24, #7e2e84); bottom: -10%; right: -5%; animation-delay: -7s; opacity: 0.3; }
+        .nebula-glow.n3 { width: 480px; height: 480px; background: radial-gradient(circle, #60a5fa, #1e1b4b); top: 40%; left: 70%; animation-delay: -13s; opacity: 0.25; }
+        .nebula-glow.n4 { width: 700px; height: 700px; background: radial-gradient(circle, #d946ef, #2e1065); bottom: -20%; left: -15%; opacity: 0.2; filter: blur(180px); }
+
+        @keyframes magicFloat {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, -50px) scale(1.2); }
+            100% { transform: translate(35px, -25px) scale(1.1); }
         }
 
         .app-container { position: relative; z-index: 10; max-width: 1300px; margin: 0 auto; padding: 0 24px; }
 
-        /* 磨砂玻璃导航栏 - 深色主题 */
+        /* 磨砂玻璃 + 魔法边框 */
         .navbar {
             position: sticky;
             top: 20px;
@@ -97,15 +109,14 @@
             justify-content: space-between;
             padding: 10px 28px;
             margin-top: 16px;
-            background: rgba(3, 3, 12, 0.7);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(80, 120, 200, 0.3);
+            background: rgba(15, 5, 35, 0.6);
+            backdrop-filter: blur(18px) saturate(180%);
+            border: 1px solid rgba(192, 132, 252, 0.5);
             border-radius: 80px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 215, 0, 0.1);
             transition: all var(--transition);
         }
-        .navbar:hover { border-color: rgba(108, 158, 255, 0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 12px rgba(108,158,255,0.2); }
+        .navbar:hover { border-color: rgba(255, 200, 100, 0.7); box-shadow: 0 0 20px rgba(192, 132, 252, 0.4); }
 
         .logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .logo-text {
@@ -113,16 +124,16 @@
             font-size: 1.7rem;
             font-weight: 600;
             letter-spacing: 4px;
-            background: linear-gradient(135deg, #cad8ff, #8aaaff, #5f7eff);
+            background: linear-gradient(135deg, #f9e1a0, #d9a7ff, #a45ee5);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 8px rgba(100, 140, 255, 0.4);
+            text-shadow: 0 0 10px rgba(200, 120, 255, 0.6);
         }
 
         .nav-links { display: flex; list-style: none; gap: 10px; flex-wrap: wrap; }
         .nav-links li a {
-            color: #b8c7ff;
+            color: #e0c9ff;
             text-decoration: none;
             padding: 8px 20px;
             border-radius: 40px;
@@ -132,114 +143,119 @@
             cursor: pointer;
         }
         .nav-links li a:hover, .nav-links li a.active {
-            background: rgba(108, 158, 255, 0.2);
-            color: #fff;
-            box-shadow: 0 0 12px rgba(108,158,255,0.4);
-            border: 1px solid rgba(108,158,255,0.5);
+            background: rgba(192, 132, 252, 0.3);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(192, 132, 252, 0.5);
+            border: 1px solid rgba(255, 210, 120, 0.6);
         }
-        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-        .hamburger span { width: 26px; height: 2.5px; background: #8aaaff; border-radius: 3px; }
 
-        .page-section { display: none; animation: cosmicRise 0.7s ease-out forwards; padding: 40px 0 70px; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .hamburger span { width: 26px; height: 2.5px; background: #f0cdff; border-radius: 3px; }
+
+        .page-section { display: none; animation: spellRise 0.7s ease-out forwards; padding: 40px 0 70px; }
         .page-section.active { display: block; }
-        @keyframes cosmicRise { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes spellRise { from { opacity: 0; transform: translateY(35px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
         .section-header { text-align: center; margin-bottom: 60px; }
         .section-header h1 {
             font-family: var(--font-display);
             font-size: 3.2rem;
             letter-spacing: 6px;
-            background: linear-gradient(180deg, #f0f4ff, #9db4ff);
+            background: linear-gradient(180deg, #fff2cf, #e6b3ff, #b77eff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+            text-shadow: 0 0 20px rgba(255, 200, 150, 0.4);
         }
-        .subtitle { color: #a0bbff; letter-spacing: 4px; font-size: 0.9rem; opacity: 0.9; }
-        .divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, #6c9eff, transparent); margin: 18px auto; }
+        .subtitle { color: #f0ccff; letter-spacing: 4px; font-size: 0.95rem; text-shadow: 0 0 5px #a87eff; }
+        .divider { width: 90px; height: 2px; background: linear-gradient(90deg, transparent, #f0b3ff, #c37aff, #f0b3ff, transparent); margin: 18px auto; }
 
-        /* 卡片磨砂玻璃 */
         .work-card, .member-name-card, .news-card, .admin-panel {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(201, 148, 255, 0.4);
             border-radius: var(--radius);
             transition: all var(--transition);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             overflow: hidden;
         }
         .work-card:hover, .member-name-card:hover, .news-card:hover {
             transform: translateY(-8px) scale(1.01);
-            border-color: rgba(108, 158, 255, 0.7);
-            box-shadow: var(--shadow-cyan), 0 20px 40px rgba(0,0,0,0.7);
+            border-color: rgba(255, 204, 112, 0.8);
+            box-shadow: var(--shadow-magic), 0 20px 40px rgba(0, 0, 0, 0.6);
             background: var(--bg-card-hover);
         }
-        .card-img { width: 100%; height: 230px; object-fit: cover; transition: transform 0.7s; }
-        .work-card:hover .card-img { transform: scale(1.05); }
+        .card-img { width: 100%; height: 230px; object-fit: cover; transition: transform 0.6s ease; cursor: pointer; }
+        .work-card:hover .card-img { transform: scale(1.04); }
         .card-body { padding: 20px; }
-        .card-body h3 { font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; }
-        .author { color: #9bb9ff; font-size: 0.85rem; margin: 6px 0 8px; }
+        .card-body h3 { font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; color: #ffeeca; }
+        .author { color: #d9b2ff; font-size: 0.85rem; margin: 6px 0 8px; }
 
         .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 28px; }
         .member-name-card { padding: 24px 12px; text-align: center; cursor: pointer; border-radius: 40px; }
         .avatar-dot {
             width: 85px; height: 85px; margin: 0 auto 15px;
-            background: linear-gradient(135deg, #3a4c9e, #1f2a6e);
+            background: radial-gradient(circle, #b77eff, #5b21b6);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 2.2rem; font-weight: bold;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            box-shadow: 0 0 25px rgba(192, 132, 252, 0.6);
             transition: all 0.3s;
             overflow: hidden;
-            color: white;
+            color: #fde047;
         }
-        .member-name-card:hover .avatar-dot { transform: scale(1.08); box-shadow: 0 0 28px rgba(100, 150, 255, 0.7); }
+        .member-name-card:hover .avatar-dot { transform: scale(1.08) rotate(3deg); box-shadow: 0 0 35px rgba(255, 215, 100, 0.9); }
 
         .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
-        .news-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid rgba(100, 150, 255, 0.2); }
+        .news-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid rgba(192, 132, 252, 0.3); }
         .news-body { padding: 20px; }
-        .news-date { color: #8aaaff; font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 8px; }
+        .news-date { color: #fbcfe8; font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 8px; }
 
+        /* 魔法模态框 */
         .modal-overlay {
             position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+            background: rgba(2, 0, 12, 0.85); backdrop-filter: blur(16px);
             z-index: 200; display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: 0.3s;
         }
         .modal-overlay.show { opacity: 1; pointer-events: all; }
         .modal-panel {
-            background: rgba(6, 8, 20, 0.95);
+            background: rgba(20, 8, 45, 0.96);
             backdrop-filter: blur(24px);
-            border: 1px solid rgba(108,158,255,0.5);
-            border-radius: 40px;
+            border: 1px solid rgba(209, 149, 255, 0.7);
+            border-radius: 48px;
             padding: 32px;
             max-width: 500px;
             width: 90%;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 200, 100, 0.3);
             transform: scale(0.96);
-            transition: transform 0.3s cubic-bezier(0.2, 1.2, 0.4, 1);
+            transition: transform 0.25s cubic-bezier(0.2, 1.2, 0.4, 1);
         }
         .modal-overlay.show .modal-panel { transform: scale(1); }
-        .article-modal-panel { max-width: 800px; max-height: 80vh; overflow-y: auto; border-radius: 32px; }
+        .article-modal-panel, .work-modal-panel { max-width: 800px; max-height: 85vh; overflow-y: auto; border-radius: 40px; }
+        .work-modal-img { width: 100%; max-height: 400px; object-fit: contain; border-radius: 32px; margin-bottom: 24px; background: #0b0520; border: 1px solid #d9a7ff; }
+        .work-modal-title { font-size: 1.8rem; letter-spacing: 3px; margin-bottom: 8px; background: linear-gradient(135deg, #ffe6c7, #eac8ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .work-modal-author { color: #f0bcff; font-size: 1rem; margin-bottom: 20px; border-left: 3px solid #fbbf24; padding-left: 12px; }
+        .work-modal-desc { color: #d9d2ff; line-height: 1.7; font-size: 1rem; }
 
         .btn {
             display: inline-block; padding: 10px 26px; border-radius: 40px;
-            background: rgba(108,158,255,0.12); backdrop-filter: blur(6px);
-            border: 1px solid rgba(108,158,255,0.5);
-            color: #fff; cursor: pointer; transition: all 0.25s;
+            background: rgba(192, 132, 252, 0.2); backdrop-filter: blur(6px);
+            border: 1px solid rgba(209, 149, 255, 0.6);
+            color: #ffefcf; cursor: pointer; transition: all 0.25s;
             font-weight: 500;
         }
-        .btn-gold { background: rgba(100, 140, 255, 0.2); border-color: #6c9eff; color: #cce4ff; }
-        .btn-gold:hover { background: rgba(108,158,255,0.4); box-shadow: 0 0 20px rgba(108,158,255,0.5); transform: translateY(-2px); }
+        .btn-gold { background: rgba(251, 191, 36, 0.2); border-color: #fbbf24; color: #ffefb9; }
+        .btn-gold:hover { background: rgba(251, 191, 36, 0.4); box-shadow: 0 0 18px #fbbf24; transform: translateY(-2px); }
         .admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .admin-table th, .admin-table td { padding: 12px 8px; border-bottom: 1px solid rgba(108,158,255,0.2); }
-        input, textarea { background: rgba(2,2,12,0.9); border: 1px solid rgba(108,158,255,0.4); border-radius: 20px; padding: 12px 16px; color: #fff; width: 100%; margin: 5px 0 14px; backdrop-filter: blur(4px); }
-        input:focus, textarea:focus { border-color: #6c9eff; outline: none; box-shadow: 0 0 12px rgba(108,158,255,0.4); }
+        .admin-table th, .admin-table td { padding: 12px 8px; border-bottom: 1px solid rgba(192, 132, 252, 0.3); }
+        input, textarea { background: rgba(10, 3, 25, 0.9); border: 1px solid rgba(209, 149, 255, 0.6); border-radius: 28px; padding: 12px 18px; color: #f3e8ff; width: 100%; margin: 5px 0 14px; backdrop-filter: blur(4px); }
+        input:focus, textarea:focus { border-color: #fbbf24; outline: none; box-shadow: 0 0 15px rgba(251, 191, 36, 0.5); }
 
-        footer { text-align: center; padding: 40px 0 30px; opacity: 0.6; font-size: 0.8rem; letter-spacing: 2px; color: #9db4ff; }
+        footer { text-align: center; padding: 40px 0 30px; opacity: 0.7; font-size: 0.8rem; letter-spacing: 2px; color: #c9b2ff; }
 
         @media (max-width: 768px) {
-            .nav-links { display: none; flex-direction: column; background: rgba(0,0,0,0.9); backdrop-filter: blur(24px); position: absolute; top: 70px; left: 20px; right: 20px; border-radius: 32px; padding: 20px; gap: 12px; }
+            .nav-links { display: none; flex-direction: column; background: rgba(15, 5, 35, 0.95); backdrop-filter: blur(24px); position: absolute; top: 70px; left: 20px; right: 20px; border-radius: 32px; padding: 20px; gap: 12px; }
             .nav-links.open { display: flex; }
             .hamburger { display: flex; }
             .section-header h1 { font-size: 2.2rem; }
@@ -249,58 +265,58 @@
 </head>
 <body>
 
-    <!-- 三层背景：主星系canvas + 星星canvas + 动态星尘canvas -->
-    <canvas id="galaxyCanvas"></canvas>
+    <!-- 魔法星夜底层: 静态深紫渐变 + 月亮 + 魔法尘埃 -->
+    <canvas id="magicBgCanvas"></canvas>
     <canvas id="starsCanvas"></canvas>
-    <canvas id="dustCanvas"></canvas>
+    <canvas id="moonCanvas"></canvas>
+    <canvas id="magicDustCanvas"></canvas>
 
-    <!-- 暗色星云光晕 -->
     <div class="nebula-glow n1"></div>
     <div class="nebula-glow n2"></div>
     <div class="nebula-glow n3"></div>
     <div class="nebula-glow n4"></div>
 
-    <div class="toast" id="toast" style="position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); backdrop-filter:blur(16px); padding:12px 28px; border-radius:60px; z-index:300; transition:0.3s; opacity:0; pointer-events:none; border:1px solid #6c9eff; color:#cce4ff;"></div>
+    <div class="toast" id="toast" style="position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:rgba(30, 12, 55, 0.9); backdrop-filter:blur(18px); padding:12px 28px; border-radius:60px; z-index:300; transition:0.3s; opacity:0; pointer-events:none; border:1px solid #fbbf24; color:#fff3cf;"></div>
 
     <div class="app-container">
         <nav class="navbar">
             <div class="logo" onclick="navigateTo('home')">
                 <span class="logo-icon">
                     <svg width="44" height="44" viewBox="0 0 40 40">
-                        <circle cx="20" cy="20" r="14" fill="none" stroke="#7a9eff" stroke-width="2" stroke-dasharray="7 5" opacity="0.9"/>
+                        <circle cx="20" cy="20" r="14" fill="none" stroke="#f0b3ff" stroke-width="2" stroke-dasharray="7 5" opacity="0.9"/>
                         <circle cx="20" cy="20" r="8" fill="url(#planetGrad)" filter="url(#planetGlow)"/>
-                        <circle cx="20" cy="5" r="1.5" fill="#b8d0ff"/>
-                        <circle cx="31" cy="24" r="1.5" fill="#b8d0ff"/>
-                        <circle cx="9" cy="24" r="1.5" fill="#b8d0ff"/>
-                        <defs><radialGradient id="planetGrad"><stop offset="0%" stop-color="#bacdff"/><stop offset="100%" stop-color="#4a6eff"/></radialGradient><filter id="planetGlow"><feGaussianBlur stdDeviation="2"/></filter></defs>
+                        <circle cx="20" cy="5" r="1.5" fill="#fde047"/>
+                        <circle cx="31" cy="24" r="1.5" fill="#fde047"/>
+                        <circle cx="9" cy="24" r="1.5" fill="#fde047"/>
+                        <defs><radialGradient id="planetGrad"><stop offset="0%" stop-color="#ffe6b3"/><stop offset="100%" stop-color="#c084fc"/></radialGradient><filter id="planetGlow"><feGaussianBlur stdDeviation="2"/></filter></defs>
                     </svg>
                 </span>
                 <span class="logo-text">万象社</span>
             </div>
             <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
             <ul class="nav-links" id="navLinks">
-                <li><a onclick="navigateTo('home')" class="active" data-page="home">🌌 首页</a></li>
-                <li><a onclick="navigateTo('works')" data-page="works">🎨 作品集</a></li>
-                <li><a onclick="navigateTo('members')" data-page="members">✨ 成员</a></li>
-                <li><a onclick="navigateTo('news')" data-page="news">📰 资讯</a></li>
+                <li><a onclick="navigateTo('home')" class="active" data-page="home">🌙 首页</a></li>
+                <li><a onclick="navigateTo('works')" data-page="works">✨ 作品集</a></li>
+                <li><a onclick="navigateTo('members')" data-page="members">🔮 成员</a></li>
+                <li><a onclick="navigateTo('news')" data-page="news">📜 资讯</a></li>
                 <li><a onclick="navigateTo('admin')" data-page="admin">⚙️ 管理</a></li>
             </ul>
         </nav>
 
         <section class="page-section active" id="page-home">
-            <div class="section-header"><h1>暗 夜 星 渊</h1><p class="subtitle">万般景象 · 皆汇星河</p><div class="divider"></div></div>
-            <div style="text-align:center; max-width:700px; margin:0 auto; backdrop-filter:blur(12px); background:rgba(0,0,0,0.35); padding:40px 28px; border-radius:60px; border:1px solid rgba(100, 140, 255, 0.3);">
-                <p style="font-size:1.4rem; letter-spacing:2px;">✨ 欢迎抵达万象宇宙 ✨</p>
-                <p style="margin-top:20px; color:var(--text-light);">双星系旋舞 · 星尘流涌动 · 彗星划过深空<br>每一粒星光皆灵感，每一次眺望皆创造。</p>
+            <div class="section-header"><h1>星 月 魔 法 书</h1><p class="subtitle">万般景象 · 皆汇于星月之辉</p><div class="divider"></div></div>
+            <div style="text-align:center; max-width:700px; margin:0 auto; backdrop-filter:blur(16px); background:rgba(25, 10, 55, 0.4); padding:40px 28px; border-radius:80px; border:1px solid rgba(240, 180, 255, 0.5);">
+                <p style="font-size:1.5rem; letter-spacing:2px;">🌙✨ 欢迎来到星月魔法结社 ✨🌙</p>
+                <p style="margin-top:20px; color:#eedcff;">月光倾洒 · 星尘作墨 · 魔力交织<br>每一件作品都是吟唱的魔法咒语。</p>
             </div>
         </section>
 
-        <section class="page-section" id="page-works"><div class="section-header"><h1>作 品 集</h1><p class="subtitle">社员创作 · 暗夜星辰</p><div class="divider"></div></div><div class="works-grid" id="worksGrid"></div></section>
+        <section class="page-section" id="page-works"><div class="section-header"><h1>作 品 集</h1><p class="subtitle">魔杖一挥 · 灵感现形</p><div class="divider"></div></div><div class="works-grid" id="worksGrid"></div></section>
         <section class="page-section" id="page-members"><div class="section-header"><h1>成 员 名 录</h1><p class="subtitle">点击卡片 · 阅览灵犀</p><div class="divider"></div></div><div class="members-grid" id="membersGrid"></div></section>
-        <section class="page-section" id="page-news"><div class="section-header"><h1>资 讯 脉 搏</h1><p class="subtitle">社区动态 · 艺事快讯</p><div class="divider"></div></div><div class="news-grid" id="newsList"></div></section>
+        <section class="page-section" id="page-news"><div class="section-header"><h1>魔 法 资 讯</h1><p class="subtitle">结社动态 · 占卜未来</p><div class="divider"></div></div><div class="news-grid" id="newsList"></div></section>
 
         <section class="page-section" id="page-admin">
-            <div class="section-header"><h1>后 台 管 理</h1><p class="subtitle">数据维护 · 银河枢纽</p><div class="divider"></div></div>
+            <div class="section-header"><h1>后 台 管 理</h1><p class="subtitle">数据维护 · 魔法书卷轴</p><div class="divider"></div></div>
             <div id="adminLoginArea" style="max-width:400px;margin:60px auto;text-align:center;">
                 <input type="password" id="adminPassword" placeholder="管理密码" style="text-align:center;"><br>
                 <button class="btn btn-gold" onclick="adminLogin()">登 录 枢 纽</button>
@@ -310,285 +326,208 @@
                 <div id="adminContentArea" style="margin-top:28px;"></div>
             </div>
         </section>
-        <footer><p>© 2026 万象社 · 暗夜星渊 灵感无垠</p></footer>
+        <footer><p>© 2026 万象社 · 星月魔法书 愿月光指引你的创造</p></footer>
     </div>
 
     <!-- 模态框 -->
     <div class="modal-overlay" id="memberModal"><div class="modal-panel" style="text-align:center;"><button class="modal-close" onclick="closeMemberModal()" style="position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:24px;">✕</button><div class="modal-avatar" id="modalAvatar" style="width:100px;height:100px;margin:0 auto;"></div><h2 id="modalName" style="margin-top:12px;"></h2><p class="modal-role" id="modalRole"></p><p class="modal-id" id="modalId"></p><p class="modal-signature" id="modalSignature" style="margin-top:20px; font-style:italic;"></p></div></div>
     <div class="modal-overlay" id="articleModal"><div class="modal-panel article-modal-panel"><button class="modal-close" onclick="closeArticleModal()" style="position:absolute;top:16px;right:20px;">✕</button><div class="article-date" id="articleDate"></div><h2 id="articleTitle"></h2><div class="article-body" id="articleBody"></div></div></div>
+    <div class="modal-overlay" id="workModal"><div class="modal-panel work-modal-panel"><button class="modal-close" onclick="closeWorkModal()" style="position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;">✕</button><img id="workModalImg" class="work-modal-img" src=""><h2 id="workModalTitle" class="work-modal-title"></h2><div id="workModalAuthor" class="work-modal-author"></div><div id="workModalDesc" class="work-modal-desc"></div></div></div>
 
     <script>
-        // ========== 1. 双星系 + 星云 + 小行星带扩展 ==========
-        const galaxyCanvas = document.getElementById('galaxyCanvas');
-        let galaxyCtx, width, height, particlesMain = [], particlesSecond = [], starCloud = [], cometList = [];
-        let galaxyRotation = 0, secondRotation = 0, cometTimer = 0;
-        
-        function initGalaxy() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            galaxyCanvas.width = width;
-            galaxyCanvas.height = height;
-            galaxyCtx = galaxyCanvas.getContext('2d');
-            createGalaxies();
-            createStarClouds();   // 额外星云团
-            animateGalaxies();
-            setInterval(() => { if(Math.random() < 0.4) spawnComet(); }, 8000);
+        // ---------- 魔法星夜特效 (轻量 + 星月元素) ----------
+        // 1. 静态魔法背景 + 缓慢飘浮的月亮光晕
+        const bgCanvas = document.getElementById('magicBgCanvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let w, h;
+        function resizeBg() { w = bgCanvas.width = window.innerWidth; h = bgCanvas.height = window.innerHeight; }
+        resizeBg(); window.addEventListener('resize', resizeBg);
+        // 绘制深紫色魔法夜空 + 柔和渐变
+        function drawStaticBg() {
+            const grad = bgCtx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, '#0d022a');
+            grad.addColorStop(0.5, '#160439');
+            grad.addColorStop(1, '#030012');
+            bgCtx.fillStyle = grad;
+            bgCtx.fillRect(0, 0, w, h);
         }
+        drawStaticBg();
 
-        function createGalaxies() {
-            // 主星系 (暗青/暗紫色旋臂)
-            const countMain = 2300;
-            const maxRadius = Math.min(width, height) * 0.4;
-            for (let i = 0; i < countMain; i++) {
-                const armIdx = i % 3;
-                const angleOffset = (armIdx * Math.PI * 2 / 3);
-                const radius = Math.pow(Math.random(), 1.1) * maxRadius;
-                const spiralAngle = radius * 0.022 + angleOffset;
-                let angle = spiralAngle + (Math.random() - 0.5) * 0.55;
-                const size = Math.random() * 2.2 + 0.6;
-                const brightness = 0.25 + Math.random() * 0.6 - (radius / maxRadius) * 0.2;
-                const hue = 210 + Math.random() * 60; // 暗蓝到紫
-                particlesMain.push({
-                    radius, baseAngle: angle, angleSpeed: 0.002 + Math.random() * 0.0018,
-                    size, color: `hsla(${hue}, 70%, 55%, ${brightness * 0.7})`
+        // 2. 月亮 + 魔法光环 (独立canvas)
+        const moonCanvas = document.getElementById('moonCanvas');
+        const moonCtx = moonCanvas.getContext('2d');
+        let moonX, moonY, moonGlowIntensity = 0;
+        function resizeMoon() { moonCanvas.width = window.innerWidth; moonCanvas.height = window.innerHeight; moonX = w * 0.85; moonY = h * 0.12; }
+        resizeMoon(); window.addEventListener('resize', resizeMoon);
+        let timeMoon = 0;
+        function drawMoon() {
+            if(!moonCtx) return;
+            moonCtx.clearRect(0, 0, w, h);
+            // 魔法月晕
+            const glowGrd = moonCtx.createRadialGradient(moonX, moonY, 10, moonX, moonY, 110);
+            glowGrd.addColorStop(0, `rgba(255, 230, 170, ${0.35 + Math.sin(timeMoon)*0.05})`);
+            glowGrd.addColorStop(0.7, `rgba(180, 120, 255, 0.2)`);
+            glowGrd.addColorStop(1, 'transparent');
+            moonCtx.fillStyle = glowGrd;
+            moonCtx.beginPath();
+            moonCtx.arc(moonX, moonY, 120, 0, Math.PI*2);
+            moonCtx.fill();
+            // 月亮本体
+            moonCtx.shadowBlur = 30;
+            moonCtx.shadowColor = '#ffe6a3';
+            moonCtx.beginPath();
+            moonCtx.arc(moonX, moonY, 35, 0, Math.PI*2);
+            moonCtx.fillStyle = '#fdf4dc';
+            moonCtx.fill();
+            // 月面纹理
+            moonCtx.beginPath();
+            moonCtx.arc(moonX-8, moonY-5, 6, 0, Math.PI*2);
+            moonCtx.fillStyle = '#e6d5b3';
+            moonCtx.fill();
+            moonCtx.beginPath();
+            moonCtx.arc(moonX+6, moonY+3, 4, 0, Math.PI*2);
+            moonCtx.fill();
+            // 魔法星环围绕月亮
+            for(let i=0;i<12;i++) {
+                let rad = (timeMoon*0.02 + i) * Math.PI*2 / 12;
+                let x = moonX + Math.cos(rad)*68;
+                let y = moonY + Math.sin(rad)*48;
+                moonCtx.fillStyle = `rgba(255, 210, 90, ${0.5+Math.sin(timeMoon*3+i)*0.2})`;
+                moonCtx.beginPath();
+                moonCtx.arc(x, y, 2.5, 0, Math.PI*2);
+                moonCtx.fill();
+            }
+            moonCtx.shadowBlur = 0;
+            timeMoon += 0.016;
+            requestAnimationFrame(drawMoon);
+        }
+        drawMoon();
+
+        // 3. 闪烁星辰 + 魔法流星
+        const starsCanvas = document.getElementById('starsCanvas');
+        const starsCtx = starsCanvas.getContext('2d');
+        let starsArray = [], shootingStars = [];
+        function resizeStars() { starsCanvas.width = window.innerWidth; starsCanvas.height = window.innerHeight; initStars(); }
+        function initStars() {
+            starsArray = [];
+            for(let i=0;i<400;i++) {
+                starsArray.push({
+                    x: Math.random() * w, y: Math.random() * h,
+                    size: Math.random() * 2.2 + 0.8,
+                    alpha: Math.random() * 0.6 + 0.3,
+                    twinkle: Math.random() * 0.03 + 0.008,
+                    hue: 260 + Math.random() * 80  // 紫罗兰到淡金
                 });
             }
-            // 伴星系 (小星系位于右下区域)
-            const secondCenterX = width * 0.75, secondCenterY = height * 0.7;
-            const countSecond = 1200;
-            const secondMaxR = Math.min(width, height) * 0.22;
-            for (let i = 0; i < countSecond; i++) {
-                const armIdx = i % 2;
-                const angleOff = (armIdx * Math.PI);
-                const r = Math.pow(Math.random(), 1.2) * secondMaxR;
-                const sAngle = r * 0.028 + angleOff + (Math.random() - 0.5)*0.6;
-                const sz = Math.random() * 1.8 + 0.5;
-                const bright = 0.3 + Math.random() * 0.5;
-                const hue = 260 + Math.random() * 50; // 紫罗兰
-                particlesSecond.push({
-                    radius: r, baseAngle: sAngle, angleSpeed: 0.0025 + Math.random() * 0.002,
-                    size: sz, color: `hsla(${hue}, 75%, 60%, ${bright * 0.65})`, offsetX: secondCenterX, offsetY: secondCenterY
+        }
+        window.addEventListener('resize', () => { starsCanvas.width = w; starsCanvas.height = h; initStars(); });
+        function animateStars() {
+            if(!starsCtx) return;
+            starsCtx.clearRect(0, 0, w, h);
+            let t = Date.now() * 0.004;
+            starsArray.forEach(s => {
+                let tw = Math.sin(t * s.twinkle * 60) * 0.4 + 0.6;
+                let a = s.alpha * tw;
+                starsCtx.fillStyle = `hsla(${s.hue}, 85%, 70%, ${a})`;
+                starsCtx.beginPath();
+                starsCtx.arc(s.x, s.y, s.size * 0.7, 0, Math.PI*2);
+                starsCtx.fill();
+                starsCtx.fillStyle = `hsla(${s.hue}, 90%, 80%, ${a*0.6})`;
+                starsCtx.beginPath();
+                starsCtx.arc(s.x, s.y, s.size*1.8, 0, Math.PI*2);
+                starsCtx.fill();
+            });
+            // 流星
+            if(Math.random()<0.025 && shootingStars.length<2) {
+                shootingStars.push({
+                    x: Math.random() * w * 0.8, y: Math.random() * h * 0.3,
+                    len: 80, speed: Math.random() * 12 + 7,
+                    angle: Math.PI/4 + (Math.random()-0.5)*0.3,
+                    life: 70, alpha: 1, gold: true
                 });
             }
+            shootingStars = shootingStars.filter(ss => {
+                ss.x += Math.cos(ss.angle) * ss.speed;
+                ss.y += Math.sin(ss.angle) * ss.speed;
+                ss.life--; ss.alpha = ss.life/70;
+                if(ss.life<=0) return false;
+                let ex = ss.x - Math.cos(ss.angle)*ss.len;
+                let ey = ss.y - Math.sin(ss.angle)*ss.len;
+                let grad = starsCtx.createLinearGradient(ss.x, ss.y, ex, ey);
+                grad.addColorStop(0, `rgba(255, 210, 100, ${ss.alpha*0.9})`);
+                grad.addColorStop(1, `rgba(200, 100, 250, 0)`);
+                starsCtx.strokeStyle = grad;
+                starsCtx.lineWidth = 2.2;
+                starsCtx.beginPath();
+                starsCtx.moveTo(ss.x, ss.y);
+                starsCtx.lineTo(ex, ey);
+                starsCtx.stroke();
+                starsCtx.fillStyle = `rgba(255, 220, 130, ${ss.alpha})`;
+                starsCtx.beginPath();
+                starsCtx.arc(ss.x, ss.y, 3, 0, Math.PI*2);
+                starsCtx.fill();
+                return true;
+            });
+            requestAnimationFrame(animateStars);
         }
+        setTimeout(() => { resizeStars(); animateStars(); }, 100);
 
-        function createStarClouds() {
-            // 星云团粒子 (弥漫光晕)
-            for(let i=0;i<800;i++) {
-                let x = Math.random() * width;
-                let y = Math.random() * height;
-                let radius = Math.random() * 40 + 15;
-                let alpha = Math.random() * 0.2;
-                let hue = 200 + Math.random() * 100;
-                starCloud.push({ x, y, radius, alpha, hue, life: Math.random() * 100, speedX: (Math.random() - 0.5)*0.08, speedY: (Math.random() - 0.5)*0.05 });
-            }
-        }
-
-        function spawnComet() {
-            // 随机彗星效果
-            cometList.push({
-                x: Math.random() * width * 0.8,
-                y: Math.random() * height * 0.3,
-                vx: (Math.random() * 5 + 3) * (Math.random() > 0.5 ? 1 : -1),
-                vy: Math.random() * 3 + 1.5,
-                len: Math.random() * 70 + 50,
-                life: 90,
-                maxLife: 90
+        // 4. 魔法粉尘 (飘浮光点)
+        const dustCanvas = document.getElementById('magicDustCanvas');
+        const dustCtx = dustCanvas.getContext('2d');
+        let dustParticles = [];
+        function resizeDust() { dustCanvas.width = w; dustCanvas.height = h; }
+        window.addEventListener('resize', resizeDust);
+        for(let i=0;i<180;i++) {
+            dustParticles.push({
+                x: Math.random() * w, y: Math.random() * h,
+                size: Math.random() * 3 + 1.2,
+                vx: (Math.random() - 0.5) * 0.2,
+                vy: (Math.random() - 0.5) * 0.12,
+                alpha: Math.random() * 0.5 + 0.2,
+                colorHue: 280 + Math.random() * 80
             });
         }
-
-        function animateGalaxies() {
-            if (!galaxyCtx) return;
-            galaxyCtx.clearRect(0, 0, width, height);
-            
-            // 超黑背景渐变
-            const grad = galaxyCtx.createLinearGradient(0, 0, width, height);
-            grad.addColorStop(0, '#010008');
-            grad.addColorStop(1, '#02010c');
-            galaxyCtx.fillStyle = grad;
-            galaxyCtx.fillRect(0, 0, width, height);
-            
-            const centerX = width / 2, centerY = height / 2;
-            galaxyRotation += 0.0022;
-            
-            // 绘制星云团 (飘浮)
-            for(let cloud of starCloud) {
-                cloud.x += cloud.speedX;
-                cloud.y += cloud.speedY;
-                if(cloud.x < -100) cloud.x = width+50;
-                if(cloud.x > width+100) cloud.x = -50;
-                if(cloud.y < -100) cloud.y = height+50;
-                if(cloud.y > height+100) cloud.y = -50;
-                const grd = galaxyCtx.createRadialGradient(cloud.x, cloud.y, 0, cloud.x, cloud.y, cloud.radius);
-                grd.addColorStop(0, `hsla(${cloud.hue}, 60%, 50%, ${cloud.alpha*0.3})`);
-                grd.addColorStop(1, 'transparent');
-                galaxyCtx.fillStyle = grd;
-                galaxyCtx.beginPath();
-                galaxyCtx.arc(cloud.x, cloud.y, cloud.radius, 0, Math.PI*2);
-                galaxyCtx.fill();
+        function animateDust() {
+            if(!dustCtx) return;
+            dustCtx.clearRect(0, 0, w, h);
+            for(let d of dustParticles) {
+                d.x += d.vx;
+                d.y += d.vy;
+                if(d.x < -30) d.x = w+30;
+                if(d.x > w+30) d.x = -30;
+                if(d.y < -30) d.y = h+30;
+                if(d.y > h+30) d.y = -30;
+                dustCtx.fillStyle = `hsla(${d.colorHue}, 90%, 70%, ${d.alpha*0.45})`;
+                dustCtx.beginPath();
+                dustCtx.arc(d.x, d.y, d.size*0.8, 0, Math.PI*2);
+                dustCtx.fill();
+                dustCtx.fillStyle = `hsla(${d.colorHue+20}, 90%, 75%, ${d.alpha*0.25})`;
+                dustCtx.beginPath();
+                dustCtx.arc(d.x, d.y, d.size*1.5, 0, Math.PI*2);
+                dustCtx.fill();
             }
-            
-            // 绘制主星系粒子
-            for(let p of particlesMain) {
-                let angle = p.baseAngle + galaxyRotation * 1.2 + p.angleSpeed * 50;
-                let x = centerX + Math.cos(angle) * p.radius;
-                let y = centerY + Math.sin(angle) * p.radius * 0.75;
-                let glowRad = p.size * 2.2;
-                let grd = galaxyCtx.createRadialGradient(x, y, 0, x, y, glowRad);
-                grd.addColorStop(0, p.color);
-                grd.addColorStop(1, 'rgba(0,0,0,0)');
-                galaxyCtx.fillStyle = grd;
-                galaxyCtx.beginPath();
-                galaxyCtx.arc(x, y, glowRad, 0, Math.PI*2);
-                galaxyCtx.fill();
-                galaxyCtx.fillStyle = p.color;
-                galaxyCtx.beginPath();
-                galaxyCtx.arc(x, y, p.size * 0.8, 0, Math.PI*2);
-                galaxyCtx.fill();
-            }
-            
-            // 伴星系 (独立旋转)
-            secondRotation += 0.0028;
-            const secCenterX = width * 0.78, secCenterY = height * 0.72;
-            for(let p of particlesSecond) {
-                let angle = p.baseAngle + secondRotation * 1.1 + p.angleSpeed * 45;
-                let x = secCenterX + Math.cos(angle) * p.radius;
-                let y = secCenterY + Math.sin(angle) * p.radius * 0.8;
-                let grd = galaxyCtx.createRadialGradient(x, y, 0, x, y, p.size*2);
-                grd.addColorStop(0, p.color);
-                grd.addColorStop(1, 'rgba(0,0,0,0)');
-                galaxyCtx.fillStyle = grd;
-                galaxyCtx.beginPath();
-                galaxyCtx.arc(x, y, p.size*2, 0, Math.PI*2);
-                galaxyCtx.fill();
-                galaxyCtx.fillStyle = p.color;
-                galaxyCtx.beginPath();
-                galaxyCtx.arc(x, y, p.size*0.7, 0, Math.PI*2);
-                galaxyCtx.fill();
-            }
-            
-            // 核心光晕 (主星系)
-            const core = galaxyCtx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 70);
-            core.addColorStop(0, 'rgba(90, 140, 230, 0.5)');
-            core.addColorStop(0.7, 'rgba(30, 40, 100, 0.2)');
-            core.addColorStop(1, 'transparent');
-            galaxyCtx.fillStyle = core;
-            galaxyCtx.fillRect(centerX-120, centerY-120, 240, 240);
-            
-            // 伴星系核心
-            const core2 = galaxyCtx.createRadialGradient(secCenterX, secCenterY, 0, secCenterX, secCenterY, 45);
-            core2.addColorStop(0, 'rgba(150, 100, 210, 0.55)');
-            core2.addColorStop(1, 'transparent');
-            galaxyCtx.fillStyle = core2;
-            galaxyCtx.fillRect(secCenterX-60, secCenterY-60, 120, 120);
-            
-            // 绘制彗星
-            for(let i=0;i<cometList.length;i++) {
-                let c = cometList[i];
-                c.x += c.vx;
-                c.y += c.vy;
-                c.life--;
-                let alpha = c.life / c.maxLife;
-                if(c.life <=0 || c.x > width+200 || c.x < -200 || c.y > height+200) { cometList.splice(i,1); i--; continue; }
-                let ex = c.x - c.vx * 10;
-                let ey = c.y - c.vy * 10;
-                let grad = galaxyCtx.createLinearGradient(c.x, c.y, ex, ey);
-                grad.addColorStop(0, `rgba(130, 180, 255, ${alpha*0.9})`);
-                grad.addColorStop(1, 'rgba(60, 80, 150, 0)');
-                galaxyCtx.strokeStyle = grad;
-                galaxyCtx.lineWidth = 2.5;
-                galaxyCtx.beginPath();
-                galaxyCtx.moveTo(c.x, c.y);
-                galaxyCtx.lineTo(ex, ey);
-                galaxyCtx.stroke();
-                galaxyCtx.fillStyle = `rgba(180, 210, 255, ${alpha})`;
-                galaxyCtx.beginPath();
-                galaxyCtx.arc(c.x, c.y, 2.8, 0, Math.PI*2);
-                galaxyCtx.fill();
-            }
-            
-            requestAnimationFrame(animateGalaxies);
+            requestAnimationFrame(animateDust);
         }
+        animateDust();
         
-        window.addEventListener('resize', () => { width = window.innerWidth; height = window.innerHeight; galaxyCanvas.width = width; galaxyCanvas.height = height; particlesMain = []; particlesSecond = []; starCloud = []; createGalaxies(); createStarClouds(); });
-        
-        // ========== 2. 星星粒子增强 (深空暗星) ==========
-        (function starField() {
-            const canvas = document.getElementById('starsCanvas');
-            const ctx = canvas.getContext('2d');
-            let stars = [], shootingStars = [], w, h;
-            function resizeStars() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-            resizeStars(); window.addEventListener('resize', resizeStars);
-            for(let i=0;i<800;i++) stars.push({ x:Math.random()*w, y:Math.random()*h, size:Math.random()*2+0.4, alpha:Math.random()*0.5+0.2, twinkle:Math.random()*0.02+0.005, hue:180+Math.random()*100 });
-            function animateStars() {
-                if(!ctx) return;
-                ctx.clearRect(0,0,w,h);
-                let time = Date.now()*0.004;
-                stars.forEach(s=>{
-                    let tw = Math.sin(time * s.twinkle*60)*0.4+0.6;
-                    let a = s.alpha * tw;
-                    ctx.fillStyle = `hsla(${s.hue}, 60%, 65%, ${a})`;
-                    ctx.beginPath();
-                    ctx.arc(s.x, s.y, s.size*0.8, 0, Math.PI*2);
-                    ctx.fill();
-                });
-                if(Math.random()<0.025 && shootingStars.length<3) shootingStars.push({ x:Math.random()*w*0.7, y:Math.random()*h*0.4, len:Math.random()*70+50, speed:Math.random()*8+5, angle:Math.PI/4+(Math.random()-0.5)*0.4, life:70, alpha:1 });
-                shootingStars = shootingStars.filter(ss=>{
-                    ss.x+=Math.cos(ss.angle)*ss.speed; ss.y+=Math.sin(ss.angle)*ss.speed; ss.life--; ss.alpha=ss.life/70;
-                    if(ss.life<=0) return false;
-                    let ex=ss.x-Math.cos(ss.angle)*ss.len, ey=ss.y-Math.sin(ss.angle)*ss.len;
-                    let grad=ctx.createLinearGradient(ss.x,ss.y,ex,ey);
-                    grad.addColorStop(0,`rgba(100,160,255,${ss.alpha*0.9})`);
-                    grad.addColorStop(1,'rgba(70,100,200,0)');
-                    ctx.strokeStyle=grad; ctx.lineWidth=1.8;
-                    ctx.beginPath(); ctx.moveTo(ss.x,ss.y); ctx.lineTo(ex,ey); ctx.stroke();
-                    ctx.fillStyle=`rgba(150,190,255,${ss.alpha})`;
-                    ctx.beginPath(); ctx.arc(ss.x,ss.y,2.5,0,Math.PI*2); ctx.fill();
-                    return true;
-                });
-                requestAnimationFrame(animateStars);
-            }
-            animateStars();
-        })();
-        
-        // ========== 3. 额外漂浮星尘粒子层 (增加动感) ==========
-        (function dustFlow() {
-            const canvas = document.getElementById('dustCanvas');
-            const ctx = canvas.getContext('2d');
-            let dust = [], w,h;
-            function resizeDust() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-            resizeDust(); window.addEventListener('resize', resizeDust);
-            for(let i=0;i<400;i++) dust.push({ x:Math.random()*w, y:Math.random()*h, size:Math.random()*2+0.8, vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.1, alpha:Math.random()*0.3+0.1 });
-            function animateDust() {
-                if(!ctx) return;
-                ctx.clearRect(0,0,w,h);
-                for(let d of dust) {
-                    d.x += d.vx; d.y += d.vy;
-                    if(d.x < -20) d.x = w+20;
-                    if(d.x > w+20) d.x = -20;
-                    if(d.y < -20) d.y = h+20;
-                    if(d.y > h+20) d.y = -20;
-                    ctx.fillStyle = `rgba(110, 150, 220, ${d.alpha*0.4})`;
-                    ctx.beginPath();
-                    ctx.arc(d.x, d.y, d.size*0.6, 0, Math.PI*2);
-                    ctx.fill();
-                }
-                requestAnimationFrame(animateDust);
-            }
-            animateDust();
-        })();
-        
-        // ========== 原有数据管理 (完全保留) ==========
+        // ========== 数据与交互核心 ==========
         const DATA_KEYS = { works: 'wxs_works', members: 'wxs_members', news: 'wxs_news' };
-        const defaultWorks = [{ id:1, title:'暗夜旋臂', author:'林月如', desc:'数字绘画，深空双星系的低语。', image:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80'},{ id:2, title:'星尘流光', author:'陈远航', desc:'长曝光摄影，捕捉暗夜中的星轨。', image:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80'}];
-        const defaultMembers = [{ id:1, name:'林月如', role:'社长·星绘者', number:'WX-001', signature:'以画笔勾勒万象星辰', avatar:''},{ id:2, name:'陈远航', role:'摄制总监', number:'WX-002', signature:'镜头捕捉宇宙一隅', avatar:''}];
-        const defaultNews = [{ id:1, date:'2025-02-20', title:'深空艺术节开幕', summary:'沉浸式暗影光影展，探索宇宙奥秘', content:'<p>沉浸式展览融合光影与音效，带你进入深邃星渊。</p><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&q=80" alt="展讯">', image:'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80'}];
-        function getLocalData(key){ try{ return JSON.parse(localStorage.getItem(DATA_KEYS[key])); }catch(e){return null;} }
+        const defaultWorks = [
+            { id:1, title:'月之咒语', author:'林月如', desc:'魔法光影绘画，月光与星尘交织而成，蕴含着古老的祝福。', image:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80' },
+            { id:2, title:'星尘魔杖', author:'陈远航', desc:'星轨摄影与炼金术符号的艺术结合，捕捉宇宙魔力。', image:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80' },
+            { id:3, title:'占星秘仪', author:'苏星野', desc:'数字插画，描绘占星轮盘与魔法灵境。', image:'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&q=80' }
+        ];
+        const defaultMembers = [{ id:1, name:'林月如', role:'月之社长', number:'WX-月痕', signature:'以月光为墨，书万象之诗。', avatar:''},{ id:2, name:'陈远航', role:'观星使者', number:'WX-星语', signature:'星轨中寻觅魔法的轨迹。', avatar:''}];
+        const defaultNews = [{ id:1, date:'2025-03-08', title:'星月魔法展即将开启', summary:'沉浸式魔法光影展，邂逅星月奇境。', content:'<p>沉浸式展览结合光影与魔法咒文，带来神秘体验。</p><img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&q=80">', image:'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80'}];
+        
+        function getLocalData(key){ try{ return JSON.parse(localStorage.getItem(DATA_KEYS[key])); } catch(e){return null;} }
         function setLocalData(key,data){ localStorage.setItem(DATA_KEYS[key], JSON.stringify(data)); }
         function initLocalData(){ if(!getLocalData('works')) setLocalData('works',defaultWorks); if(!getLocalData('members')) setLocalData('members',defaultMembers); if(!getLocalData('news')) setLocalData('news',defaultNews); }
         async function loadCloudData(){ try{ let res=await fetch('data.json'); if(res.ok){ let json=await res.json(); if(json.works)setLocalData('works',json.works); if(json.members)setLocalData('members',json.members); if(json.news)setLocalData('news',json.news); return true;}}catch(e){} return false;}
-        function exportDataJSON(){ let data={works:getLocalData('works'),members:getLocalData('members'),news:getLocalData('news')}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})); a.download='data.json'; a.click(); showToast('✨ data.json 已导出 ✨');}
+        function exportDataJSON(){ let data={works:getLocalData('works'),members:getLocalData('members'),news:getLocalData('news')}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})); a.download='data.json'; a.click(); showToast('✨ 魔法书卷 data.json 已导出 ✨');}
         function showToast(msg){ let t=document.getElementById('toast'); t.textContent=msg; t.style.opacity='1'; setTimeout(()=>t.style.opacity='0',2500);}
+        
         let currentPage='home';
         function navigateTo(page){ 
             if(currentPage===page && page!=='admin') return;
@@ -600,36 +539,56 @@
             if(page==='works') renderWorks(); if(page==='members') renderMembers(); if(page==='news') renderNews(); if(page==='admin') checkAdminStatus();
             window.scrollTo({top:0,behavior:'smooth'}); document.getElementById('navLinks')?.classList.remove('open');
         }
-        function renderWorks(){ let works=getLocalData('works')||[]; document.getElementById('worksGrid').innerHTML=works.map(w=>`<div class="work-card"><img class="card-img" src="${escapeHtml(w.image)}" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'"><div class="card-body"><h3>${escapeHtml(w.title)}</h3><p class="author">✧ ${escapeHtml(w.author)}</p><p class="desc">${escapeHtml(w.desc)}</p></div></div>`).join('');}
-        function renderMembers(){ let m=getLocalData('members')||[]; document.getElementById('membersGrid').innerHTML=m.map(mem=>{let ini=escapeHtml((mem.name||'?').charAt(0)); let avHtml=mem.avatar?`<img src="${escapeHtml(mem.avatar)}" style="width:100%;height:100%;object-fit:cover;">`:ini; return `<div class="member-name-card" onclick="openMemberModal('${mem.id}')"><div class="avatar-dot">${avHtml}</div><div class="member-name">${escapeHtml(mem.name)}</div><div class="member-role-hint">${escapeHtml(mem.role)}</div></div>`;}).join('');}
-        function openMemberModal(id){ let m=getLocalData('members').find(x=>String(x.id)===String(id)); if(!m)return; let avatarDiv=document.getElementById('modalAvatar'); if(m.avatar)avatarDiv.innerHTML=`<img src="${escapeHtml(m.avatar)}" style="width:100%;height:100%;object-fit:cover;">`; else avatarDiv.innerHTML=(m.name||'?').charAt(0); document.getElementById('modalName').innerText=m.name; document.getElementById('modalRole').innerText='✦ '+m.role; document.getElementById('modalId').innerText='编号：'+m.number; document.getElementById('modalSignature').innerText='「'+ (m.signature||'')+'」'; document.getElementById('memberModal').classList.add('show');}
+        
+        function renderWorks(){ 
+            let works=getLocalData('works')||[]; 
+            document.getElementById('worksGrid').innerHTML=works.map(w=>`
+                <div class="work-card" data-id="${w.id}">
+                    <img class="card-img" src="${escapeHtml(w.image)}" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'">
+                    <div class="card-body">
+                        <h3>${escapeHtml(w.title)}</h3>
+                        <p class="author">🔮 ${escapeHtml(w.author)}</p>
+                        <p class="desc">${escapeHtml(w.desc.substring(0,80))}${w.desc.length>80?'…':''}</p>
+                    </div>
+                </div>`).join('');
+            document.querySelectorAll('.work-card').forEach(card => {
+                card.addEventListener('click', (e) => { const id = parseInt(card.getAttribute('data-id')); openWorkDetail(id); });
+            });
+        }
+        function openWorkDetail(id){ let works=getLocalData('works')||[]; let w=works.find(w=>w.id===id); if(w){ document.getElementById('workModalImg').src=w.image; document.getElementById('workModalTitle').innerText=w.title; document.getElementById('workModalAuthor').innerHTML=`🔮 ${escapeHtml(w.author)}`; document.getElementById('workModalDesc').innerHTML=w.desc; document.getElementById('workModal').classList.add('show'); document.body.style.overflow='hidden'; } }
+        function closeWorkModal(){ document.getElementById('workModal').classList.remove('show'); document.body.style.overflow=''; }
+        function renderMembers(){ let m=getLocalData('members')||[]; document.getElementById('membersGrid').innerHTML=m.map(mem=>{let ini=escapeHtml((mem.name||'?').charAt(0)); let avHtml=mem.avatar?`<img src="${escapeHtml(mem.avatar)}" style="width:100%;height:100%;object-fit:cover;">`:ini; return `<div class="member-name-card" onclick="openMemberModal('${mem.id}')"><div class="avatar-dot">${avHtml}</div><div class="member-name">${escapeHtml(mem.name)}</div><div class="member-role-hint">✨ ${escapeHtml(mem.role)}</div></div>`;}).join('');}
+        function openMemberModal(id){ let m=getLocalData('members').find(x=>String(x.id)===String(id)); if(!m)return; let avatarDiv=document.getElementById('modalAvatar'); if(m.avatar)avatarDiv.innerHTML=`<img src="${escapeHtml(m.avatar)}" style="width:100%;height:100%;object-fit:cover;">`; else avatarDiv.innerHTML=(m.name||'?').charAt(0); document.getElementById('modalName').innerText=m.name; document.getElementById('modalRole').innerText='✦ '+m.role; document.getElementById('modalId').innerText='星月编号：'+m.number; document.getElementById('modalSignature').innerText='「'+ (m.signature||'')+'」'; document.getElementById('memberModal').classList.add('show');}
         function closeMemberModal(){ document.getElementById('memberModal').classList.remove('show');}
-        function renderNews(){ let news=getLocalData('news')||[]; document.getElementById('newsList').innerHTML=news.map(n=>`<div class="news-card" onclick="openArticle(${n.id})">${n.image?`<img class="news-img" src="${escapeHtml(n.image)}" onerror="this.style.display='none'">`:''}<div class="news-body"><div class="news-date">📅 ${escapeHtml(n.date)}</div><h3>${escapeHtml(n.title)}</h3><p class="news-summary">${escapeHtml((n.summary||'').substring(0,80))}</p></div></div>`).join('');}
-        function openArticle(id){ let art=getLocalData('news').find(n=>n.id===id); if(art){ document.getElementById('articleDate').innerHTML='📅 '+escapeHtml(art.date); document.getElementById('articleTitle').innerHTML=escapeHtml(art.title); document.getElementById('articleBody').innerHTML=art.content||'暂无内容'; document.getElementById('articleModal').classList.add('show');}}
+        function renderNews(){ let news=getLocalData('news')||[]; document.getElementById('newsList').innerHTML=news.map(n=>`<div class="news-card" onclick="openArticle(${n.id})">${n.image?`<img class="news-img" src="${escapeHtml(n.image)}" onerror="this.style.display='none'">`:''}<div class="news-body"><div class="news-date">🌙 ${escapeHtml(n.date)}</div><h3>${escapeHtml(n.title)}</h3><p class="news-summary">${escapeHtml((n.summary||'').substring(0,80))}</p></div></div>`).join('');}
+        function openArticle(id){ let art=getLocalData('news').find(n=>n.id===id); if(art){ document.getElementById('articleDate').innerHTML='🌙 '+escapeHtml(art.date); document.getElementById('articleTitle').innerHTML=escapeHtml(art.title); document.getElementById('articleBody').innerHTML=art.content||'暂无内容'; document.getElementById('articleModal').classList.add('show');}}
         function closeArticleModal(){ document.getElementById('articleModal').classList.remove('show');}
         function escapeHtml(str){ let div=document.createElement('div'); div.textContent=str||''; return div.innerHTML;}
-        const ADMIN_PW='wanxiang2024';
+        
+        const ADMIN_PW='magic2026';
         function checkAdminStatus(){ let logged=sessionStorage.getItem('wxs_admin'); document.getElementById('adminLoginArea').style.display=logged==='true'?'none':'block'; document.getElementById('adminPanelArea').style.display=logged==='true'?'block':'none'; if(logged==='true') switchAdminTab('works');}
         function adminLogin(){ if(document.getElementById('adminPassword').value===ADMIN_PW){ sessionStorage.setItem('wxs_admin','true'); checkAdminStatus(); showToast('✅ 登录成功'); } else showToast('❌ 密码错误');}
         function adminLogout(){ sessionStorage.removeItem('wxs_admin'); checkAdminStatus(); showToast('已退出');}
         let adminTab='works';
         function switchAdminTab(tab){ adminTab=tab; renderAdminContent();}
-        function renderAdminContent(){ let data=getLocalData(adminTab)||[]; let cfg={works:{fields:['title','author','desc','image'],labels:['标题','作者','描述','图片URL']}, members:{fields:['name','role','number','signature','avatar'],labels:['昵称','职位','编号','签名','头像URL']}, news:{fields:['title','date','summary','content','image'],labels:['标题','日期','摘要','正文','封面URL']}}[adminTab]; let html=`<h3>${adminTab}管理</h3><table class="admin-table"><tr>${cfg.labels.map(l=>`<th>${l}</th>`).join('')}<th>操作</th></tr>`; data.forEach(item=>{ html+=`<tr>${cfg.fields.map(f=>`<td style="max-width:150px;overflow:hidden;">${escapeHtml(String(item[f]||'').substring(0,25))}</td>`).join('')}<td><button class="btn btn-sm" onclick="editItem('${adminTab}',${item.id})">✏️</button> <button class="btn btn-sm" onclick="deleteItem('${adminTab}',${item.id})">🗑</button></td></tr>`; }); html+=`</table><button class="btn btn-gold" onclick="addItem('${adminTab}')">＋ 新增</button><div id="editFormArea" style="margin-top:20px;"></div>`; document.getElementById('adminContentArea').innerHTML=html;}
+        function renderAdminContent(){ let data=getLocalData(adminTab)||[]; let cfg={works:{fields:['title','author','desc','image'],labels:['标题','作者','描述','图片URL']}, members:{fields:['name','role','number','signature','avatar'],labels:['昵称','职位','编号','签名','头像URL']}, news:{fields:['title','date','summary','content','image'],labels:['标题','日期','摘要','正文','封面URL']}}[adminTab]; let html=`<h3>${adminTab}管理</h3><table class="admin-table"><tr>${cfg.labels.map(l=>`<th>${l}</th>`).join('')}<th>操作</th></tr>`; data.forEach(item=>{ html+=`<tr>${cfg.fields.map(f=>`<td style="max-width:150px;overflow:hidden;">${escapeHtml(String(item[f]||'').substring(0,25))}</td>`).join('')}<td><button class="btn btn-sm" onclick="editItem('${adminTab}',${item.id})">✏️</button> <button class="btn btn-sm" onclick="deleteItem('${adminTab}',${item.id})">🗑</button></td></tr>`; }); html+=`<table><button class="btn btn-gold" onclick="addItem('${adminTab}')">＋ 新增</button><div id="editFormArea" style="margin-top:20px;"></div>`; document.getElementById('adminContentArea').innerHTML=html;}
         function getNextId(tab){ let d=getLocalData(tab)||[]; return d.length?Math.max(...d.map(i=>i.id))+1:1;}
         function addItem(tab){ let cfgMap={works:['title','author','desc','image'],members:['name','role','number','signature','avatar'],news:['title','date','summary','content','image']}; let fields=cfgMap[tab]; let html='<h4>新增条目</h4>'; fields.forEach(f=>{ html+=`<label>${f}</label><textarea id="f_${f}" rows="2"></textarea>`; if(f==='content') html+=`<button type="button" class="btn btn-sm" onclick="insertImageToField('f_content')">📷 插入图片</button>`; }); html+=`<button class="btn btn-gold" onclick="saveNew('${tab}')">保存</button> <button class="btn" onclick="document.getElementById('editFormArea').innerHTML=''">取消</button>`; document.getElementById('editFormArea').innerHTML=html;}
         function editItem(tab,id){ let data=getLocalData(tab); let item=data.find(d=>d.id===id); let cfgMap={works:['title','author','desc','image'],members:['name','role','number','signature','avatar'],news:['title','date','summary','content','image']}; let fields=cfgMap[tab]; let html=`<h4>编辑 ID ${id}</h4>`; fields.forEach(f=>{ let val=item[f]||''; html+=`<label>${f}</label><textarea id="f_${f}" rows="2">${escapeHtml(val)}</textarea>`; if(f==='content') html+=`<button type="button" class="btn btn-sm" onclick="insertImageToField('f_content')">📷 插入图片</button>`; }); html+=`<button class="btn btn-gold" onclick="saveEdit('${tab}',${id})">更新</button> <button class="btn" onclick="document.getElementById('editFormArea').innerHTML=''">取消</button>`; document.getElementById('editFormArea').innerHTML=html;}
-        function insertImageToField(fieldId){ let url=prompt('输入图片URL:'); if(url){ let textarea=document.getElementById(fieldId); let tag=`<img src="${url}" alt="image" style="max-width:100%">`; let start=textarea.selectionStart; let val=textarea.value; textarea.value=val.slice(0,start)+tag+val.slice(start);}}
+        function insertImageToField(fieldId){ let url=prompt('输入图片URL:'); if(url){ let textarea=document.getElementById(fieldId); let tag=`<img src="${url}" alt="魔法图像" style="max-width:100%">`; let start=textarea.selectionStart; let val=textarea.value; textarea.value=val.slice(0,start)+tag+val.slice(start);}}
         function saveNew(tab){ let cfgMap={works:['title','author','desc','image'],members:['name','role','number','signature','avatar'],news:['title','date','summary','content','image']}; let fields=cfgMap[tab]; let obj={id:getNextId(tab)}; fields.forEach(f=>{ let el=document.getElementById('f_'+f); if(el) obj[f]=el.value;}); let data=getLocalData(tab)||[]; data.push(obj); setLocalData(tab,data); document.getElementById('editFormArea').innerHTML=''; renderAdminContent(); refreshPage(tab); showToast('已保存至本地');}
         function saveEdit(tab,id){ let cfgMap={works:['title','author','desc','image'],members:['name','role','number','signature','avatar'],news:['title','date','summary','content','image']}; let fields=cfgMap[tab]; let data=getLocalData(tab); let idx=data.findIndex(d=>d.id===id); fields.forEach(f=>{ let el=document.getElementById('f_'+f); if(el) data[idx][f]=el.value;}); setLocalData(tab,data); document.getElementById('editFormArea').innerHTML=''; renderAdminContent(); refreshPage(tab); showToast('已更新');}
         function deleteItem(tab,id){ if(!confirm('确认删除？')) return; let data=getLocalData(tab).filter(d=>d.id!==id); setLocalData(tab,data); renderAdminContent(); refreshPage(tab); showToast('已删除');}
         function refreshPage(tab){ if(tab==='works') renderWorks(); if(tab==='members') renderMembers(); if(tab==='news') renderNews();}
         
-        window.onload=()=>{ initGalaxy(); initLocalData(); loadCloudData().then(()=>{ renderWorks(); renderMembers(); renderNews(); }); checkAdminStatus(); };
+        window.onload=()=>{ initLocalData(); loadCloudData().then(()=>{ renderWorks(); renderMembers(); renderNews(); }); checkAdminStatus(); };
         window.toggleMenu=function(){document.getElementById('navLinks').classList.toggle('open');};
         window.closeMemberModal=closeMemberModal; window.closeArticleModal=closeArticleModal; window.openArticle=openArticle; window.openMemberModal=openMemberModal;
-        window.insertImageToField = insertImageToField;
-        window.addItem = addItem; window.editItem = editItem; window.deleteItem = deleteItem;
-        window.saveNew = saveNew; window.saveEdit = saveEdit;
+        window.closeWorkModal=closeWorkModal;
+        document.getElementById('workModal').addEventListener('click',(e)=> { if(e.target===document.getElementById('workModal')) closeWorkModal(); });
+        document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ closeWorkModal(); closeMemberModal(); closeArticleModal(); } });
+        window.insertImageToField=insertImageToField; window.addItem=addItem; window.editItem=editItem; window.deleteItem=deleteItem;
+        window.saveNew=saveNew; window.saveEdit=saveEdit;
     </script>
 </body>
 </html>
